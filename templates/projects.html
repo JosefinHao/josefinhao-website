@@ -5,26 +5,241 @@
 {% block content %}
 <h1>Projects</h1>
 
-<p style="margin-bottom: 3rem;">
-    Here's a collection of projects I've worked on. This page will showcase
-    various initiatives, from personal experiments to professional work.
+<p style="margin-bottom: 3rem; font-size: 1.15rem; color: #5f7c8a;">
+    A showcase of my work in AI, multi-agent systems, and intelligent automation.
 </p>
 
-<div class="content-placeholder">
-    <h3>Project Portfolio</h3>
-    <p>Featured projects and case studies will be displayed here.</p>
-    <p style="font-size: 0.95rem; margin-top: 1rem;">
-        Coming soon: Interactive project cards with descriptions, technologies used, and live demos.
+<!-- Featured Project -->
+<section style="margin-bottom: 4rem;">
+    <div style="background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(95, 124, 138, 0.1) 100%);
+                border-left: 5px solid #4a90e2;
+                padding: 2.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);">
+        <h2 style="color: #4a90e2; margin-bottom: 1rem; font-size: 2.2rem;">
+            🚀 Multi-Agent Data Science Platform
+        </h2>
+        <p style="font-size: 1.15rem; font-weight: 500; color: #2c3e50; margin-bottom: 1.5rem;">
+            Prototyping advanced multi-agent systems for data exploration, causal inference, and predictive modeling tasks.
+        </p>
+        <p style="color: #5f7c8a; line-height: 1.9;">
+            Building intelligent agent architectures that collaborate to analyze complex datasets,
+            discover causal relationships, and generate predictive models. The system leverages
+            autonomous agents working in concert to handle different aspects of the data science
+            pipeline—from initial exploration through hypothesis testing to final model deployment.
+        </p>
+        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255, 255, 255, 0.7); border-radius: 8px;">
+            <p style="margin: 0; font-size: 0.95rem; color: #78909c; font-style: italic;">
+                <strong>Tech Stack:</strong> Multi-agent frameworks, Python, Statistical modeling, Causal inference libraries
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Other Current Projects -->
+<section style="margin-bottom: 4rem;">
+    <h2 style="color: #2c3e50; margin-bottom: 2rem;">Current Projects</h2>
+
+    <div style="display: grid; gap: 2rem;">
+        <!-- Financial Advisor App -->
+        <div style="background: #f8f9fa;
+                    border-left: 4px solid #4a90e2;
+                    padding: 2rem;
+                    border-radius: 8px;
+                    transition: box-shadow 0.3s ease;">
+            <h3 style="color: #4a90e2; margin-bottom: 1rem;">GPT-Backed Financial Advisor</h3>
+            <p style="color: #5f7c8a; margin-bottom: 1rem;">
+                Building a comprehensive financial advisor application using React and Flask that provides
+                personalized guidance and financial planning tools.
+            </p>
+            <p style="color: #5f7c8a; margin-bottom: 1rem;">
+                <strong>Features:</strong> Mortgage calculator, retirement planner, goal tracking,
+                document analysis, and automated payment reminders.
+            </p>
+            <p style="margin: 0; font-size: 0.95rem; color: #78909c;">
+                <strong>Stack:</strong> React, Flask, OpenAI GPT, Python
+            </p>
+        </div>
+
+        <!-- AI Model Training -->
+        <div style="background: #f8f9fa;
+                    border-left: 4px solid #5f7c8a;
+                    padding: 2rem;
+                    border-radius: 8px;">
+            <h3 style="color: #5f7c8a; margin-bottom: 1rem;">Domain-Specific AI Models</h3>
+            <p style="color: #5f7c8a; margin-bottom: 1rem;">
+                Training and fine-tuning specialized AI models to enhance contextual understanding
+                and deliver more accurate, domain-aware recommendations.
+            </p>
+            <p style="margin: 0; font-size: 0.95rem; color: #78909c;">
+                <strong>Focus:</strong> Model fine-tuning, Domain adaptation, Contextual AI
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Completed Work Section -->
+<section style="margin-bottom: 4rem;">
+    <h2 style="color: #2c3e50; margin-bottom: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e0e0e0;">
+        Completed Work
+    </h2>
+
+    <!-- OpenAI Agents SDK -->
+    <div style="margin-bottom: 3rem;">
+        <h3 style="color: #4a90e2; margin-bottom: 1.5rem; font-size: 1.5rem;">
+            Built with OpenAI Agents SDK
+        </h3>
+        <div style="display: grid; gap: 1.5rem;">
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Career Agent/Bot</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Answers user questions about me and sends push notifications (via Pushover)
+                    for unknown questions and user outreach.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">SDR (Sales Development Representative)</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Generates multiple sales emails in various tones, selects the most effective one,
+                    formats and sends to specified email addresses.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Deep Research Agent</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Takes user queries, plans multiple related searches, executes them concurrently,
+                    writes comprehensive reports, and emails the results.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CrewAI -->
+    <div style="margin-bottom: 3rem;">
+        <h3 style="color: #4a90e2; margin-bottom: 1.5rem; font-size: 1.5rem;">
+            Built with CrewAI
+        </h3>
+        <div style="display: grid; gap: 1.5rem;">
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Debate System</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Agents argue for and against a motion with a judge agent to decide the winner.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Financial Researcher</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Research crew for comprehensive topic analysis and reporting using Serper for web search.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Stock Picker</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Identifies trending companies, researches them, and selects the best investment opportunities.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Coder</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Uses CrewAI Coder Agents and Docker to write and execute code autonomously.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Engineering Team</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Multi-agent team including engineering lead, backend engineer, frontend engineer,
+                    and test engineer that collaboratively designs, codes, and tests according to user requirements.
+                </p>
+            </div>
+
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Trading Simulation Platform</h4>
+                <p style="color: #5f7c8a; margin: 0;">
+                    Built with the Engineering Team by providing specific requirements for a complete
+                    trading simulation system.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LangGraph -->
+    <div style="margin-bottom: 3rem;">
+        <h3 style="color: #4a90e2; margin-bottom: 1.5rem; font-size: 1.5rem;">
+            Built with LangGraph
+        </h3>
+        <div style="display: grid; gap: 1.5rem;">
+            <div style="background: white;
+                        border: 1px solid #e0e0e0;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h4 style="color: #2c3e50; margin-bottom: 0.75rem;">Sidekick - Autonomous AI Assistant</h4>
+                <p style="color: #5f7c8a; margin-bottom: 1rem;">
+                    Developed an autonomous AI assistant system using LangGraph and LangChain that
+                    iteratively completes user-defined tasks through a worker-evaluator architecture.
+                </p>
+                <p style="color: #5f7c8a; margin: 0;">
+                    <strong>Integrated Tools:</strong> Playwright web automation, web search APIs,
+                    Python execution, file management, with a Gradio interface for user interaction.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div style="background: #e8f4f8;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #4a90e2;
+            margin-top: 3rem;">
+    <p style="margin: 0; color: #2c3e50; font-size: 1.05rem;">
+        <strong>Interested in collaboration?</strong>
+        <a href="/contact" style="color: #4a90e2; text-decoration: none; font-weight: 500; margin-left: 0.5rem;">
+            Get in touch →
+        </a>
     </p>
 </div>
 
-<div class="content-placeholder">
-    <h3>Open Source Contributions</h3>
-    <p>A showcase of my contributions to open source projects and community initiatives.</p>
-</div>
-
-<div class="content-placeholder">
-    <h3>Experiments & Learning</h3>
-    <p>Smaller projects and experiments exploring new technologies and concepts.</p>
-</div>
 {% endblock %}
