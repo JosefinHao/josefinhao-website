@@ -2,54 +2,66 @@
 
 {% block title %}Contact - Josefin Hao{% endblock %}
 
-{% block heading %}Contact{% endblock %}
-
 {% block content %}
-<p style="margin-bottom: 2rem;">
-    I'd love to hear from you! Send me a message using the form below.
-</p>
+<div class="contact-form-container">
+    <h1>Get In Touch</h1>
 
-<form method="POST" action="/contact">
-    {{ form.hidden_tag() }}
-
-    <div class="form-group">
-        {{ form.name.label }}
-        {{ form.name(class="form-control") }}
-        {% if form.name.errors %}
-            <span style="color: red; font-size: 0.9rem;">{{ form.name.errors[0] }}</span>
-        {% endif %}
+    <div class="contact-intro">
+        <p>
+            I'd love to hear from you! Whether you have a question, want to discuss
+            a project, or just want to connect, feel free to send me a message using
+            the form below.
+        </p>
     </div>
 
-    <div class="form-group">
-        {{ form.email.label }}
-        {{ form.email(class="form-control") }}
-        {% if form.email.errors %}
-            <span style="color: red; font-size: 0.9rem;">{{ form.email.errors[0] }}</span>
-        {% endif %}
-    </div>
+    <form method="POST" action="/contact">
+        {{ form.hidden_tag() }}
 
-    <div class="form-group">
-        {{ form.subject.label }}
-        {{ form.subject(class="form-control") }}
-        {% if form.subject.errors %}
-            <span style="color: red; font-size: 0.9rem;">{{ form.subject.errors[0] }}</span>
-        {% endif %}
-    </div>
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+            {% if form.name.errors %}
+                <span style="color: #dc3545; font-size: 0.9rem;">{{ form.name.errors[0] }}</span>
+            {% endif %}
+        </div>
 
-    <div class="form-group">
-        {{ form.message.label }}
-        {{ form.message(class="form-control") }}
-        {% if form.message.errors %}
-            <span style="color: red; font-size: 0.9rem;">{{ form.message.errors[0] }}</span>
-        {% endif %}
-    </div>
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control") }}
+            {% if form.email.errors %}
+                <span style="color: #dc3545; font-size: 0.9rem;">{{ form.email.errors[0] }}</span>
+            {% endif %}
+        </div>
 
-    <div class="form-group">
-        {{ form.submit(class="btn") }}
-    </div>
-</form>
+        <div class="form-group">
+            {{ form.subject.label }}
+            {{ form.subject(class="form-control") }}
+            {% if form.subject.errors %}
+                <span style="color: #dc3545; font-size: 0.9rem;">{{ form.subject.errors[0] }}</span>
+            {% endif %}
+        </div>
 
-<p style="margin-top: 2rem; color: #999; font-size: 0.9rem;">
-    Or email me directly at: <a href="mailto:hello@josefinhao.com" style="color: #667eea;">hello@josefinhao.com</a>
-</p>
+        <div class="form-group">
+            {{ form.message.label }}
+            {{ form.message(class="form-control") }}
+            {% if form.message.errors %}
+                <span style="color: #dc3545; font-size: 0.9rem;">{{ form.message.errors[0] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn") }}
+        </div>
+    </form>
+
+    <div class="contact-footer">
+        <p>
+            Or email me directly at:
+            <a href="mailto:hello@josefinhao.com">hello@josefinhao.com</a>
+        </p>
+        <p style="margin-top: 0.5rem;">
+            I typically respond within 24-48 hours.
+        </p>
+    </div>
+</div>
 {% endblock %}

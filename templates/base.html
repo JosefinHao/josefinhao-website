@@ -8,9 +8,22 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <div class="container">
-        <h1>{% block heading %}Josefin Hao{% endblock %}</h1>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">Josefin Hao</a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/projects">Projects</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                {% block extra_nav %}{% endblock %}
+            </nav>
+        </div>
+    </header>
 
+    <!-- Main Content Container -->
+    <div class="main-container">
         {% block flash_messages %}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -22,16 +35,8 @@
         {% endblock %}
 
         {% block content %}{% endblock %}
-
-        <nav>
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
-            {% block extra_nav %}{% endblock %}
-        </nav>
-
-        {% block status %}{% endblock %}
     </div>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

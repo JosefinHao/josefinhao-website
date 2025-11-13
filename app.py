@@ -91,6 +91,11 @@ def about():
     """About page"""
     return render_template('about.html')
 
+@app.route('/projects')
+def projects():
+    """Projects page"""
+    return render_template('projects.html')
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     """Contact page with form"""

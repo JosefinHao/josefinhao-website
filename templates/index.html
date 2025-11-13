@@ -3,11 +3,39 @@
 {% block title %}Josefin Hao - Home{% endblock %}
 
 {% block content %}
-<p>Welcome to my website</p>
-{% endblock %}
+<div class="home-layout">
+    <!-- Left Sidebar: Profile Section -->
+    <aside class="profile-section">
+        <div class="profile-photo-placeholder">
+            JH
+        </div>
+        <div class="profile-intro">
+            <h2>Josefin Hao</h2>
+            <p>Building innovative solutions and exploring new technologies.</p>
+            <p style="font-size: 0.9rem; color: #78909c;">Welcome to my digital space.</p>
+        </div>
 
-{% block status %}
-<div class="status">
-    <span></span> Website operational | SendGrid webhook active
+        <div class="status">
+            <span></span> Website operational
+        </div>
+    </aside>
+
+    <!-- Right Side: Main Content Area -->
+    <main class="main-content">
+        <div class="content-placeholder">
+            <h3>Featured Content</h3>
+            <p>This area is reserved for featured projects, blog posts, or announcements.</p>
+        </div>
+
+        <div class="content-placeholder">
+            <h3>Recent Work</h3>
+            <p>Showcase of recent projects and achievements will appear here.</p>
+        </div>
+
+        <div class="content-placeholder">
+            <h3>Latest Updates</h3>
+            <p>News, updates, and interesting findings will be shared in this section.</p>
+        </div>
+    </main>
 </div>
 {% endblock %}
