@@ -1,78 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Josefin Hao</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .container {
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 600px;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        p {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        
-        nav {
-            margin-top: 2rem;
-        }
-        
-        nav a {
-            display: inline-block;
-            margin: 0 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: transform 0.3s ease;
-        }
-        
-        nav a:hover {
-            transform: translateY(-2px);
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>About</h1>
-        <p>This is the about page. You can add more content here later.</p>
-        
-        <nav>
-            <a href="/">← Back Home</a>
-        </nav>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}About - Josefin Hao{% endblock %}
+
+{% block content %}
+<div class="about-content">
+    <h1>About Me</h1>
+
+    <h2>Hi, I'm Josefin!</h2>
+    <p>
+        Welcome to my corner of the internet. I'm passionate about building
+        innovative solutions and connecting with people through technology.
+    </p>
+
+    <h2>What I Do</h2>
+    <p>
+        I focus on creating meaningful digital experiences and exploring
+        new technologies. This website serves as a hub for my projects
+        and a way to stay connected with the community.
+    </p>
+
+    <p>
+        My work spans across various domains, from web development to
+        automation, always with a focus on creating practical solutions
+        that make a difference.
+    </p>
+
+    <h2>Get In Touch</h2>
+    <p>
+        I'm always interested in hearing about new opportunities and
+        collaborations. Whether you have a project in mind, want to
+        discuss ideas, or just want to say hello, feel free to reach
+        out through the <a href="/contact" style="color: #4a90e2; text-decoration: none; font-weight: 500;">contact page</a>.
+    </p>
+
+    <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e0e0e0; color: #78909c; font-size: 0.95rem;">
+        This website is continuously evolving as I add new projects and content.
+        Check back regularly for updates!
+    </p>
+</div>
+{% endblock %}

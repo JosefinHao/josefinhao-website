@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Josefin Hao{% endblock %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+
+<div class="admin-header">
+    <p style="color: #5f7c8a;">
+        View all contact form submissions and inbound webhook emails
+    </p>
+</div>
+
+<!-- Contact Form Messages Section -->
+<section style="margin-bottom: 3rem;">
+    <h2 style="color: #4a90e2; margin-bottom: 1rem;">
+        Contact Form Messages ({{ contact_messages|length }})
+    </h2>
+
+    {% if contact_messages %}
+        <div class="email-list">
+            {% for msg in contact_messages %}
+                <div class="email-item">
+                    <h3>{{ msg.subject }}</h3>
+                    <div class="email-meta">
+                        <strong>From:</strong> {{ msg.name }} ({{ msg.email }})<br>
+                        <strong>Received:</strong> {{ msg.created_at.strftime('%Y-%m-%d %H:%M UTC') }}
+                    </div>
+                    <div class="email-preview">
+                        {{ msg.message[:150] }}{% if msg.message|length > 150 %}...{% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            No contact form submissions yet
+        </div>
+    {% endif %}
+</section>
+
+<!-- Inbound Webhook Emails Section -->
+<section>
+    <h2 style="color: #5f7c8a; margin-bottom: 1rem;">
+        Inbound Webhook Emails ({{ inbound_emails|length }})
+    </h2>
+
+    {% if inbound_emails %}
+        <div class="email-list">
+            {% for email in inbound_emails %}
+                <div class="email-item">
+                    <h3>{{ email.subject }}</h3>
+                    <div class="email-meta">
+                        <strong>From:</strong> {{ email.from_email }}<br>
+                        <strong>To:</strong> {{ email.to_email }}<br>
+                        <strong>Received:</strong> {{ email.received_at.strftime('%Y-%m-%d %H:%M UTC') }}
+                    </div>
+                    <div class="email-preview">
+                        {{ email.text_content[:200] if email.text_content else 'No text content' }}
+                        {% if email.text_content and email.text_content|length > 200 %}...{% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            No webhook emails received yet
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
