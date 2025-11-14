@@ -1,5 +1,5 @@
-/* Import modern sans-serif font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Import modern serif font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
@@ -9,7 +9,7 @@
 
 /* Animated Gradient Background - Soft Pastel Colors */
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     line-height: 1.4;
     color: #2c3e50;
     background: linear-gradient(-45deg, #e3f2fd, #f3e5f5, #e8eaf6, #e0f2f1);
@@ -28,6 +28,17 @@ body {
     100% {
         background-position: 0% 50%;
     }
+}
+
+/* Interactive Particle Canvas */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
 }
 
 /* Glassmorphism Header */
