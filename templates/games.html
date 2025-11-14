@@ -10,7 +10,7 @@
     </p>
 </div>
 
-<!-- Grid of Games -->
+<!-- Grid of Game Cards -->
 <div class="games-grid">
     <!-- Game 1: Typing Speed Challenge -->
     <div class="game-card">
@@ -21,11 +21,49 @@
         <p class="game-description">
             Type code snippets as fast and accurately as you can. Test your coding speed with real Python and SQL code!
         </p>
-        <button class="game-launch-btn" onclick="toggleGame('typing-game')">
+        <button class="game-launch-btn" onclick="openGameModal('typing-game-modal')">
             Play Now
         </button>
-        <div id="typing-game" class="game-container" style="display: none;">
-            <p style="margin-bottom: 1rem; color: #5f7c8a; font-size: 0.95rem;">
+    </div>
+
+    <!-- Game 2: Guess the Output -->
+    <div class="game-card">
+        <div class="game-card-header">
+            <h3>🔮 Guess the Output</h3>
+            <span class="game-badge">Active</span>
+        </div>
+        <p class="game-description">
+            Look at Python or SQL code and predict what it will output. Perfect for testing your code comprehension!
+        </p>
+        <button class="game-launch-btn" onclick="openGameModal('guess-game-modal')">
+            Play Now
+        </button>
+    </div>
+
+    <!-- Game 3: Big O Challenge -->
+    <div class="game-card">
+        <div class="game-card-header">
+            <h3>📊 Big O Challenge</h3>
+            <span class="game-badge">Active</span>
+        </div>
+        <p class="game-description">
+            Identify the time and space complexity of code snippets. Master Big O notation like a pro!
+        </p>
+        <button class="game-launch-btn" onclick="openGameModal('bigo-game-modal')">
+            Play Now
+        </button>
+    </div>
+</div>
+
+<!-- Modal 1: Typing Speed Game -->
+<div id="typing-game-modal" class="game-modal">
+    <div class="game-modal-content">
+        <div class="game-modal-header">
+            <h2>⌨️ Typing Speed Challenge</h2>
+            <button class="game-modal-close" onclick="closeGameModal('typing-game-modal')">&times;</button>
+        </div>
+        <div class="game-modal-body">
+            <p style="margin-bottom: 1.5rem; color: #5f7c8a; font-size: 1rem;">
                 Type the code snippet as fast and accurately as you can!
             </p>
 
@@ -59,21 +97,17 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Game 2: Guess the Output -->
-    <div class="game-card">
-        <div class="game-card-header">
-            <h3>🔮 Guess the Output</h3>
-            <span class="game-badge">Active</span>
+<!-- Modal 2: Guess the Output Game -->
+<div id="guess-game-modal" class="game-modal">
+    <div class="game-modal-content">
+        <div class="game-modal-header">
+            <h2>🔮 Guess the Output</h2>
+            <button class="game-modal-close" onclick="closeGameModal('guess-game-modal')">&times;</button>
         </div>
-        <p class="game-description">
-            Look at Python or SQL code and predict what it will output. Perfect for testing your code comprehension!
-        </p>
-        <button class="game-launch-btn" onclick="toggleGame('guess-game')">
-            Play Now
-        </button>
-        <div id="guess-game" class="game-container" style="display: none;">
-            <p style="margin-bottom: 1rem; color: #5f7c8a; font-size: 0.95rem;">
+        <div class="game-modal-body">
+            <p style="margin-bottom: 1.5rem; color: #5f7c8a; font-size: 1rem;">
                 Read the code carefully and select the correct output!
             </p>
 
@@ -105,21 +139,17 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Game 3: Big O Challenge -->
-    <div class="game-card">
-        <div class="game-card-header">
-            <h3>📊 Big O Challenge</h3>
-            <span class="game-badge">Active</span>
+<!-- Modal 3: Big O Challenge Game -->
+<div id="bigo-game-modal" class="game-modal">
+    <div class="game-modal-content">
+        <div class="game-modal-header">
+            <h2>📊 Big O Challenge</h2>
+            <button class="game-modal-close" onclick="closeGameModal('bigo-game-modal')">&times;</button>
         </div>
-        <p class="game-description">
-            Identify the time and space complexity of code snippets. Master Big O notation like a pro!
-        </p>
-        <button class="game-launch-btn" onclick="toggleGame('bigo-game')">
-            Play Now
-        </button>
-        <div id="bigo-game" class="game-container" style="display: none;">
-            <p style="margin-bottom: 1rem; color: #5f7c8a; font-size: 0.95rem;">
+        <div class="game-modal-body">
+            <p style="margin-bottom: 1.5rem; color: #5f7c8a; font-size: 1rem;">
                 Analyze the algorithm and identify its complexity!
             </p>
 
@@ -148,21 +178,44 @@
 </div>
 
 <script>
-function toggleGame(gameId) {
-    const game = document.getElementById(gameId);
-    const isVisible = game.style.display === 'block';
-
-    // Hide all games first
-    document.querySelectorAll('.game-container').forEach(g => {
-        g.style.display = 'none';
-    });
-
-    // Toggle the clicked game
-    if (!isVisible) {
-        game.style.display = 'block';
-        game.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+// Open game modal
+function openGameModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
 }
+
+// Close game modal
+function closeGameModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    if (event.target.classList.contains('game-modal')) {
+        event.target.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Close modal on ESC key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modals = document.querySelectorAll('.game-modal');
+        modals.forEach(modal => {
+            if (modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+});
 </script>
 
 {% endblock %}
