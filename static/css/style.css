@@ -1915,3 +1915,484 @@ body.dark-theme .theme-name {
         min-width: 180px;
     }
 }
+
+/* ============================================ */
+/* NEURAL NETWORK GAME */
+/* ============================================ */
+
+.nn-game-area {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.nn-controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.nn-control-section {
+    background: rgba(74, 144, 226, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.1);
+}
+
+.nn-control-section h4 {
+    color: var(--primary);
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+}
+
+.nn-control-section label {
+    display: block;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.nn-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+    border-radius: 6px;
+    background: white;
+    color: var(--text-dark);
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nn-select:hover {
+    border-color: var(--primary);
+}
+
+.nn-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.nn-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, rgba(74, 144, 226, 0.2), var(--primary));
+    outline: none;
+    -webkit-appearance: none;
+    margin-bottom: 1rem;
+}
+
+.nn-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.nn-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.nn-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.nn-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.nn-stats {
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+}
+
+.nn-stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.nn-stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.nn-stat-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.nn-stat-value {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.nn-visualization-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.nn-canvas-container,
+.nn-chart-container {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.1);
+}
+
+.nn-canvas-container h4,
+.nn-chart-container h4 {
+    color: var(--primary);
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+}
+
+#nn-canvas,
+#nn-loss-chart {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive adjustments for neural network game */
+@media (max-width: 1200px) {
+    .nn-game-area {
+        grid-template-columns: 1fr;
+    }
+
+    .nn-controls-panel {
+        order: 2;
+    }
+
+    .nn-visualization-panel {
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    #nn-canvas,
+    #nn-loss-chart {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .nn-control-section {
+        padding: 0.75rem;
+    }
+}
+
+/* ============================================ */
+/* BLOCKCHAIN MINING GAME */
+/* ============================================ */
+
+.blockchain-game-area {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.blockchain-controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.blockchain-control-section {
+    background: rgba(74, 144, 226, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.1);
+}
+
+.blockchain-control-section h4 {
+    color: var(--primary);
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+}
+
+.blockchain-control-section label {
+    display: block;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.blockchain-stats {
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+}
+
+.blockchain-stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.blockchain-stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.blockchain-stat-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.blockchain-stat-value {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.blockchain-info-section {
+    background: rgba(236, 64, 122, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(236, 64, 122, 0.1);
+}
+
+.blockchain-info-section h4 {
+    color: var(--accent);
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.blockchain-visualization-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.blockchain-current-block {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+}
+
+.blockchain-current-block h4 {
+    color: var(--primary);
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+.blockchain-block-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.blockchain-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(74, 144, 226, 0.03);
+    border-radius: 4px;
+}
+
+.blockchain-field-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.blockchain-field code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    word-break: break-all;
+}
+
+.blockchain-hash-valid {
+    color: #2d6a4f !important;
+    background: rgba(45, 106, 79, 0.1) !important;
+    font-weight: 600;
+}
+
+.blockchain-hash-invalid {
+    color: #d32f2f !important;
+    background: rgba(211, 47, 47, 0.1) !important;
+}
+
+.blockchain-chain-container {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.blockchain-chain-container h4 {
+    color: var(--primary);
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+.blockchain-chain-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.blockchain-block {
+    background: white;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.blockchain-block:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+}
+
+.blockchain-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(74, 144, 226, 0.1);
+}
+
+.blockchain-block-index {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.blockchain-block-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.blockchain-block-status.valid {
+    background: rgba(45, 106, 79, 0.1);
+    color: #2d6a4f;
+}
+
+.blockchain-block-status.invalid {
+    background: rgba(211, 47, 47, 0.1);
+    color: #d32f2f;
+}
+
+.blockchain-block-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    font-size: 0.85rem;
+}
+
+.blockchain-block-hash {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    background: rgba(0, 0, 0, 0.03);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+}
+
+.blockchain-block-data {
+    color: var(--text-dark);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* Scrollbar styling for blockchain container */
+.blockchain-chain-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.blockchain-chain-container::-webkit-scrollbar-track {
+    background: rgba(74, 144, 226, 0.05);
+    border-radius: 4px;
+}
+
+.blockchain-chain-container::-webkit-scrollbar-thumb {
+    background: rgba(74, 144, 226, 0.3);
+    border-radius: 4px;
+}
+
+.blockchain-chain-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* Responsive adjustments for blockchain game */
+@media (max-width: 1200px) {
+    .blockchain-game-area {
+        grid-template-columns: 1fr;
+    }
+
+    .blockchain-controls-panel {
+        order: 2;
+    }
+
+    .blockchain-visualization-panel {
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .blockchain-control-section,
+    .blockchain-info-section {
+        padding: 0.75rem;
+    }
+
+    .blockchain-current-block,
+    .blockchain-chain-container {
+        padding: 1rem;
+    }
+
+    .blockchain-field {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .blockchain-field-label {
+        min-width: auto;
+    }
+}
