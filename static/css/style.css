@@ -30,17 +30,6 @@ body {
     }
 }
 
-/* Interactive Particle Canvas */
-#particle-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
-
 /* Glassmorphism Header */
 header {
     background: rgba(255, 255, 255, 0.2);
@@ -64,7 +53,7 @@ header {
 }
 
 .logo {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.3rem;
     font-weight: 700;
     color: #2c3e50;
@@ -154,7 +143,7 @@ nav a.active {
 }
 
 .profile-intro h2 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.3rem;
     color: #2c3e50;
     margin-bottom: 0.4rem;
@@ -200,7 +189,7 @@ nav a.active {
 }
 
 .content-placeholder h3 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     color: #4a90e2;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
@@ -239,21 +228,21 @@ nav a.active {
 
 /* Headings */
 h1 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 2rem;
     margin-bottom: 1rem;
     color: #2c3e50;
 }
 
 h2 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.5rem;
     color: #2c3e50;
     margin-bottom: 0.8rem;
 }
 
 h3 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.1rem;
     color: #4a90e2;
     margin: 1rem 0 0.4rem 0;
@@ -322,7 +311,7 @@ p {
     padding: 0.7rem;
     border: 2px solid rgba(74, 144, 226, 0.2);
     border-radius: 10px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 0.9rem;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.5);
@@ -356,7 +345,7 @@ p {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     box-shadow: 0 3px 12px rgba(117, 117, 255, 0.25);
 }
 
@@ -450,7 +439,8 @@ p {
 
 /* About page specific styles */
 .about-content {
-    max-width: 800px;
+    max-width: 90%;
+    width: 100%;
 }
 
 .about-content h2 {
@@ -573,7 +563,7 @@ p {
     margin: 0;
     font-size: 0.9rem;
     color: white;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
 }
 
 .chat-header-subtitle {
@@ -682,7 +672,7 @@ p {
     padding: 0.5rem 0.75rem;
     border: 2px solid rgba(244, 143, 177, 0.25);
     border-radius: 16px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 0.8rem;
     background: rgba(255, 255, 255, 0.9);
     transition: all 0.3s ease;
@@ -785,14 +775,14 @@ p {
 .flip-card {
     background-color: transparent;
     perspective: 1000px;
-    height: 260px;
+    height: 220px;
     cursor: pointer;
 }
 
 .flip-card-small {
     background-color: transparent;
     perspective: 1000px;
-    height: 200px;
+    height: 170px;
     cursor: pointer;
 }
 
@@ -838,12 +828,12 @@ p {
 .flip-card-front h4 {
     color: #4a90e2;
     margin-bottom: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .flip-card-tagline {
     color: #5f7c8a;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 /* Back of card */
@@ -859,14 +849,14 @@ p {
 
 .flip-card-back p {
     color: #2c3e50;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     line-height: 1.4;
     margin-bottom: 0.5rem;
 }
 
 .flip-tech {
     margin-top: auto;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: #667eea;
 }
 
@@ -877,7 +867,7 @@ p {
 }
 
 .flip-card-small .flip-card-front h4 {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
 }
 
 .flip-card-small .flip-card-back {
@@ -885,7 +875,7 @@ p {
 }
 
 .flip-card-small .flip-card-back p {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 /* Responsive design */
