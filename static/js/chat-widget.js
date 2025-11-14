@@ -122,45 +122,6 @@ class ChatWidget {
         this.scrollToBottom();
     }
 
-    addBotMessageWithTyping(text) {
-        // Create message container
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'chat-message bot';
-
-        const messageBubble = document.createElement('div');
-        messageBubble.className = 'message-bubble';
-        messageBubble.textContent = ''; // Start empty
-
-        const timeDiv = document.createElement('div');
-        timeDiv.className = 'message-time';
-        timeDiv.textContent = this.getCurrentTime();
-
-        messageDiv.appendChild(messageBubble);
-        messageDiv.appendChild(timeDiv);
-        this.chatMessages.appendChild(messageDiv);
-
-        // Typing animation - word by word
-        const words = text.split(' ');
-        let currentIndex = 0;
-
-        const typeWord = () => {
-            if (currentIndex < words.length) {
-                if (currentIndex > 0) {
-                    messageBubble.textContent += ' ';
-                }
-                messageBubble.textContent += words[currentIndex];
-                currentIndex++;
-                this.scrollToBottom();
-
-                // Random delay between 50-100ms per word for natural typing feel
-                const delay = Math.random() * 50 + 50;
-                setTimeout(typeWord, delay);
-            }
-        };
-
-        typeWord();
-    }
-
     showTypingIndicator() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'chat-message bot';

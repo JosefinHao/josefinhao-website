@@ -774,14 +774,14 @@ p {
 .flip-card {
     background-color: transparent;
     perspective: 1000px;
-    height: 280px;
+    height: 260px;
     cursor: pointer;
 }
 
 .flip-card-small {
     background-color: transparent;
     perspective: 1000px;
-    height: 180px;
+    height: 200px;
     cursor: pointer;
 }
 
@@ -823,11 +823,6 @@ p {
     text-align: center;
 }
 
-.flip-card-icon {
-    font-size: 3rem;
-    margin-bottom: 0.75rem;
-}
-
 .flip-card-front h3,
 .flip-card-front h4 {
     color: #5e35b1;
@@ -838,15 +833,6 @@ p {
 .flip-card-tagline {
     color: #5f7c8a;
     font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.flip-hint,
-.flip-hint-small {
-    margin-top: auto;
-    color: #f48fb1;
-    font-size: 0.75rem;
-    font-style: italic;
 }
 
 /* Back of card */
@@ -856,13 +842,8 @@ p {
     transform: rotateY(180deg);
     text-align: left;
     overflow-y: auto;
-}
-
-.flip-card-back h3,
-.flip-card-back h4 {
-    color: #5e35b1;
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
+    justify-content: flex-start;
+    padding-top: 1.5rem;
 }
 
 .flip-card-back p {
@@ -888,9 +869,8 @@ p {
     font-size: 0.95rem;
 }
 
-.flip-card-small .flip-card-back h4 {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+.flip-card-small .flip-card-back {
+    padding-top: 1rem;
 }
 
 .flip-card-small .flip-card-back p {
