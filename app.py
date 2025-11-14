@@ -7,6 +7,8 @@ import os
 import logging
 from datetime import datetime
 from career_agent import init_career_agent, get_career_agent
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Email as SGEmail, To, Content
 
 # Configure logging
 logging.basicConfig(
@@ -22,6 +24,8 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-i
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///josefinhao.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['OPENAI_API_KEY'] = os.environ.get('OPENAI_API_KEY')
+app.config['SENDGRID_API_KEY'] = os.environ.get('SENDGRID_API_KEY')
+app.config['NOTIFICATION_EMAIL'] = 'josefin.rui.hao@gmail.com'  # Email to receive notifications
 
 # Initialize database
 db = SQLAlchemy(app)
@@ -83,6 +87,75 @@ class ContactForm(FlaskForm):
     submit = SubmitField('Send Message')
 
 # ============================================
+# HELPER FUNCTIONS
+# ============================================
+
+def send_contact_notification(name, email, subject, message):
+    """
+    Send email notification when someone submits the contact form
+
+    Args:
+        name: Name of the person who sent the message
+        email: Email of the person who sent the message
+        subject: Subject of the message
+        message: The message content
+
+    Returns:
+        bool: True if email was sent successfully, False otherwise
+    """
+    if not app.config.get('SENDGRID_API_KEY'):
+        logger.warning("SendGrid API key not configured. Skipping email notification.")
+        return False
+
+    try:
+        # Create email content
+        email_body = f"""
+        <html>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #5e35b1; border-bottom: 2px solid #f48fb1; padding-bottom: 10px;">
+                        New Contact Form Submission
+                    </h2>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                        <p style="margin: 10px 0;"><strong>From:</strong> {name}</p>
+                        <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:{email}">{email}</a></p>
+                        <p style="margin: 10px 0;"><strong>Subject:</strong> {subject}</p>
+                    </div>
+
+                    <div style="background: white; padding: 20px; border-left: 4px solid #f48fb1; margin: 20px 0;">
+                        <h3 style="color: #5e35b1; margin-top: 0;">Message:</h3>
+                        <p style="white-space: pre-wrap;">{message}</p>
+                    </div>
+
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #666; font-size: 0.9em;">
+                        <p>This notification was sent from your website contact form at josefinhao.com</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+        """
+
+        # Create the email message
+        mail = Mail(
+            from_email=SGEmail('notifications@josefinhao.com', 'Josefin Hao Website'),
+            to_emails=To(app.config['NOTIFICATION_EMAIL']),
+            subject=f'New Contact Form Message: {subject}',
+            html_content=Content('text/html', email_body)
+        )
+
+        # Send the email
+        sg = SendGridAPIClient(app.config['SENDGRID_API_KEY'])
+        response = sg.send(mail)
+
+        logger.info(f"Contact notification email sent successfully. Status code: {response.status_code}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Failed to send contact notification email: {str(e)}", exc_info=True)
+        return False
+
+# ============================================
 # MAIN WEBSITE ROUTES
 # ============================================
 
@@ -118,6 +191,14 @@ def contact():
         db.session.commit()
 
         logger.info(f"New contact message from {form.email.data}: {form.subject.data}")
+
+        # Send email notification
+        send_contact_notification(
+            name=form.name.data,
+            email=form.email.data,
+            subject=form.subject.data,
+            message=form.message.data
+        )
 
         flash('Thank you for your message! I\'ll get back to you soon.', 'success')
         return redirect(url_for('contact'))
