@@ -35,10 +35,8 @@ class ChatWidget {
             }
         });
 
-        // Add welcome message with typing effect
-        setTimeout(() => {
-            this.addBotMessageWithTyping("Hi! I'm Josefin. Feel free to ask me anything about my work, projects, or background!");
-        }, 500); // Small delay before showing welcome message
+        // Add welcome message
+        this.addBotMessage("Hi! I'm Josefin. Feel free to ask me anything about my work, projects, or background!");
     }
 
     toggleChat() {
@@ -87,11 +85,11 @@ class ChatWidget {
             // Remove typing indicator
             this.removeTypingIndicator();
 
-            // Add bot response with typing animation
+            // Add bot response
             if (data.response) {
-                this.addBotMessageWithTyping(data.response);
+                this.addBotMessage(data.response);
             } else {
-                this.addBotMessageWithTyping("I'm sorry, I couldn't process that request. Please try again.");
+                this.addBotMessage("I'm sorry, I couldn't process that request. Please try again.");
             }
         } catch (error) {
             console.error('Chat error:', error);
