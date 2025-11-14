@@ -218,6 +218,99 @@ def api_status():
     }), 200
 
 # ============================================
+# AI CHAT API
+# ============================================
+
+@app.route('/api/chat', methods=['POST'])
+def chat_api():
+    """
+    AI Chat endpoint - integrates with Career Agent
+    For now, provides basic responses about Josefin
+    TODO: Connect to actual Career Agent/Bot implementation
+    """
+    try:
+        data = request.get_json()
+        user_message = data.get('message', '').lower().strip()
+
+        if not user_message:
+            return jsonify({
+                "response": "Please ask me something!"
+            }), 400
+
+        # Log the chat interaction
+        logger.info(f"💬 Chat query: {user_message}")
+
+        # Simple response system (to be replaced with actual Career Agent)
+        response = generate_chat_response(user_message)
+
+        logger.info(f"✅ Chat response generated")
+
+        return jsonify({
+            "response": response
+        }), 200
+
+    except Exception as e:
+        logger.error(f"❌ Error in chat API: {str(e)}", exc_info=True)
+        return jsonify({
+            "response": "I'm sorry, I encountered an error. Please try again or contact Josefin directly."
+        }), 500
+
+def generate_chat_response(message):
+    """
+    Generate responses based on user message
+    This is a placeholder - replace with actual Career Agent integration
+    """
+    message_lower = message.lower()
+
+    # Projects and AI work
+    if any(word in message_lower for word in ['project', 'work', 'built', 'create']):
+        return ("I've built impressive AI systems including a multi-agent data science platform for causal "
+                "inference and predictive modeling. I also created several agents using OpenAI SDK, CrewAI, "
+                "and LangGraph - from SDRs to autonomous AI assistants. Check out the Projects page for details!")
+
+    # Background and experience
+    if any(word in message_lower for word in ['experience', 'background', 'education', 'studied', 'university']):
+        return ("Josefin has a Master's in Financial Mathematics from Uppsala University (4.0 GPA). "
+                "She led data science at OKX (top crypto exchange), built derivative pricing models at "
+                "Handelsbanken, and now focuses on multi-agent AI systems. She's fluent in English, Swedish, and Chinese!")
+
+    # Skills and technical expertise
+    if any(word in message_lower for word in ['skill', 'tech', 'language', 'framework', 'tool']):
+        return ("Josefin specializes in Python, SQL, R, C#, and JavaScript. Her expertise includes statistical "
+                "modeling, machine learning, blockchain, and agentic AI systems. She's particularly interested "
+                "in the intersection of AI, DeFi, and automated decision-making.")
+
+    # OKX experience
+    if 'okx' in message_lower or 'crypto' in message_lower:
+        return ("At OKX (second-largest global crypto exchange), Josefin led the data science R&D domain, "
+                "built client segmentation models, automated reporting (95% efficiency gain), and collaborated "
+                "with crypto hedge funds and broker firms.")
+
+    # Multi-agent systems
+    if any(word in message_lower for word in ['agent', 'multi-agent', 'crewai', 'langgraph']):
+        return ("Josefin is actively building multi-agent systems for data exploration, causal inference, and "
+                "predictive modeling. She's built 10+ agent systems using OpenAI SDK, CrewAI, and LangGraph - "
+                "including SDRs, research agents, and autonomous AI assistants!")
+
+    # Contact information
+    if any(word in message_lower for word in ['contact', 'email', 'reach', 'hire', 'collaborate']):
+        return ("You can reach Josefin at josefin.rui.hao@gmail.com or use the contact form on this website. "
+                "She's always interested in new opportunities and collaborations!")
+
+    # General greeting
+    if any(word in message_lower for word in ['hi', 'hello', 'hey']):
+        return ("Hi there! I'm Josefin's AI assistant. I can tell you about her work experience, technical skills, "
+                "AI projects, or how to get in touch. What would you like to know?")
+
+    # Thanks
+    if any(word in message_lower for word in ['thank', 'thanks']):
+        return ("You're welcome! Feel free to ask me anything else about Josefin's work or reach out directly via the contact form!")
+
+    # Default response
+    return ("I can help you learn about Josefin's background, technical skills, AI projects (multi-agent systems, "
+            "CrewAI, LangGraph), work experience at OKX, or how to contact her. What interests you most?")
+
+# ============================================
 # DATABASE INITIALIZATION
 # ============================================
 
