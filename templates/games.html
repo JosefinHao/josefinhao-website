@@ -67,6 +67,20 @@
             Play Now
         </button>
     </div>
+
+    <!-- Game 5: Blockchain Mining Simulator -->
+    <div class="game-card">
+        <div class="game-card-header">
+            <h3>⛏️ Blockchain Mining Simulator</h3>
+            <span class="game-badge">Active</span>
+        </div>
+        <p class="game-description">
+            Experience proof-of-work mining! Find nonces that produce valid hashes and understand blockchain security fundamentals.
+        </p>
+        <button class="game-launch-btn" onclick="openGameModal('blockchain-game-modal')">
+            Play Now
+        </button>
+    </div>
 </div>
 
 <!-- Modal 1: Typing Speed Game -->
@@ -277,6 +291,96 @@
     </div>
 </div>
 
+<!-- Modal 5: Blockchain Mining Simulator -->
+<div id="blockchain-game-modal" class="game-modal">
+    <div class="game-modal-content">
+        <div class="game-modal-header">
+            <h2>⛏️ Blockchain Mining Simulator</h2>
+            <button class="game-modal-close" onclick="closeGameModal('blockchain-game-modal')">&times;</button>
+        </div>
+        <div class="game-modal-body">
+            <p style="margin-bottom: 1.5rem; color: #5f7c8a; font-size: 1rem;">
+                Mine blocks by finding nonces that produce hashes with required leading zeros!
+            </p>
+
+            <div class="blockchain-game-area">
+                <div class="blockchain-controls-panel">
+                    <div class="blockchain-control-section">
+                        <h4>Mining Configuration</h4>
+                        <label>Difficulty (Leading Zeros): <span id="blockchain-difficulty-value">2</span></label>
+                        <input type="range" id="blockchain-difficulty" min="1" max="5" value="2" class="nn-slider">
+
+                        <div class="typing-controls" style="margin-top: 1rem;">
+                            <button id="blockchain-mine-btn" class="typing-btn typing-btn-primary">Start Mining</button>
+                            <button id="blockchain-reset-btn" class="typing-btn typing-btn-secondary">Reset Chain</button>
+                        </div>
+                    </div>
+
+                    <div class="blockchain-stats">
+                        <div class="blockchain-stat-item">
+                            <span class="blockchain-stat-label">Chain Length:</span>
+                            <span id="blockchain-length-display" class="blockchain-stat-value">1</span>
+                        </div>
+                        <div class="blockchain-stat-item">
+                            <span class="blockchain-stat-label">Attempts:</span>
+                            <span id="blockchain-attempts-display" class="blockchain-stat-value">0</span>
+                        </div>
+                        <div class="blockchain-stat-item">
+                            <span class="blockchain-stat-label">Hash Rate:</span>
+                            <span id="blockchain-hashrate-display" class="blockchain-stat-value">0 H/s</span>
+                        </div>
+                        <div class="blockchain-stat-item">
+                            <span class="blockchain-stat-label">Total Reward:</span>
+                            <span id="blockchain-reward-display" class="blockchain-stat-value">0 BTC</span>
+                        </div>
+                    </div>
+
+                    <div class="blockchain-info-section">
+                        <h4>📚 How It Works</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-dark); line-height: 1.6;">
+                            <strong>Proof-of-Work Mining:</strong><br>
+                            Miners try different nonces until they find one that produces a hash starting with the required number of zeros. Higher difficulty = more zeros = exponentially harder!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="blockchain-visualization-panel">
+                    <div class="blockchain-current-block">
+                        <h4>⛏️ Current Mining Block</h4>
+                        <div class="blockchain-block-data">
+                            <div class="blockchain-field">
+                                <span class="blockchain-field-label">Block #:</span>
+                                <span id="blockchain-block-number">1</span>
+                            </div>
+                            <div class="blockchain-field">
+                                <span class="blockchain-field-label">Previous Hash:</span>
+                                <code id="blockchain-prev-hash">0000000...</code>
+                            </div>
+                            <div class="blockchain-field">
+                                <span class="blockchain-field-label">Data:</span>
+                                <span id="blockchain-data">Genesis Block</span>
+                            </div>
+                            <div class="blockchain-field">
+                                <span class="blockchain-field-label">Nonce:</span>
+                                <span id="blockchain-nonce">0</span>
+                            </div>
+                            <div class="blockchain-field">
+                                <span class="blockchain-field-label">Hash:</span>
+                                <code id="blockchain-hash" class="blockchain-hash-invalid">Searching...</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="blockchain-chain-container">
+                        <h4>⛓️ Blockchain</h4>
+                        <div id="blockchain-chain" class="blockchain-chain-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Open game modal
 function openGameModal(modalId) {
@@ -325,4 +429,5 @@ document.addEventListener('keydown', function(event) {
 <script src="{{ url_for('static', filename='js/guess-output-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bigo-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/neural-network-game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/blockchain-game.js') }}"></script>
 {% endblock %}
