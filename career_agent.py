@@ -183,7 +183,7 @@ to collaborate or work with you."""
                 model=self.model,
                 messages=messages,
                 temperature=0.7,
-                max_tokens=500,
+                max_tokens=300,  # Reduced for faster responses
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0

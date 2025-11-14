@@ -1,5 +1,5 @@
-/* Import modern serif font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap');
+/* Import modern sans-serif font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 * {
     margin: 0;
@@ -9,7 +9,7 @@
 
 /* Animated Gradient Background - Soft Pastel Colors */
 body {
-    font-family: 'Lora', Georgia, serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.4;
     color: #2c3e50;
     background: linear-gradient(-45deg, #e3f2fd, #f3e5f5, #e8eaf6, #e0f2f1);
@@ -53,7 +53,7 @@ header {
 }
 
 .logo {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.3rem;
     font-weight: 700;
     color: #2c3e50;
@@ -77,9 +77,9 @@ nav a {
 
 nav a:hover,
 nav a.active {
-    color: #5e35b1;
-    border-bottom-color: #5e35b1;
-    background: rgba(94, 53, 177, 0.05);
+    color: #4a90e2;
+    border-bottom-color: #4a90e2;
+    background: rgba(74, 144, 226, 0.05);
 }
 
 /* Glassmorphism Main Container */
@@ -143,7 +143,7 @@ nav a.active {
 }
 
 .profile-intro h2 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.3rem;
     color: #2c3e50;
     margin-bottom: 0.4rem;
@@ -189,7 +189,7 @@ nav a.active {
 }
 
 .content-placeholder h3 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     color: #4a90e2;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
@@ -228,23 +228,23 @@ nav a.active {
 
 /* Headings */
 h1 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 2rem;
     margin-bottom: 1rem;
     color: #2c3e50;
 }
 
 h2 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
     color: #2c3e50;
     margin-bottom: 0.8rem;
 }
 
 h3 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.1rem;
-    color: #5e35b1;
+    color: #4a90e2;
     margin: 1rem 0 0.4rem 0;
 }
 
@@ -262,7 +262,7 @@ p {
     background: rgba(232, 244, 248, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-left: 3px solid #5e35b1;
+    border-left: 3px solid #4a90e2;
     border-radius: 8px;
     font-size: 0.8rem;
     color: #2c3e50;
@@ -309,9 +309,9 @@ p {
 .form-group textarea {
     width: 100%;
     padding: 0.7rem;
-    border: 2px solid rgba(94, 53, 177, 0.2);
+    border: 2px solid rgba(74, 144, 226, 0.2);
     border-radius: 10px;
-    font-family: 'Lora', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.5);
@@ -323,9 +323,9 @@ p {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #5e35b1;
+    border-color: #4a90e2;
     background: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 12px rgba(94, 53, 177, 0.15);
+    box-shadow: 0 2px 12px rgba(74, 144, 226, 0.15);
 }
 
 .form-group textarea {
@@ -336,7 +336,7 @@ p {
 .btn {
     display: inline-block;
     padding: 0.7rem 2rem;
-    background: linear-gradient(135deg, #9575cd 0%, #7e57c2 100%);
+    background: linear-gradient(135deg, #5f7c8a 0%, #667eea 100%);
     color: white;
     text-decoration: none;
     border: none;
@@ -345,7 +345,7 @@ p {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Lora', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     box-shadow: 0 3px 12px rgba(117, 117, 255, 0.25);
 }
 
@@ -395,7 +395,7 @@ p {
     padding: 1rem;
     border-radius: 10px;
     margin-bottom: 0.8rem;
-    border-left: 3px solid #5e35b1;
+    border-left: 3px solid #4a90e2;
     transition: all 0.3s ease;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
@@ -403,7 +403,7 @@ p {
 .email-item:hover {
     background: rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(94, 53, 177, 0.15);
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.15);
 }
 
 .email-item h3 {
@@ -562,7 +562,7 @@ p {
     margin: 0;
     font-size: 0.9rem;
     color: white;
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .chat-header-subtitle {
@@ -671,7 +671,7 @@ p {
     padding: 0.5rem 0.75rem;
     border: 2px solid rgba(244, 143, 177, 0.25);
     border-radius: 16px;
-    font-family: 'Lora', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.8rem;
     background: rgba(255, 255, 255, 0.9);
     transition: all 0.3s ease;
@@ -774,14 +774,14 @@ p {
 .flip-card {
     background-color: transparent;
     perspective: 1000px;
-    height: 280px;
+    height: 260px;
     cursor: pointer;
 }
 
 .flip-card-small {
     background-color: transparent;
     perspective: 1000px;
-    height: 180px;
+    height: 200px;
     cursor: pointer;
 }
 
@@ -813,24 +813,19 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 0 3px 8px rgba(149, 117, 205, 0.12);
+    box-shadow: 0 3px 8px rgba(95, 124, 138, 0.12);
 }
 
 /* Front of card */
 .flip-card-front {
-    background: linear-gradient(135deg, rgba(94, 53, 177, 0.08) 0%, rgba(149, 117, 205, 0.08) 100%);
-    border: 2px solid rgba(149, 117, 205, 0.2);
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(95, 124, 138, 0.08) 100%);
+    border: 2px solid rgba(95, 124, 138, 0.2);
     text-align: center;
-}
-
-.flip-card-icon {
-    font-size: 3rem;
-    margin-bottom: 0.75rem;
 }
 
 .flip-card-front h3,
 .flip-card-front h4 {
-    color: #5e35b1;
+    color: #4a90e2;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
 }
@@ -838,31 +833,17 @@ p {
 .flip-card-tagline {
     color: #5f7c8a;
     font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.flip-hint,
-.flip-hint-small {
-    margin-top: auto;
-    color: #f48fb1;
-    font-size: 0.75rem;
-    font-style: italic;
 }
 
 /* Back of card */
 .flip-card-back {
     background: white;
-    border: 2px solid rgba(149, 117, 205, 0.3);
+    border: 2px solid rgba(95, 124, 138, 0.3);
     transform: rotateY(180deg);
     text-align: left;
     overflow-y: auto;
-}
-
-.flip-card-back h3,
-.flip-card-back h4 {
-    color: #5e35b1;
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
+    justify-content: flex-start;
+    padding-top: 1.5rem;
 }
 
 .flip-card-back p {
@@ -875,7 +856,7 @@ p {
 .flip-tech {
     margin-top: auto;
     font-size: 0.8rem;
-    color: #7e57c2;
+    color: #667eea;
 }
 
 /* Small cards specific styles */
@@ -888,9 +869,8 @@ p {
     font-size: 0.95rem;
 }
 
-.flip-card-small .flip-card-back h4 {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+.flip-card-small .flip-card-back {
+    padding-top: 1rem;
 }
 
 .flip-card-small .flip-card-back p {
