@@ -7,22 +7,39 @@
     box-sizing: border-box;
 }
 
+/* Animated Gradient Background */
 body {
     font-family: 'Lora', Georgia, serif;
     line-height: 1.6;
     color: #2c3e50;
-    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 50%, #78909c 100%);
+    background: linear-gradient(-45deg, #4a90e2, #5f7c8a, #667eea, #78909c);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     min-height: 100vh;
 }
 
-/* Header and Navigation */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Glassmorphism Header */
 header {
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 2px solid #4a90e2;
 }
 
 .header-container {
@@ -39,11 +56,12 @@ header {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.8rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-decoration: none;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
 }
 
 nav {
@@ -53,7 +71,7 @@ nav {
 
 nav a {
     padding: 1.5rem 1.5rem;
-    color: #2c3e50;
+    color: rgba(255, 255, 255, 0.95);
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -63,18 +81,25 @@ nav a {
 
 nav a:hover,
 nav a.active {
-    color: #4a90e2;
-    border-bottom-color: #4a90e2;
-    background: rgba(74, 144, 226, 0.05);
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
 }
 
-/* Main Content Container */
+/* Glassmorphism Main Container */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 3rem 2rem;
-    background: white;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     min-height: calc(100vh - 70px);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 /* Homepage Layout */
@@ -85,10 +110,18 @@ nav a.active {
     align-items: start;
 }
 
+/* Glassmorphism Profile Section */
 .profile-section {
     text-align: center;
     position: sticky;
     top: 90px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .profile-photo-placeholder {
@@ -103,19 +136,27 @@ nav a.active {
     color: white;
     font-size: 4rem;
     font-weight: 300;
-    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.profile-photo-placeholder:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
 .profile-intro h2 {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: #ffffff;
     margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .profile-intro p {
     font-size: 1rem;
-    color: #5f7c8a;
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.8;
     margin-bottom: 0.5rem;
 }
@@ -124,15 +165,25 @@ nav a.active {
     padding: 1rem;
 }
 
-/* Content Placeholders */
+/* Glassmorphism Content Placeholders */
 .content-placeholder {
-    background: #f8f9fa;
-    border: 2px dashed #4a90e2;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px dashed rgba(74, 144, 226, 0.4);
+    border-radius: 15px;
     padding: 3rem;
     text-align: center;
-    color: #5f7c8a;
+    color: #2c3e50;
     margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.content-placeholder:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .content-placeholder h3 {
@@ -169,20 +220,23 @@ h3 {
 
 p {
     font-size: 1.1rem;
-    color: #5f7c8a;
+    color: #2c3e50;
     margin-bottom: 1.5rem;
     line-height: 1.8;
 }
 
-/* Status indicator */
+/* Glassmorphism Status Indicator */
 .status {
     margin-top: 2rem;
     padding: 1rem;
-    background: #e8f4f8;
+    background: rgba(232, 244, 248, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-left: 4px solid #4a90e2;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 0.9rem;
-    color: #5f7c8a;
+    color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .status span {
@@ -193,14 +247,21 @@ p {
     border-radius: 50%;
     margin-right: 8px;
     animation: pulse 2s infinite;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
 }
 
-/* Contact form styles */
+/* Glassmorphism Contact Form */
 .form-group {
     margin-bottom: 1.5rem;
     text-align: left;
@@ -218,19 +279,23 @@ p {
 .form-group textarea {
     width: 100%;
     padding: 0.9rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
     font-family: 'Lora', Georgia, serif;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
-    background: #fafafa;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #2c3e50;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: #4a90e2;
-    background: white;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.2);
 }
 
 .form-group textarea {
@@ -245,35 +310,39 @@ p {
     color: white;
     text-decoration: none;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
     font-family: 'Lora', Georgia, serif;
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.5);
 }
 
-/* Alert messages */
+/* Glassmorphism Alert Messages */
 .alert {
     padding: 1rem 1.5rem;
-    border-radius: 8px;
+    border-radius: 12px;
     margin-bottom: 1.5rem;
     font-size: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .alert-success {
-    background: #d4edda;
+    background: rgba(212, 237, 218, 0.5);
     color: #155724;
     border-left: 4px solid #28a745;
 }
 
 .alert-error {
-    background: #f8d7da;
+    background: rgba(248, 215, 218, 0.5);
     color: #721c24;
     border-left: 4px solid #dc3545;
 }
@@ -282,7 +351,7 @@ p {
 .admin-header {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 2px solid rgba(224, 224, 224, 0.3);
 }
 
 .email-list {
@@ -290,16 +359,21 @@ p {
 }
 
 .email-item {
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: 12px;
     margin-bottom: 1rem;
     border-left: 4px solid #4a90e2;
-    transition: box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .email-item:hover {
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.2);
 }
 
 .email-item h3 {
@@ -316,16 +390,16 @@ p {
 }
 
 .email-preview {
-    color: #6c757d;
+    color: #2c3e50;
     margin-top: 0.8rem;
     font-style: italic;
     padding: 0.8rem;
-    background: white;
-    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
 }
 
 .empty-state {
-    color: #999;
+    color: #5f7c8a;
     font-style: italic;
     text-align: center;
     padding: 3rem;
@@ -354,7 +428,7 @@ p {
 .contact-footer {
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid rgba(224, 224, 224, 0.3);
     color: #5f7c8a;
     font-size: 0.95rem;
 }
@@ -367,6 +441,278 @@ p {
 
 .contact-footer a:hover {
     text-decoration: underline;
+}
+
+/* ============================================ */
+/* AI CHAT WIDGET STYLES */
+/* ============================================ */
+
+/* Chat Widget Button */
+.chat-widget-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 100%);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.chat-widget-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(74, 144, 226, 0.6);
+}
+
+.chat-widget-button svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+}
+
+/* Chat Widget Container */
+.chat-widget-container {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 380px;
+    height: 550px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    z-index: 998;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.chat-widget-container.open {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Chat Header */
+.chat-header {
+    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 100%);
+    color: white;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: white;
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+.chat-header-subtitle {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top: 0.2rem;
+}
+
+.chat-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.chat-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Chat Messages Area */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: rgba(248, 249, 250, 0.5);
+}
+
+.chat-message {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    animation: messageSlide 0.3s ease;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message.user {
+    align-items: flex-end;
+}
+
+.chat-message.bot {
+    align-items: flex-start;
+}
+
+.message-bubble {
+    max-width: 80%;
+    padding: 0.8rem 1.2rem;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chat-message.user .message-bubble {
+    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.bot .message-bubble {
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.3rem;
+}
+
+/* Chat Input Area */
+.chat-input-container {
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(224, 224, 224, 0.3);
+}
+
+.chat-input-wrapper {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+    border-radius: 25px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+}
+
+.chat-send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 100%);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.chat-send-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(74, 144, 226, 0.5);
+}
+
+.chat-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chat-send-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 0.8rem 1.2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 18px;
+    width: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4a90e2;
+    animation: typingBounce 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-10px);
+    }
 }
 
 /* Responsive design */
@@ -399,10 +745,23 @@ p {
 
     nav a {
         text-align: center;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     h1 {
         font-size: 2rem;
+    }
+
+    /* Chat widget responsive */
+    .chat-widget-container {
+        width: calc(100% - 30px);
+        height: calc(100vh - 120px);
+        right: 15px;
+        bottom: 80px;
+    }
+
+    .chat-widget-button {
+        right: 15px;
+        bottom: 15px;
     }
 }
