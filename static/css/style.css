@@ -1657,6 +1657,8 @@ p {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .game-modal-content {
@@ -1670,7 +1672,7 @@ p {
     overflow-x: hidden;
     animation: modalSlideIn 0.3s ease;
     position: relative;
-    margin: auto;
+    margin: 2rem auto;
 }
 
 @keyframes modalSlideIn {

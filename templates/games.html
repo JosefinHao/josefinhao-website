@@ -386,7 +386,7 @@
 function openGameModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
         // Scroll the modal overlay to the top to ensure content is visible
         modal.scrollTop = 0;
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
@@ -415,7 +415,7 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         const modals = document.querySelectorAll('.game-modal');
         modals.forEach(modal => {
-            if (modal.style.display === 'block') {
+            if (modal.style.display === 'flex') {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
