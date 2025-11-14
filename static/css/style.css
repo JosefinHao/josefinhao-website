@@ -1656,7 +1656,7 @@ p {
     backdrop-filter: blur(5px);
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
+    overflow: hidden;
     padding: 2rem 1rem;
 }
 
@@ -1668,7 +1668,9 @@ p {
     max-width: 1200px;
     max-height: 90vh;
     overflow-y: auto;
+    overflow-x: hidden;
     animation: modalSlideIn 0.3s ease;
+    position: relative;
 }
 
 @keyframes modalSlideIn {
