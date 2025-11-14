@@ -54,20 +54,20 @@ class ThemeSwitcher {
                     '--bg-gradient-4': '#ffe4cc'
                 }
             },
-            'cyber-purple': {
-                name: 'Cyber Purple',
-                icon: '💜',
+            'green-forest': {
+                name: 'Green Forest',
+                icon: '🌲',
                 colors: {
-                    '--primary': '#9333ea',
-                    '--primary-light': '#a855f7',
-                    '--secondary': '#7c3aed',
-                    '--accent': '#ec4899',
-                    '--text-dark': '#2c3e50',
-                    '--text-light': '#6b7280',
-                    '--bg-gradient-1': '#faf5ff',
-                    '--bg-gradient-2': '#f3e8ff',
-                    '--bg-gradient-3': '#e9d5ff',
-                    '--bg-gradient-4': '#f5f3ff'
+                    '--primary': '#2d6a4f',
+                    '--primary-light': '#40916c',
+                    '--secondary': '#52b788',
+                    '--accent': '#95d5b2',
+                    '--text-dark': '#1b4332',
+                    '--text-light': '#52b788',
+                    '--bg-gradient-1': '#d8f3dc',
+                    '--bg-gradient-2': '#b7e4c7',
+                    '--bg-gradient-3': '#95d5b2',
+                    '--bg-gradient-4': '#d8f3dc'
                 }
             }
         };
