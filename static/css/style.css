@@ -1804,12 +1804,12 @@ p {
 }
 
 .theme-toggle-btn {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
     border: none;
-    font-size: 1.3rem;
+    font-size: 1rem;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
@@ -1829,7 +1829,7 @@ p {
 
 .theme-panel {
     position: absolute;
-    bottom: 70px;
+    top: 45px;
     right: 0;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -1837,7 +1837,7 @@ p {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     padding: 0.75rem;
     min-width: 200px;
-    animation: slideUp 0.2s ease;
+    animation: slideDown 0.2s ease;
 }
 
 body.dark-theme .theme-panel {
@@ -1845,10 +1845,10 @@ body.dark-theme .theme-panel {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@keyframes slideUp {
+@keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(-10px);
     }
     to {
         opacity: 1;
@@ -1902,18 +1902,18 @@ body.dark-theme .theme-name {
 /* Responsive adjustments for theme switcher */
 @media (max-width: 768px) {
     .theme-switcher {
-        bottom: 80px;
+        top: 8px;
         right: 15px;
     }
 
     .theme-toggle-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
     }
 
     .theme-panel {
-        bottom: 60px;
+        top: 48px;
         min-width: 180px;
     }
 }
