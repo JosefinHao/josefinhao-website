@@ -35,8 +35,10 @@ class ChatWidget {
             }
         });
 
-        // Add welcome message
-        this.addBotMessage("Hi! I'm Josefin's AI assistant. Feel free to ask me anything about her work, projects, or background!");
+        // Add welcome message with typing effect
+        setTimeout(() => {
+            this.addBotMessageWithTyping("Hi! I'm Josefin. Feel free to ask me anything about my work, projects, or background!");
+        }, 500); // Small delay before showing welcome message
     }
 
     toggleChat() {
@@ -85,11 +87,11 @@ class ChatWidget {
             // Remove typing indicator
             this.removeTypingIndicator();
 
-            // Add bot response
+            // Add bot response with typing animation
             if (data.response) {
-                this.addBotMessage(data.response);
+                this.addBotMessageWithTyping(data.response);
             } else {
-                this.addBotMessage("I'm sorry, I couldn't process that request. Please try again.");
+                this.addBotMessageWithTyping("I'm sorry, I couldn't process that request. Please try again.");
             }
         } catch (error) {
             console.error('Chat error:', error);
@@ -120,6 +122,45 @@ class ChatWidget {
         `;
         this.chatMessages.appendChild(messageDiv);
         this.scrollToBottom();
+    }
+
+    addBotMessageWithTyping(text) {
+        // Create message container
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chat-message bot';
+
+        const messageBubble = document.createElement('div');
+        messageBubble.className = 'message-bubble';
+        messageBubble.textContent = ''; // Start empty
+
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'message-time';
+        timeDiv.textContent = this.getCurrentTime();
+
+        messageDiv.appendChild(messageBubble);
+        messageDiv.appendChild(timeDiv);
+        this.chatMessages.appendChild(messageDiv);
+
+        // Typing animation - word by word
+        const words = text.split(' ');
+        let currentIndex = 0;
+
+        const typeWord = () => {
+            if (currentIndex < words.length) {
+                if (currentIndex > 0) {
+                    messageBubble.textContent += ' ';
+                }
+                messageBubble.textContent += words[currentIndex];
+                currentIndex++;
+                this.scrollToBottom();
+
+                // Random delay between 50-100ms per word for natural typing feel
+                const delay = Math.random() * 50 + 50;
+                setTimeout(typeWord, delay);
+            }
+        };
+
+        typeWord();
     }
 
     showTypingIndicator() {
