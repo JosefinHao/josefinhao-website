@@ -1,21 +1,57 @@
 /* Import modern serif font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&display=swap');
 
+/* CSS Variables for Theme Switching */
+:root {
+    --primary: #4a90e2;
+    --primary-light: #667eea;
+    --secondary: #5f7c8a;
+    --accent: #ec407a;
+    --text-dark: #2c3e50;
+    --text-light: #5f7c8a;
+    --bg-gradient-1: #e3f2fd;
+    --bg-gradient-2: #f3e5f5;
+    --bg-gradient-3: #e8eaf6;
+    --bg-gradient-4: #e0f2f1;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Animated Gradient Background - Soft Pastel Colors */
+/* Smooth theme transitions */
+body.theme-transitioning,
+body.theme-transitioning * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Animated Gradient Background - Uses CSS Variables */
 body {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     line-height: 1.4;
-    color: #2c3e50;
-    background: linear-gradient(-45deg, #e3f2fd, #f3e5f5, #e8eaf6, #e0f2f1);
+    color: var(--text-dark);
+    background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
     background-size: 400% 400%;
     animation: gradientShift 20s ease infinite;
     min-height: 100vh;
+}
+
+/* Dark theme specific adjustments */
+body.dark-theme {
+    color: var(--text-dark);
+}
+
+body.dark-theme .content-placeholder,
+body.dark-theme .profile-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme header {
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 @keyframes gradientShift {
@@ -1752,4 +1788,130 @@ p {
     height: 100%;
     z-index: 1;
     pointer-events: none;
+}
+
+/* ============================================ */
+/* THEME SWITCHER */
+/* ============================================ */
+
+.theme-switcher {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    z-index: 1500;
+}
+
+.theme-toggle-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle-btn:active {
+    transform: translateY(-1px) scale(1);
+}
+
+.theme-panel {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    padding: 0.75rem;
+    min-width: 200px;
+    animation: slideUp 0.2s ease;
+}
+
+body.dark-theme .theme-panel {
+    background: rgba(30, 30, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+}
+
+.theme-option:last-child {
+    margin-bottom: 0;
+}
+
+.theme-option:hover {
+    background: rgba(74, 144, 226, 0.1);
+    border-color: rgba(74, 144, 226, 0.3);
+}
+
+.theme-option.active {
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(102, 126, 234, 0.15) 100%);
+    border-color: var(--primary);
+}
+
+.theme-icon {
+    font-size: 1.5rem;
+}
+
+.theme-name {
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+body.dark-theme .theme-name {
+    color: var(--text-dark);
+}
+
+/* Responsive adjustments for theme switcher */
+@media (max-width: 768px) {
+    .theme-switcher {
+        bottom: 80px;
+        right: 15px;
+    }
+
+    .theme-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .theme-panel {
+        bottom: 60px;
+        min-width: 180px;
+    }
 }
