@@ -1915,3 +1915,195 @@ body.dark-theme .theme-name {
         min-width: 180px;
     }
 }
+
+/* ============================================ */
+/* NEURAL NETWORK GAME */
+/* ============================================ */
+
+.nn-game-area {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.nn-controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.nn-control-section {
+    background: rgba(74, 144, 226, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.1);
+}
+
+.nn-control-section h4 {
+    color: var(--primary);
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+}
+
+.nn-control-section label {
+    display: block;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.nn-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+    border-radius: 6px;
+    background: white;
+    color: var(--text-dark);
+    font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nn-select:hover {
+    border-color: var(--primary);
+}
+
+.nn-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.nn-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, rgba(74, 144, 226, 0.2), var(--primary));
+    outline: none;
+    -webkit-appearance: none;
+    margin-bottom: 1rem;
+}
+
+.nn-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.nn-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.nn-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.nn-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.nn-stats {
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.2);
+}
+
+.nn-stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.nn-stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.nn-stat-label {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.nn-stat-value {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.nn-visualization-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.nn-canvas-container,
+.nn-chart-container {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid rgba(74, 144, 226, 0.1);
+}
+
+.nn-canvas-container h4,
+.nn-chart-container h4 {
+    color: var(--primary);
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+}
+
+#nn-canvas,
+#nn-loss-chart {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive adjustments for neural network game */
+@media (max-width: 1200px) {
+    .nn-game-area {
+        grid-template-columns: 1fr;
+    }
+
+    .nn-controls-panel {
+        order: 2;
+    }
+
+    .nn-visualization-panel {
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    #nn-canvas,
+    #nn-loss-chart {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .nn-control-section {
+        padding: 0.75rem;
+    }
+}

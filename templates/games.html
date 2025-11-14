@@ -53,6 +53,20 @@
             Play Now
         </button>
     </div>
+
+    <!-- Game 4: Neural Network Playground -->
+    <div class="game-card">
+        <div class="game-card-header">
+            <h3>🧠 Neural Network Playground</h3>
+            <span class="game-badge">Active</span>
+        </div>
+        <p class="game-description">
+            Train a neural network by tuning hyperparameters! Watch decision boundaries form in real-time as you master deep learning fundamentals.
+        </p>
+        <button class="game-launch-btn" onclick="openGameModal('nn-game-modal')">
+            Play Now
+        </button>
+    </div>
 </div>
 
 <!-- Modal 1: Typing Speed Game -->
@@ -177,6 +191,92 @@
     </div>
 </div>
 
+<!-- Modal 4: Neural Network Playground -->
+<div id="nn-game-modal" class="game-modal">
+    <div class="game-modal-content">
+        <div class="game-modal-header">
+            <h2>🧠 Neural Network Playground</h2>
+            <button class="game-modal-close" onclick="closeGameModal('nn-game-modal')">&times;</button>
+        </div>
+        <div class="game-modal-body">
+            <p style="margin-bottom: 1.5rem; color: #5f7c8a; font-size: 1rem;">
+                Configure network architecture and hyperparameters to train on different datasets!
+            </p>
+
+            <div class="nn-game-area">
+                <div class="nn-controls-panel">
+                    <div class="nn-control-section">
+                        <h4>Dataset</h4>
+                        <select id="nn-dataset" class="nn-select">
+                            <option value="xor">XOR Pattern</option>
+                            <option value="circle">Circle</option>
+                            <option value="spiral">Spiral</option>
+                            <option value="gaussian">Gaussian Clusters</option>
+                        </select>
+                    </div>
+
+                    <div class="nn-control-section">
+                        <h4>Architecture</h4>
+                        <label>Hidden Layers: <span id="nn-layers-value">2</span></label>
+                        <input type="range" id="nn-layers" min="1" max="3" value="2" class="nn-slider">
+
+                        <label>Neurons per Layer: <span id="nn-neurons-value">4</span></label>
+                        <input type="range" id="nn-neurons" min="2" max="8" value="4" class="nn-slider">
+                    </div>
+
+                    <div class="nn-control-section">
+                        <h4>Hyperparameters</h4>
+                        <label>Learning Rate: <span id="nn-lr-value">0.1</span></label>
+                        <input type="range" id="nn-lr" min="0.001" max="1" step="0.001" value="0.1" class="nn-slider">
+
+                        <label>Activation Function:</label>
+                        <select id="nn-activation" class="nn-select">
+                            <option value="relu">ReLU</option>
+                            <option value="sigmoid">Sigmoid</option>
+                            <option value="tanh">Tanh</option>
+                        </select>
+                    </div>
+
+                    <div class="nn-control-section">
+                        <div class="typing-controls">
+                            <button id="nn-train-btn" class="typing-btn typing-btn-primary">Start Training</button>
+                            <button id="nn-pause-btn" class="typing-btn typing-btn-secondary" disabled>Pause</button>
+                            <button id="nn-reset-btn" class="typing-btn typing-btn-secondary">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="nn-stats">
+                        <div class="nn-stat-item">
+                            <span class="nn-stat-label">Epoch:</span>
+                            <span id="nn-epoch-display" class="nn-stat-value">0</span>
+                        </div>
+                        <div class="nn-stat-item">
+                            <span class="nn-stat-label">Accuracy:</span>
+                            <span id="nn-accuracy-display" class="nn-stat-value">0%</span>
+                        </div>
+                        <div class="nn-stat-item">
+                            <span class="nn-stat-label">Loss:</span>
+                            <span id="nn-loss-display" class="nn-stat-value">0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nn-visualization-panel">
+                    <div class="nn-canvas-container">
+                        <h4>Decision Boundary</h4>
+                        <canvas id="nn-canvas" width="400" height="400"></canvas>
+                    </div>
+
+                    <div class="nn-chart-container">
+                        <h4>Training Progress</h4>
+                        <canvas id="nn-loss-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Open game modal
 function openGameModal(modalId) {
@@ -224,4 +324,5 @@ document.addEventListener('keydown', function(event) {
 <script src="{{ url_for('static', filename='js/typing-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/guess-output-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bigo-game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/neural-network-game.js') }}"></script>
 {% endblock %}
