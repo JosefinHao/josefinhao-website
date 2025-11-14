@@ -12,7 +12,7 @@
 
 <!-- Grid of Games -->
 <div class="games-grid">
-    <!-- Game 1: Typing Speed -->
+    <!-- Game 1: Typing Speed Challenge -->
     <div class="game-card">
         <div class="game-card-header">
             <h3>⌨️ Typing Speed Challenge</h3>
@@ -60,79 +60,89 @@
         </div>
     </div>
 
-    <!-- Game 2: Code Memory Match -->
-    <div class="game-card">
-        <div class="game-card-header">
-            <h3>🧠 Code Memory Match</h3>
-            <span class="game-badge game-badge-soon">Coming Soon</span>
-        </div>
-        <p class="game-description">
-            Match pairs of programming concepts, syntax, and data structures. Test your memory and coding knowledge!
-        </p>
-        <div class="game-features">
-            <ul>
-                <li>Python, JavaScript, and SQL concepts</li>
-                <li>Multiple difficulty levels</li>
-                <li>Time-based scoring</li>
-                <li>Leaderboard tracking</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Game 3: Guess the Output -->
+    <!-- Game 2: Guess the Output -->
     <div class="game-card">
         <div class="game-card-header">
             <h3>🔮 Guess the Output</h3>
-            <span class="game-badge game-badge-soon">Coming Soon</span>
+            <span class="game-badge">Active</span>
         </div>
         <p class="game-description">
             Look at Python or SQL code and predict what it will output. Perfect for testing your code comprehension!
         </p>
-        <div class="game-features">
-            <ul>
-                <li>Real code snippets from Python & SQL</li>
-                <li>Multiple choice answers</li>
-                <li>Increasing difficulty levels</li>
-                <li>Detailed explanations</li>
-            </ul>
+        <button class="game-launch-btn" onclick="toggleGame('guess-game')">
+            Play Now
+        </button>
+        <div id="guess-game" class="game-container" style="display: none;">
+            <p style="margin-bottom: 1rem; color: #5f7c8a; font-size: 0.95rem;">
+                Read the code carefully and select the correct output!
+            </p>
+
+            <div class="guess-game-area">
+                <div class="guess-controls">
+                    <label for="guess-difficulty" style="font-weight: 600; color: #2c3e50;">Difficulty:</label>
+                    <select id="guess-difficulty" class="guess-difficulty-select">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="all">All Levels</option>
+                    </select>
+                    <button id="start-guess-btn" class="typing-btn typing-btn-primary">Start Quiz</button>
+                    <span id="guess-score" class="guess-score">Score: 0/0</span>
+                </div>
+
+                <div id="guess-code-display" class="guess-code-display"></div>
+                <div id="guess-options" class="guess-options-container"></div>
+                <div id="guess-result" class="guess-result"></div>
+
+                <div class="typing-controls" style="margin-top: 1rem;">
+                    <button id="next-guess-btn" class="typing-btn typing-btn-primary" disabled>Next Question</button>
+                </div>
+            </div>
+
+            <div class="leaderboard-section">
+                <h4 style="margin-bottom: 0.75rem; color: #2c3e50;">🏆 Leaderboard (Top 10)</h4>
+                <div id="guess-leaderboard"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Game 4: Binary Converter Challenge -->
-    <div class="game-card">
-        <div class="game-card-header">
-            <h3>💻 Binary Converter Race</h3>
-            <span class="game-badge game-badge-soon">Coming Soon</span>
-        </div>
-        <p class="game-description">
-            Convert numbers between binary, decimal, and hexadecimal as fast as you can. Race against the clock!
-        </p>
-        <div class="game-features">
-            <ul>
-                <li>Convert between binary, decimal, hex</li>
-                <li>Timed challenges</li>
-                <li>Progressive difficulty</li>
-                <li>Score multipliers for speed</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Game 5: Algorithm Complexity Quiz -->
+    <!-- Game 3: Big O Challenge -->
     <div class="game-card">
         <div class="game-card-header">
             <h3>📊 Big O Challenge</h3>
-            <span class="game-badge game-badge-soon">Coming Soon</span>
+            <span class="game-badge">Active</span>
         </div>
         <p class="game-description">
             Identify the time and space complexity of code snippets. Master Big O notation like a pro!
         </p>
-        <div class="game-features">
-            <ul>
-                <li>Analyze real algorithms</li>
-                <li>O(1), O(n), O(log n), O(n²) and more</li>
-                <li>Time and space complexity</li>
-                <li>Detailed complexity explanations</li>
-            </ul>
+        <button class="game-launch-btn" onclick="toggleGame('bigo-game')">
+            Play Now
+        </button>
+        <div id="bigo-game" class="game-container" style="display: none;">
+            <p style="margin-bottom: 1rem; color: #5f7c8a; font-size: 0.95rem;">
+                Analyze the algorithm and identify its complexity!
+            </p>
+
+            <div class="guess-game-area">
+                <div class="guess-controls">
+                    <button id="start-bigo-btn" class="typing-btn typing-btn-primary">Start Challenge</button>
+                    <span id="bigo-score" class="guess-score">Score: 0/0</span>
+                </div>
+
+                <div id="bigo-complexity-type" style="margin-bottom: 1rem;"></div>
+                <div id="bigo-code-display" class="guess-code-display"></div>
+                <div id="bigo-options" class="guess-options-container"></div>
+                <div id="bigo-result" class="guess-result"></div>
+
+                <div class="typing-controls" style="margin-top: 1rem;">
+                    <button id="next-bigo-btn" class="typing-btn typing-btn-primary" disabled>Next Question</button>
+                </div>
+            </div>
+
+            <div class="leaderboard-section">
+                <h4 style="margin-bottom: 0.75rem; color: #2c3e50;">🏆 Leaderboard (Top 10)</h4>
+                <div id="bigo-leaderboard"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -159,4 +169,6 @@ function toggleGame(gameId) {
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/typing-game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/guess-output-game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bigo-game.js') }}"></script>
 {% endblock %}
