@@ -1739,3 +1739,17 @@ p {
         padding: 1.5rem;
     }
 }
+
+/* ============================================ */
+/* INTERACTIVE PARTICLE NETWORK */
+/* ============================================ */
+
+#particle-network-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
