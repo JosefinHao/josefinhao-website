@@ -35,53 +35,6 @@
             <h3>Latest Updates</h3>
             <p>News, updates, and interesting findings will be shared in this section.</p>
         </div>
-
-        <!-- Typing Speed Mini-Game -->
-        <div class="content-placeholder">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 style="margin: 0;">⌨️ Test Your Coding Speed</h3>
-                <button id="toggle-typing-game" class="typing-toggle-btn">Show Typing Game</button>
-            </div>
-
-            <div id="typing-game-container" class="typing-game-container" style="display: none;">
-                <p style="margin-bottom: 1rem; color: #5f7c8a; font-size: 0.95rem;">
-                    Type the code snippet as fast and accurately as you can!
-                </p>
-
-                <div class="typing-game-area">
-                    <div class="snippet-container">
-                        <pre id="snippet-display" class="snippet-display">Click "Start New Challenge" to begin!</pre>
-                    </div>
-
-                    <textarea
-                        id="user-input"
-                        class="typing-input"
-                        placeholder="Type the code here..."
-                        disabled
-                        spellcheck="false"
-                        autocomplete="off"
-                        autocorrect="off"
-                        autocapitalize="off"
-                    ></textarea>
-
-                    <div class="typing-controls">
-                        <button id="start-typing-btn" class="typing-btn typing-btn-primary">Start New Challenge</button>
-                        <button id="reset-typing-btn" class="typing-btn typing-btn-secondary" disabled>Reset</button>
-                    </div>
-
-                    <div id="typing-results" class="typing-results"></div>
-                </div>
-
-                <div class="leaderboard-section">
-                    <h4 style="margin-bottom: 0.75rem; color: #2c3e50;">🏆 Leaderboard (Top 10)</h4>
-                    <div id="typing-leaderboard"></div>
-                </div>
-            </div>
-        </div>
     </main>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/typing-game.js') }}"></script>
 {% endblock %}
