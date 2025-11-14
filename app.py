@@ -174,6 +174,11 @@ def projects():
     """Projects page"""
     return render_template('projects.html')
 
+@app.route('/games')
+def games():
+    """Games page with interactive mini-games"""
+    return render_template('games.html')
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     """Contact page with form"""
