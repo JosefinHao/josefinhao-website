@@ -1654,11 +1654,9 @@ p {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 2rem 1rem;
     align-items: center;
     justify-content: center;
+    padding: 2rem;
 }
 
 .game-modal-content {
@@ -1667,12 +1665,11 @@ p {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 90%;
     max-width: 1200px;
-    max-height: 85vh;
+    max-height: 90vh;
     overflow-y: auto;
     overflow-x: hidden;
     animation: modalSlideIn 0.3s ease;
     position: relative;
-    margin: 2rem auto;
 }
 
 @keyframes modalSlideIn {
