@@ -224,7 +224,8 @@ def contact():
             return redirect(url_for('contact'))
 
         except Exception as e:
-            logger.error(f"Failed to save contact message: {str(e)}")
+            logger.error(f"Failed to save contact message: {str(e)}", exc_info=True)
+            logger.error(f"Form data - Name: {form.name.data}, Email: {form.email.data}, Subject: {form.subject.data}")
             db.session.rollback()
             flash('Sorry, there was an error submitting your message. Please try again.', 'error')
 
@@ -364,6 +365,53 @@ def chat_api():
         logger.error(f"❌ Error in chat API: {str(e)}", exc_info=True)
         return jsonify({
             "response": "I'm sorry, I encountered an error. Please try again or contact Josefin directly via the contact form."
+        }), 500
+
+# ============================================
+# DEBUG ENDPOINTS
+# ============================================
+
+@app.route('/debug/db-status')
+def debug_db_status():
+    """Debug endpoint to check database status"""
+    try:
+        import os.path
+        db_path = app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')
+
+        # Check if database file exists
+        if db_path.startswith('/'):
+            abs_path = db_path
+        else:
+            abs_path = os.path.join(app.instance_path, db_path)
+
+        db_exists = os.path.exists(abs_path)
+
+        # Try to query the database
+        with app.app_context():
+            inspector = db.inspect(db.engine)
+            tables = inspector.get_table_names()
+
+            # Try to count contact messages
+            try:
+                message_count = ContactMessage.query.count()
+            except Exception as count_error:
+                message_count = f"Error: {str(count_error)}"
+
+        return jsonify({
+            'database_uri': app.config['SQLALCHEMY_DATABASE_URI'],
+            'database_path': abs_path,
+            'database_exists': db_exists,
+            'tables': tables,
+            'contact_message_count': message_count,
+            'sendgrid_available': SENDGRID_AVAILABLE,
+            'instance_path': app.instance_path
+        }), 200
+
+    except Exception as e:
+        logger.error(f"Debug endpoint error: {str(e)}", exc_info=True)
+        return jsonify({
+            'error': str(e),
+            'type': type(e).__name__
         }), 500
 
 # ============================================
