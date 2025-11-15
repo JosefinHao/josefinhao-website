@@ -185,28 +185,37 @@ def contact():
     form = ContactForm()
 
     if form.validate_on_submit():
-        # Save the contact message to database
-        message = ContactMessage(
-            name=form.name.data,
-            email=form.email.data,
-            subject=form.subject.data,
-            message=form.message.data
-        )
-        db.session.add(message)
-        db.session.commit()
+        try:
+            # Save the contact message to database
+            message = ContactMessage(
+                name=form.name.data,
+                email=form.email.data,
+                subject=form.subject.data,
+                message=form.message.data
+            )
+            db.session.add(message)
+            db.session.commit()
 
-        logger.info(f"New contact message from {form.email.data}: {form.subject.data}")
+            logger.info(f"New contact message from {form.email.data}: {form.subject.data}")
 
-        # Send email notification
-        send_contact_notification(
-            name=form.name.data,
-            email=form.email.data,
-            subject=form.subject.data,
-            message=form.message.data
-        )
+            # Try to send email notification (don't fail if this doesn't work)
+            try:
+                send_contact_notification(
+                    name=form.name.data,
+                    email=form.email.data,
+                    subject=form.subject.data,
+                    message=form.message.data
+                )
+            except Exception as e:
+                logger.error(f"Failed to send email notification: {str(e)}")
 
-        flash('Thank you for your message! I\'ll get back to you soon.', 'success')
-        return redirect(url_for('contact'))
+            flash('Thank you for your message! I\'ll get back to you soon.', 'success')
+            return redirect(url_for('contact'))
+
+        except Exception as e:
+            logger.error(f"Failed to save contact message: {str(e)}")
+            db.session.rollback()
+            flash('Sorry, there was an error submitting your message. Please try again.', 'error')
 
     return render_template('contact.html', form=form)
 
