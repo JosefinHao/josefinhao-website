@@ -388,6 +388,19 @@ function openGameModal(modalId) {
     if (modal) {
         modal.classList.add('show');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+        // Ensure modal is scrolled to top and centered in viewport
+        modal.scrollTop = 0;
+
+        // Use requestAnimationFrame to ensure the modal is rendered before scrolling
+        requestAnimationFrame(() => {
+            modal.scrollTop = 0;
+            // Focus on the modal for accessibility
+            const modalContent = modal.querySelector('.game-modal-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0;
+            }
+        });
     }
 }
 
