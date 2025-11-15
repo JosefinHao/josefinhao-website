@@ -1651,6 +1651,11 @@ p {
     z-index: 2000;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+}
+
+/* When modal is shown (display set to flex by JS) */
+.game-modal[style*="display: flex"] {
+    display: flex !important;
     align-items: center;
     justify-content: center;
     padding: 2rem;
