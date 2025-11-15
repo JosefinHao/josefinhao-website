@@ -1653,9 +1653,9 @@ p {
     backdrop-filter: blur(5px);
 }
 
-/* When modal is shown (display set to flex by JS) */
-.game-modal[style*="display: flex"] {
-    display: flex !important;
+/* When modal is shown */
+.game-modal.show {
+    display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem;
