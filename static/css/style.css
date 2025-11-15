@@ -1649,28 +1649,25 @@ p {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
     z-index: 2000;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 /* When modal is shown */
 .game-modal.show {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    /* Ensure the modal is always centered in viewport */
-    min-height: 100vh;
+    display: block;
 }
 
 .game-modal-content {
+    /* Use transform-based centering - most reliable method */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -1680,20 +1677,19 @@ p {
     overflow-y: auto;
     overflow-x: hidden;
     animation: modalFadeIn 0.3s ease;
-    /* Ensure modal content is properly positioned */
-    position: relative;
-    margin: auto;
-    flex-shrink: 0;
+
+    /* Ensure content doesn't get cut off */
+    z-index: 2001;
 }
 
 @keyframes modalFadeIn {
     from {
         opacity: 0;
-        transform: scale(0.95);
+        transform: translate(-50%, -50%) scale(0.95);
     }
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
     }
 }
 
@@ -1763,21 +1759,14 @@ p {
 
 /* Responsive modal adjustments */
 @media (max-width: 768px) {
-    .game-modal {
-        padding: 0.5rem;
-    }
-
-    .game-modal.show {
-        padding: 0.5rem;
-        align-items: flex-start;
-        padding-top: 1rem;
-    }
-
     .game-modal-content {
-        width: 98%;
-        max-height: 96vh;
-        margin-top: auto;
-        margin-bottom: auto;
+        width: 95%;
+        max-width: 95%;
+        max-height: 95vh;
+        /* Keep centered even on mobile */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .game-modal-header {
@@ -1796,6 +1785,18 @@ p {
 
     .game-modal-body {
         padding: 1.5rem;
+    }
+
+    /* Fix animation on mobile */
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
     }
 }
 

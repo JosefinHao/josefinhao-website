@@ -386,21 +386,17 @@
 function openGameModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        // Prevent background scrolling
+        document.body.style.overflow = 'hidden';
+
+        // Show the modal
         modal.classList.add('show');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
-        // Ensure modal is scrolled to top and centered in viewport
-        modal.scrollTop = 0;
-
-        // Use requestAnimationFrame to ensure the modal is rendered before scrolling
-        requestAnimationFrame(() => {
-            modal.scrollTop = 0;
-            // Focus on the modal for accessibility
-            const modalContent = modal.querySelector('.game-modal-content');
-            if (modalContent) {
-                modalContent.scrollTop = 0;
-            }
-        });
+        // Reset scroll position of modal content to top
+        const modalContent = modal.querySelector('.game-modal-content');
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
     }
 }
 
@@ -409,17 +405,18 @@ function closeGameModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('show');
-        document.body.style.overflow = 'auto'; // Restore scrolling
+        // Restore background scrolling
+        document.body.style.overflow = 'auto';
     }
 }
 
-// Close modal when clicking outside of it
-window.onclick = function(event) {
+// Close modal when clicking on the backdrop (outside modal content)
+document.addEventListener('click', function(event) {
     if (event.target.classList.contains('game-modal')) {
         event.target.classList.remove('show');
         document.body.style.overflow = 'auto';
     }
-}
+});
 
 // Close modal on ESC key
 document.addEventListener('keydown', function(event) {
