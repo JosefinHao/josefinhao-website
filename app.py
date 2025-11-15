@@ -70,6 +70,15 @@ class InboundEmail(db.Model):
         return f'<InboundEmail {self.id}: {self.subject}>'
 
 # ============================================
+# DATABASE INITIALIZATION
+# ============================================
+
+# Initialize database tables when app starts (works with gunicorn and flask run)
+with app.app_context():
+    db.create_all()
+    logger.info("Database tables created/verified")
+
+# ============================================
 # FORMS
 # ============================================
 
