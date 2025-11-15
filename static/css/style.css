@@ -1654,12 +1654,13 @@ p {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
 }
 
 .game-modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -1669,7 +1670,7 @@ p {
     overflow-y: auto;
     overflow-x: hidden;
     animation: modalSlideIn 0.3s ease;
-    position: relative;
+    z-index: 2001;
 }
 
 @keyframes modalSlideIn {
