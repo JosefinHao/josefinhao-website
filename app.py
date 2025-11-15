@@ -7,15 +7,22 @@ import os
 import logging
 from datetime import datetime
 from career_agent import init_career_agent, get_career_agent
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Email as SGEmail, To, Content
 
-# Configure logging
+# Configure logging first
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Optional SendGrid import - app will work without it
+try:
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail, Email as SGEmail, To, Content
+    SENDGRID_AVAILABLE = True
+except ImportError:
+    logger.warning("SendGrid module not installed. Email notifications will be disabled.")
+    SENDGRID_AVAILABLE = False
 
 app = Flask(__name__)
 
@@ -103,6 +110,10 @@ def send_contact_notification(name, email, subject, message):
     Returns:
         bool: True if email was sent successfully, False otherwise
     """
+    if not SENDGRID_AVAILABLE:
+        logger.warning("SendGrid module not available. Skipping email notification.")
+        return False
+
     if not app.config.get('SENDGRID_API_KEY'):
         logger.warning("SendGrid API key not configured. Skipping email notification.")
         return False
