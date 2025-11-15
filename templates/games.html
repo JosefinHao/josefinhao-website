@@ -386,7 +386,7 @@
 function openGameModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-        modal.style.display = 'flex';
+        modal.classList.add('show');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
 }
@@ -395,7 +395,7 @@ function openGameModal(modalId) {
 function closeGameModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('show');
         document.body.style.overflow = 'auto'; // Restore scrolling
     }
 }
@@ -403,7 +403,7 @@ function closeGameModal(modalId) {
 // Close modal when clicking outside of it
 window.onclick = function(event) {
     if (event.target.classList.contains('game-modal')) {
-        event.target.style.display = 'none';
+        event.target.classList.remove('show');
         document.body.style.overflow = 'auto';
     }
 }
@@ -411,12 +411,10 @@ window.onclick = function(event) {
 // Close modal on ESC key
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
-        const modals = document.querySelectorAll('.game-modal');
+        const modals = document.querySelectorAll('.game-modal.show');
         modals.forEach(modal => {
-            if (modal.style.display === 'flex') {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
         });
     }
 });
