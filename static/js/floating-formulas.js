@@ -213,28 +213,39 @@ class FloatingFormulas {
 
     /**
      * Check if a new position overlaps with existing formulas
-     * Now considers actual text width for more accurate collision detection
+     * Accounts for drift movement and growth to prevent collisions during animation
      */
     checkOverlap(newPos, newText, existingPositions, minDistance = 25) {
         const newWidth = this.estimateFormulaWidth(newText);
 
+        // Account for maximum drift distance (50px) and growth (125%)
+        // Convert 50px to viewport percentage
+        const maxDriftPercent = (50 / window.innerWidth) * 100;
+        const growthFactor = 1.25; // 125% max size
+
+        // Safety buffer includes drift space and growth
+        const safetyBuffer = maxDriftPercent * 2 + minDistance;
+
         for (let pos of existingPositions) {
             const posWidth = this.estimateFormulaWidth(pos.text);
 
-            // Calculate actual distance considering text width
+            // Calculate distance between centers
             const dx = Math.abs(newPos.x - pos.x);
             const dy = Math.abs(newPos.y - pos.y);
 
-            // Horizontal overlap check
-            const horizontalOverlap = dx < ((newWidth + posWidth) / 2 + minDistance);
-            // Vertical overlap check (formulas are single line, so smaller vertical threshold)
-            const verticalOverlap = dy < 8;
+            // Combined width accounting for growth
+            const combinedWidth = ((newWidth + posWidth) / 2) * growthFactor;
+
+            // Check for overlap with safety buffer
+            // Use larger buffer for both horizontal and vertical to account for drift
+            const horizontalOverlap = dx < (combinedWidth + safetyBuffer);
+            const verticalOverlap = dy < safetyBuffer;
 
             if (horizontalOverlap && verticalOverlap) {
-                return true; // Overlaps
+                return true; // Would overlap during animation
             }
         }
-        return false; // No overlap
+        return false; // Safe distance
     }
 
     createFormulas() {
@@ -318,7 +329,7 @@ class FloatingFormulas {
             attempts++;
         } while (
             attempts < maxAttempts &&
-            this.checkOverlap(pos, formulaText, this.formulaPositions, 30)
+            this.checkOverlap(pos, formulaText, this.formulaPositions, 50)
         );
 
         // Update position tracking
@@ -348,7 +359,7 @@ class FloatingFormulas {
 
         // Random drift direction (single direction movement)
         const angle = Math.random() * 2 * Math.PI; // Random angle in radians
-        const distance = 30 + Math.random() * 40; // 30-70px drift distance
+        const distance = 20 + Math.random() * 30; // 20-50px drift distance (reduced to minimize collisions)
         const driftX = Math.cos(angle) * distance;
         const driftY = Math.sin(angle) * distance;
         element.style.setProperty('--drift-x', `${driftX}px`);
