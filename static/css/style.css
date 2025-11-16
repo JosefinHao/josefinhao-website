@@ -1981,8 +1981,7 @@ body.dark-theme .theme-name {
     user-select: none;
     letter-spacing: -0.02em;
     line-height: 1.2;
-    animation: floatFormula 150s linear infinite;
-    will-change: transform;
+    will-change: transform, opacity;
 }
 
 /* Vary opacity and size based on formula category for depth */

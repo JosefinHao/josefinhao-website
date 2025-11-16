@@ -250,119 +250,79 @@ class FloatingFormulas {
         container.id = 'floating-formulas-container';
         container.className = 'floating-formulas-container';
 
-        // Try to restore saved state from sessionStorage
-        const savedState = sessionStorage.getItem('floatingFormulasState');
-        const savedTimestamp = sessionStorage.getItem('floatingFormulasTimestamp');
+        // Create all formulas with random initial positions
+        this.formulas.forEach((formula, index) => {
+            const formulaElement = document.createElement('div');
+            formulaElement.className = 'floating-formula';
+            formulaElement.textContent = formula.text;
+            formulaElement.setAttribute('data-category', formula.category);
 
-        if (savedState) {
-            // Restore formulas from saved state with time-based animation offset
-            const elapsedTime = savedTimestamp ? (Date.now() - parseInt(savedTimestamp)) / 1000 : 0;
-            this.restoreFormulas(container, JSON.parse(savedState), elapsedTime);
-        } else {
-            // Create new formulas and save state
-            const formulaStates = this.generateNewFormulas(container);
-            sessionStorage.setItem('floatingFormulasState', JSON.stringify(formulaStates));
-            sessionStorage.setItem('floatingFormulasTimestamp', Date.now().toString());
-        }
+            // Set initial random position
+            this.repositionFormula(formulaElement);
+
+            // Stagger the initial appearance
+            setTimeout(() => {
+                this.startFormulaAnimation(formulaElement);
+            }, index * 200); // Stagger by 200ms each
+
+            container.appendChild(formulaElement);
+        });
 
         // Insert at the beginning of body (furthest back)
         document.body.insertBefore(container, document.body.firstChild);
     }
 
-    restoreFormulas(container, formulaStates, elapsedTime = 0) {
-        formulaStates.forEach(state => {
-            const formulaElement = document.createElement('div');
-            formulaElement.className = 'floating-formula';
-            formulaElement.textContent = state.text;
-            formulaElement.setAttribute('data-category', state.category);
-
-            formulaElement.style.left = `${state.x}%`;
-            formulaElement.style.top = `${state.y}%`;
-            formulaElement.style.setProperty('--initial-rotation', `${state.rotation}deg`);
-            formulaElement.style.transform = `rotate(${state.rotation}deg)`;
-            formulaElement.style.animationDuration = `${state.duration}s`;
-
-            // Calculate adjusted delay to continue animation from current position
-            // Using negative delay makes the animation start mid-cycle
-            const adjustedDelay = state.delay - elapsedTime;
-            formulaElement.style.animationDelay = `${adjustedDelay}s`;
-
-            container.appendChild(formulaElement);
-        });
+    getRandomPosition() {
+        // Generate random position anywhere in viewport
+        // Avoid edges to prevent clipping
+        const x = 5 + Math.random() * 90; // 5-95%
+        const y = 5 + Math.random() * 90; // 5-95%
+        return { x, y };
     }
 
-    generateNewFormulas(container) {
-        const existingPositions = [];
-        const formulaStates = [];
+    repositionFormula(element) {
+        const pos = this.getRandomPosition();
+        element.style.left = `${pos.x}%`;
+        element.style.top = `${pos.y}%`;
 
-        // Group formulas by category for organized placement
-        const formulasByCategory = {};
-        this.formulas.forEach(formula => {
-            if (!formulasByCategory[formula.category]) {
-                formulasByCategory[formula.category] = [];
-            }
-            formulasByCategory[formula.category].push(formula);
-        });
+        // Random rotation
+        const rotation = (Math.random() - 0.5) * 20; // -10 to 10 degrees
+        element.style.setProperty('--initial-rotation', `${rotation}deg`);
+    }
 
-        // Process each category group
-        Object.keys(formulasByCategory).forEach(category => {
-            const categoryFormulas = formulasByCategory[category];
-            const zone = this.getCategoryZone(category);
-            const totalInZone = categoryFormulas.length;
+    startFormulaAnimation(element) {
+        // Start the 10-second float animation
+        element.style.animation = 'floatFormula 10s ease-in-out';
 
-            categoryFormulas.forEach((formula, indexInCategory) => {
-                const formulaElement = document.createElement('div');
-                formulaElement.className = 'floating-formula';
-                formulaElement.textContent = formula.text;
-                formulaElement.setAttribute('data-category', formula.category);
+        // After 10 seconds, reposition and restart
+        const repositionAndRestart = () => {
+            // Fade out
+            element.style.opacity = '0';
+            element.style.transition = 'opacity 0.5s ease-out';
 
-                // Get position in category zone with overlap detection
-                let position;
-                let attempts = 0;
-                do {
-                    position = this.getPositionInZone(zone, indexInCategory, totalInZone);
-                    attempts++;
-                } while (this.checkOverlap(position, formula.text, existingPositions) && attempts < 100);
+            setTimeout(() => {
+                // Reposition
+                this.repositionFormula(element);
 
-                // Store position with text for overlap checking
-                existingPositions.push({
-                    x: position.x,
-                    y: position.y,
-                    text: formula.text
-                });
+                // Fade in
+                element.style.opacity = '';
+                element.style.transition = 'opacity 0.5s ease-in';
 
-                // Smaller random rotation (-10 to 10 degrees)
-                const rotation = (Math.random() - 0.5) * 20;
+                // Restart animation after a brief delay
+                setTimeout(() => {
+                    element.style.animation = 'none';
+                    // Force reflow
+                    void element.offsetWidth;
+                    element.style.animation = 'floatFormula 10s ease-in-out';
 
-                // Random animation duration (100-180 seconds for very slow movement)
-                const duration = 100 + Math.random() * 80;
+                    // Schedule next repositioning
+                    setTimeout(repositionAndRestart, 10000);
+                }, 50);
+            }, 500); // Wait for fade out
+        };
 
-                // Staggered animation delay based on category
-                const delay = Math.random() * 30;
-
-                // Save state for persistence
-                formulaStates.push({
-                    text: formula.text,
-                    category: formula.category,
-                    x: position.x,
-                    y: position.y,
-                    rotation: rotation,
-                    duration: duration,
-                    delay: delay
-                });
-
-                formulaElement.style.left = `${position.x}%`;
-                formulaElement.style.top = `${position.y}%`;
-                formulaElement.style.setProperty('--initial-rotation', `${rotation}deg`);
-                formulaElement.style.transform = `rotate(${rotation}deg)`;
-                formulaElement.style.animationDuration = `${duration}s`;
-                formulaElement.style.animationDelay = `${delay}s`;
-
-                container.appendChild(formulaElement);
-            });
-        });
-
-        return formulaStates;
+        // Start the cycle
+        setTimeout(repositionAndRestart, 10000);
     }
 }
 
