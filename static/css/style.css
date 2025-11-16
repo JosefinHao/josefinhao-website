@@ -60,44 +60,6 @@ body.dark-theme header {
     border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Floating geometric decorative elements */
-body::before,
-body::after {
-    content: '';
-    position: fixed;
-    border-radius: 50%;
-    opacity: 0.08;
-    pointer-events: none;
-    z-index: 1;
-}
-
-body::before {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-    top: -200px;
-    right: -200px;
-    animation: float 20s ease-in-out infinite;
-}
-
-body::after {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
-    bottom: -100px;
-    left: -100px;
-    animation: float 25s ease-in-out infinite reverse;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    50% {
-        transform: translate(30px, -30px) scale(1.1);
-    }
-}
-
 /* Enhanced Glassmorphism Header */
 header {
     background: rgba(255, 255, 255, 0.25);
@@ -1874,10 +1836,7 @@ p {
 /* ============================================ */
 
 .theme-switcher {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    z-index: 1500;
+    display: none; /* Hidden - using single theme only */
 }
 
 .theme-toggle-btn {
