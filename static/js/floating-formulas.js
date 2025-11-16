@@ -149,50 +149,50 @@ class FloatingFormulas {
     getPositionInZone(zone, formulaIndex, totalInZone) {
         let x, y;
 
-        // Distribute formulas within their zone
+        // Distribute formulas evenly within their zone vertically
         const spacing = 100 / (totalInZone + 1);
-        const offset = spacing * (formulaIndex + 1);
+        const verticalOffset = spacing * (formulaIndex + 1);
 
         switch(zone) {
             case 'top':
                 x = 20 + Math.random() * 60; // Center top area
-                y = 5 + Math.random() * 12;   // Top 5-17%
+                y = 5 + (verticalOffset * 0.12); // Distribute across top 5-17%
                 break;
             case 'top-left':
-                x = 5 + Math.random() * 20;   // Left 5-25%
-                y = 5 + Math.random() * 20;   // Top 5-25%
+                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
+                y = 5 + (verticalOffset * 0.20); // Distribute across top 5-25%
                 break;
             case 'top-right':
-                x = 75 + Math.random() * 20;  // Right 75-95%
-                y = 5 + Math.random() * 20;   // Top 5-25%
+                x = 74 + Math.random() * 18;  // Right 74-92%
+                y = 5 + (verticalOffset * 0.20); // Distribute across top 5-25%
                 break;
             case 'right':
-                x = 75 + Math.random() * 20;  // Right 75-95%
-                y = 25 + Math.random() * 30;  // Middle-upper
+                x = 76 + Math.random() * 18;  // Right 76-94%
+                y = 25 + (verticalOffset * 0.30); // Distribute across middle-upper
                 break;
             case 'right-bottom':
-                x = 75 + Math.random() * 20;  // Right 75-95%
-                y = 60 + Math.random() * 30;  // Lower portion
+                x = 76 + Math.random() * 18;  // Right 76-94%
+                y = 60 + (verticalOffset * 0.30); // Distribute across lower portion
                 break;
             case 'bottom':
                 x = 30 + Math.random() * 40;  // Center bottom
-                y = 80 + Math.random() * 15;  // Bottom 80-95%
+                y = 80 + (verticalOffset * 0.15); // Distribute across bottom 80-95%
                 break;
             case 'bottom-right':
-                x = 65 + Math.random() * 30;  // Right side
-                y = 75 + Math.random() * 20;  // Bottom 75-95%
+                x = 68 + Math.random() * 26;  // Right side 68-94%
+                y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
                 break;
             case 'bottom-left':
-                x = 5 + Math.random() * 25;   // Left 5-30%
-                y = 75 + Math.random() * 20;  // Bottom 75-95%
+                x = 0 + Math.random() * 30;   // Left 0-30% (from edge)
+                y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
                 break;
             case 'left':
-                x = 5 + Math.random() * 20;   // Left 5-25%
-                y = 35 + Math.random() * 30;  // Middle
+                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
+                y = 35 + (verticalOffset * 0.30); // Distribute across middle
                 break;
             case 'left-top':
-                x = 5 + Math.random() * 20;   // Left 5-25%
-                y = 10 + Math.random() * 25;  // Upper
+                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
+                y = 10 + (verticalOffset * 0.25); // Distribute across upper
                 break;
         }
 
