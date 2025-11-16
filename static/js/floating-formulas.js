@@ -159,7 +159,7 @@ class FloatingFormulas {
                 y = 5 + (verticalOffset * 0.12); // Distribute across top 5-17%
                 break;
             case 'top-left':
-                x = 8 + Math.random() * 18;   // Left 8-26%
+                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
                 y = 5 + (verticalOffset * 0.20); // Distribute across top 5-25%
                 break;
             case 'top-right':
@@ -183,15 +183,15 @@ class FloatingFormulas {
                 y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
                 break;
             case 'bottom-left':
-                x = 8 + Math.random() * 22;   // Left 8-30%
+                x = 0 + Math.random() * 30;   // Left 0-30% (from edge)
                 y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
                 break;
             case 'left':
-                x = 8 + Math.random() * 18;   // Left 8-26%
+                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
                 y = 35 + (verticalOffset * 0.30); // Distribute across middle
                 break;
             case 'left-top':
-                x = 8 + Math.random() * 18;   // Left 8-26%
+                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
                 y = 10 + (verticalOffset * 0.25); // Distribute across upper
                 break;
         }
