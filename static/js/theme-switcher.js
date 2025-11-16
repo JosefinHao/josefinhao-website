@@ -16,11 +16,11 @@ class ThemeSwitcher {
                     '--accent': '#ec407a',
                     '--text-dark': '#2c3e50',
                     '--text-light': '#5f7c8a',
-                    // Fixed static light blue background - all gradients the same
-                    '--bg-gradient-1': '#e3f2fd',
-                    '--bg-gradient-2': '#e3f2fd',
-                    '--bg-gradient-3': '#e3f2fd',
-                    '--bg-gradient-4': '#e3f2fd'
+                    // Modern mesh gradient - multiple blue tones for depth
+                    '--bg-gradient-1': '#e3f2fd',  // Very light blue
+                    '--bg-gradient-2': '#bbdefb',  // Light sky blue
+                    '--bg-gradient-3': '#90caf9',  // Bright blue
+                    '--bg-gradient-4': '#e1f5fe'   // Cyan tint
                 }
             },
             'dark-mode': {
