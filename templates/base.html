@@ -76,6 +76,9 @@
         </div>
     </div>
 
+    <!-- Modals Block (outside main-container to avoid backdrop-filter containing block) -->
+    {% block modals %}{% endblock %}
+
     <script src="{{ url_for('static', filename='js/chat-widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
     {% block extra_js %}{% endblock %}
