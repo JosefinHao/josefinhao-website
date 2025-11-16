@@ -1981,8 +1981,7 @@ body.dark-theme .theme-name {
     user-select: none;
     letter-spacing: -0.02em;
     line-height: 1.2;
-    animation: floatFormula 150s linear infinite;
-    will-change: transform;
+    will-change: transform, opacity;
 }
 
 /* Vary opacity and size based on formula category for depth */
@@ -2004,13 +2003,13 @@ body.dark-theme .theme-name {
         transform: translate(0, 0) rotate(var(--initial-rotation, 0deg));
     }
     25% {
-        transform: translate(15px, -15px) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(30px, -25px) rotate(calc(var(--initial-rotation, 0deg) + 3deg));
     }
     50% {
-        transform: translate(-10px, 10px) rotate(calc(var(--initial-rotation, 0deg) - 1.5deg));
+        transform: translate(-25px, 20px) rotate(calc(var(--initial-rotation, 0deg) - 2deg));
     }
     75% {
-        transform: translate(20px, -5px) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+        transform: translate(35px, -10px) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     100% {
         transform: translate(0, 0) rotate(var(--initial-rotation, 0deg));
