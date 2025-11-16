@@ -113,8 +113,8 @@ nav a {
 
 nav a:hover,
 nav a.active {
-    color: #4a90e2;
-    border-bottom-color: #4a90e2;
+    color: var(--primary);
+    border-bottom-color: var(--primary);
     background: rgba(74, 144, 226, 0.05);
 }
 
@@ -194,7 +194,7 @@ nav a.active {
 
 .profile-intro .tagline {
     font-size: 0.9rem;
-    color: #4a90e2;
+    color: var(--primary);
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
@@ -226,7 +226,7 @@ nav a.active {
 
 .content-placeholder h3 {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
-    color: #4a90e2;
+    color: var(--primary);
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
 }
@@ -254,12 +254,12 @@ nav a.active {
     content: "▸";
     position: absolute;
     left: 0;
-    color: #4a90e2;
+    color: var(--primary);
     font-weight: bold;
 }
 
 .content-placeholder .project-list strong {
-    color: #4a90e2;
+    color: var(--primary);
 }
 
 /* Headings */
@@ -280,7 +280,7 @@ h2 {
 h3 {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.1rem;
-    color: #4a90e2;
+    color: var(--primary);
     margin: 1rem 0 0.4rem 0;
 }
 
@@ -298,7 +298,7 @@ p {
     background: rgba(232, 244, 248, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-left: 3px solid #4a90e2;
+    border-left: 3px solid var(--primary);
     border-radius: 8px;
     font-size: 0.8rem;
     color: #2c3e50;
@@ -359,7 +359,7 @@ p {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #4a90e2;
+    border-color: var(--primary);
     background: rgba(255, 255, 255, 0.7);
     box-shadow: 0 2px 12px rgba(74, 144, 226, 0.15);
 }
@@ -431,7 +431,7 @@ p {
     padding: 1rem;
     border-radius: 10px;
     margin-bottom: 0.8rem;
-    border-left: 3px solid #4a90e2;
+    border-left: 3px solid var(--primary);
     transition: all 0.3s ease;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
@@ -862,7 +862,7 @@ p {
 
 .flip-card-front h3,
 .flip-card-front h4 {
-    color: #4a90e2;
+    color: var(--primary);
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
 }
@@ -1082,7 +1082,7 @@ p {
 
 .typing-input:focus {
     outline: none;
-    border-color: #4a90e2;
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
@@ -1149,7 +1149,7 @@ p {
 }
 
 .typing-results-content h4 {
-    color: #4a90e2;
+    color: var(--primary);
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
@@ -1168,7 +1168,7 @@ p {
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #4a90e2;
+    color: var(--primary);
     margin-bottom: 0.25rem;
 }
 
@@ -1208,7 +1208,7 @@ p {
     padding: 0.75rem;
     text-align: left;
     font-weight: 600;
-    color: #4a90e2;
+    color: var(--primary);
     border-bottom: 2px solid rgba(74, 144, 226, 0.3);
 }
 
@@ -1302,7 +1302,7 @@ p {
 }
 
 .game-card-header h3 {
-    color: #4a90e2;
+    color: var(--primary);
     margin: 0;
     font-size: 1.4rem;
 }
@@ -1426,13 +1426,13 @@ p {
 
 .guess-difficulty-select:focus {
     outline: none;
-    border-color: #4a90e2;
+    border-color: var(--primary);
 }
 
 .guess-score {
     margin-left: auto;
     font-weight: 600;
-    color: #4a90e2;
+    color: var(--primary);
     font-size: 1.1rem;
 }
 
@@ -1467,7 +1467,7 @@ p {
 
 .guess-language-badge {
     background: rgba(74, 144, 226, 0.2);
-    color: #4a90e2;
+    color: var(--primary);
     padding: 0.3rem 0.8rem;
     border-radius: 4px;
     font-size: 0.85rem;
@@ -1530,7 +1530,7 @@ p {
 }
 
 .guess-option-btn:hover:not(:disabled) {
-    border-color: #4a90e2;
+    border-color: var(--primary);
     background: rgba(74, 144, 226, 0.05);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);

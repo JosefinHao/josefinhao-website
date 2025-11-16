@@ -16,10 +16,11 @@ class ThemeSwitcher {
                     '--accent': '#ec407a',
                     '--text-dark': '#2c3e50',
                     '--text-light': '#5f7c8a',
+                    // Fixed static light blue background - all gradients the same
                     '--bg-gradient-1': '#e3f2fd',
-                    '--bg-gradient-2': '#f3e5f5',
-                    '--bg-gradient-3': '#e8eaf6',
-                    '--bg-gradient-4': '#e0f2f1'
+                    '--bg-gradient-2': '#e3f2fd',
+                    '--bg-gradient-3': '#e3f2fd',
+                    '--bg-gradient-4': '#e3f2fd'
                 }
             },
             'dark-mode': {
@@ -28,10 +29,11 @@ class ThemeSwitcher {
                 colors: {
                     '--primary': '#64b5f6',
                     '--primary-light': '#90caf9',
-                    '--secondary': '#78909c',
+                    '--secondary': '#b0bec5',
                     '--accent': '#f48fb1',
-                    '--text-dark': '#e0e0e0',
-                    '--text-light': '#b0bec5',
+                    // Improved text readability with higher contrast
+                    '--text-dark': '#f5f5f5',
+                    '--text-light': '#d0d0d0',
                     '--bg-gradient-1': '#1a1a2e',
                     '--bg-gradient-2': '#16213e',
                     '--bg-gradient-3': '#0f3460',
