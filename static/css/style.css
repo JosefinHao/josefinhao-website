@@ -10,7 +10,7 @@
     --text-dark: #2c3e50;
     --text-light: #5f7c8a;
     --bg-gradient-1: #e3f2fd;
-    --bg-gradient-2: #f3e5f5;
+    --bg-gradient-2: #e1f5fe;
     --bg-gradient-3: #e8eaf6;
     --bg-gradient-4: #e0f2f1;
 }
@@ -19,6 +19,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Ensure consistent background during page loads */
+html {
+    background-color: #e3f2fd;
 }
 
 /* Smooth theme transitions */
