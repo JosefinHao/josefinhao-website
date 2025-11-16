@@ -5,6 +5,7 @@
 
 class FloatingFormulas {
     constructor() {
+        this.formulaPositions = []; // Track all formula positions for overlap detection
         this.formulas = [
             // 1. Linear Regression (MSE Loss)
             {
@@ -257,8 +258,12 @@ class FloatingFormulas {
             formulaElement.textContent = formula.text;
             formulaElement.setAttribute('data-category', formula.category);
 
-            // Set initial random position
-            this.repositionFormula(formulaElement);
+            // Store reference to formula text for overlap detection
+            formulaElement.dataset.formulaText = formula.text;
+            formulaElement.dataset.formulaIndex = index;
+
+            // Set initial random position with overlap detection
+            this.repositionFormula(formulaElement, true);
 
             // Stagger the initial appearance
             setTimeout(() => {
@@ -300,8 +305,40 @@ class FloatingFormulas {
         return { x, y };
     }
 
-    repositionFormula(element) {
-        const pos = this.getRandomPosition();
+    repositionFormula(element, isInitial = false) {
+        const formulaText = element.dataset.formulaText;
+        const formulaIndex = parseInt(element.dataset.formulaIndex);
+        let pos;
+        let attempts = 0;
+        const maxAttempts = 100;
+
+        // Try to find a non-overlapping position
+        do {
+            pos = this.getRandomPosition();
+            attempts++;
+        } while (
+            attempts < maxAttempts &&
+            this.checkOverlap(pos, formulaText, this.formulaPositions, 30)
+        );
+
+        // Update position tracking
+        if (isInitial) {
+            // Add new position
+            this.formulaPositions.push({
+                x: pos.x,
+                y: pos.y,
+                text: formulaText,
+                index: formulaIndex
+            });
+        } else {
+            // Update existing position
+            const existingPos = this.formulaPositions.find(p => p.index === formulaIndex);
+            if (existingPos) {
+                existingPos.x = pos.x;
+                existingPos.y = pos.y;
+            }
+        }
+
         element.style.left = `${pos.x}%`;
         element.style.top = `${pos.y}%`;
 
