@@ -1971,13 +1971,16 @@ body.dark-theme .theme-name {
 
 .floating-formula {
     position: absolute;
-    font-family: 'Georgia', 'Times New Roman', serif;
-    font-size: 0.9rem;
-    font-style: italic;
+    font-family: 'Computer Modern', 'Latin Modern Math', 'Cambria Math', 'Times New Roman', serif;
+    font-size: 0.8rem;
+    font-style: normal;
+    font-weight: 400;
     color: #5f7c8a;
     opacity: 0.4;
     white-space: nowrap;
     user-select: none;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
     animation: floatFormula 150s linear infinite;
     will-change: transform;
 }
@@ -1986,31 +1989,31 @@ body.dark-theme .theme-name {
 .floating-formula[data-category="neural"],
 .floating-formula[data-category="bayesian"] {
     opacity: 0.45;
-    font-size: 1rem;
+    font-size: 0.85rem;
 }
 
 .floating-formula[data-category="finance"],
 .floating-formula[data-category="clustering"] {
     opacity: 0.35;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
 }
 
-/* Slow floating animation with minimal movement to prevent overlap */
+/* Slow floating animation with gentle continuous movement */
 @keyframes floatFormula {
     0% {
         transform: translate(0, 0) rotate(var(--initial-rotation, 0deg));
     }
     25% {
-        transform: translate(5px, -10px) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+        transform: translate(15px, -15px) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     50% {
-        transform: translate(-5px, -20px) rotate(calc(var(--initial-rotation, 0deg) - 1deg));
+        transform: translate(-10px, 10px) rotate(calc(var(--initial-rotation, 0deg) - 1.5deg));
     }
     75% {
-        transform: translate(8px, -30px) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
+        transform: translate(20px, -5px) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
     }
     100% {
-        transform: translate(0, -40px) rotate(var(--initial-rotation, 0deg));
+        transform: translate(0, 0) rotate(var(--initial-rotation, 0deg));
     }
 }
 
@@ -2023,13 +2026,13 @@ body.dark-theme .floating-formula {
 /* Responsive - reduce formula size on mobile */
 @media (max-width: 768px) {
     .floating-formula {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         opacity: 0.3;
     }
 
     .floating-formula[data-category="neural"],
     .floating-formula[data-category="bayesian"] {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         opacity: 0.35;
     }
 }
