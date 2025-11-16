@@ -237,28 +237,39 @@ class FloatingFormulas {
     }
 
     createFormulas() {
+        // Check if container already exists (prevents flash on navigation)
+        let container = document.getElementById('floating-formulas-container');
+
+        if (container) {
+            // Container already exists, don't recreate
+            return;
+        }
+
         // Create container for formulas
-        const container = document.createElement('div');
+        container = document.createElement('div');
         container.id = 'floating-formulas-container';
         container.className = 'floating-formulas-container';
 
         // Try to restore saved state from sessionStorage
         const savedState = sessionStorage.getItem('floatingFormulasState');
+        const savedTimestamp = sessionStorage.getItem('floatingFormulasTimestamp');
 
         if (savedState) {
-            // Restore formulas from saved state
-            this.restoreFormulas(container, JSON.parse(savedState));
+            // Restore formulas from saved state with time-based animation offset
+            const elapsedTime = savedTimestamp ? (Date.now() - parseInt(savedTimestamp)) / 1000 : 0;
+            this.restoreFormulas(container, JSON.parse(savedState), elapsedTime);
         } else {
             // Create new formulas and save state
             const formulaStates = this.generateNewFormulas(container);
             sessionStorage.setItem('floatingFormulasState', JSON.stringify(formulaStates));
+            sessionStorage.setItem('floatingFormulasTimestamp', Date.now().toString());
         }
 
         // Insert at the beginning of body (furthest back)
         document.body.insertBefore(container, document.body.firstChild);
     }
 
-    restoreFormulas(container, formulaStates) {
+    restoreFormulas(container, formulaStates, elapsedTime = 0) {
         formulaStates.forEach(state => {
             const formulaElement = document.createElement('div');
             formulaElement.className = 'floating-formula';
@@ -270,7 +281,11 @@ class FloatingFormulas {
             formulaElement.style.setProperty('--initial-rotation', `${state.rotation}deg`);
             formulaElement.style.transform = `rotate(${state.rotation}deg)`;
             formulaElement.style.animationDuration = `${state.duration}s`;
-            formulaElement.style.animationDelay = `${state.delay}s`;
+
+            // Calculate adjusted delay to continue animation from current position
+            // Using negative delay makes the animation start mid-cycle
+            const adjustedDelay = state.delay - elapsedTime;
+            formulaElement.style.animationDelay = `${adjustedDelay}s`;
 
             container.appendChild(formulaElement);
         });
