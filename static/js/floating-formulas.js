@@ -273,10 +273,30 @@ class FloatingFormulas {
     }
 
     getRandomPosition() {
-        // Generate random position anywhere in viewport
-        // Avoid edges to prevent clipping
-        const x = 5 + Math.random() * 90; // 5-95%
-        const y = 5 + Math.random() * 90; // 5-95%
+        // Generate random position at the edges of viewport
+        // Formulas appear on top, bottom, left, or right edges
+        const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
+        let x, y;
+
+        switch(edge) {
+            case 0: // Top edge
+                x = Math.random() * 100; // 0-100%
+                y = Math.random() * 20;  // 0-20% from top
+                break;
+            case 1: // Right edge
+                x = 80 + Math.random() * 20; // 80-100% from left
+                y = Math.random() * 100;     // 0-100%
+                break;
+            case 2: // Bottom edge
+                x = Math.random() * 100;     // 0-100%
+                y = 80 + Math.random() * 20; // 80-100% from top
+                break;
+            case 3: // Left edge
+                x = Math.random() * 20;  // 0-20% from left
+                y = Math.random() * 100; // 0-100%
+                break;
+        }
+
         return { x, y };
     }
 
@@ -291,38 +311,28 @@ class FloatingFormulas {
     }
 
     startFormulaAnimation(element) {
-        // Start the 10-second float animation
-        element.style.animation = 'floatFormula 10s ease-in-out';
+        // Start the animation cycle: appear → grow → dissolve
+        element.style.animation = 'formulaGrowDissolve 10s ease-in-out forwards';
 
-        // After 10 seconds, reposition and restart
+        // After animation completes, reposition and restart
         const repositionAndRestart = () => {
-            // Fade out
-            element.style.opacity = '0';
-            element.style.transition = 'opacity 0.5s ease-out';
-
             setTimeout(() => {
-                // Reposition
+                // Reposition to new random edge location
                 this.repositionFormula(element);
 
-                // Fade in
-                element.style.opacity = '';
-                element.style.transition = 'opacity 0.5s ease-in';
+                // Restart animation
+                element.style.animation = 'none';
+                // Force reflow to restart animation
+                void element.offsetWidth;
+                element.style.animation = 'formulaGrowDissolve 10s ease-in-out forwards';
 
-                // Restart animation after a brief delay
-                setTimeout(() => {
-                    element.style.animation = 'none';
-                    // Force reflow
-                    void element.offsetWidth;
-                    element.style.animation = 'floatFormula 10s ease-in-out';
-
-                    // Schedule next repositioning
-                    setTimeout(repositionAndRestart, 10000);
-                }, 50);
-            }, 500); // Wait for fade out
+                // Schedule next cycle
+                repositionAndRestart();
+            }, 10000); // 10 second cycle
         };
 
-        // Start the cycle
-        setTimeout(repositionAndRestart, 10000);
+        // Start the continuous cycle
+        repositionAndRestart();
     }
 }
 
