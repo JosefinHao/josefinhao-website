@@ -1995,7 +1995,7 @@ body.dark-theme .theme-name {
     font-size: 0.75rem;
 }
 
-/* Formula animation: appear → grow slowly to 150% → dissolve */
+/* Formula animation: appear → grow slowly to 125% → dissolve, moving in one direction */
 @keyframes formulaGrowDissolve {
     0% {
         opacity: 0;
@@ -2003,23 +2003,23 @@ body.dark-theme .theme-name {
     }
     15% {
         opacity: 0.4;
-        transform: translate(10px, -5px) scale(1.1) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.25), calc(var(--drift-y, 0px) * 0.25)) scale(1.08) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
     }
     40% {
         opacity: 0.4;
-        transform: translate(-8px, 10px) scale(1.3) rotate(calc(var(--initial-rotation, 0deg) - 1deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.5), calc(var(--drift-y, 0px) * 0.5)) scale(1.15) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
     }
     65% {
         opacity: 0.4;
-        transform: translate(12px, -8px) scale(1.5) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.75), calc(var(--drift-y, 0px) * 0.75)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     85% {
         opacity: 0.3;
-        transform: translate(-5px, 5px) scale(1.5) rotate(calc(var(--initial-rotation, 0deg) - 1deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.9), calc(var(--drift-y, 0px) * 0.9)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     100% {
         opacity: 0;
-        transform: translate(0, 0) scale(1.5) rotate(var(--initial-rotation, 0deg));
+        transform: translate(var(--drift-x, 0px), var(--drift-y, 0px)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
 }
 
@@ -2035,23 +2035,23 @@ body.dark-theme .floating-formula {
     }
     15% {
         opacity: 0.25;
-        transform: translate(10px, -5px) scale(1.1) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.25), calc(var(--drift-y, 0px) * 0.25)) scale(1.08) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
     }
     40% {
         opacity: 0.25;
-        transform: translate(-8px, 10px) scale(1.3) rotate(calc(var(--initial-rotation, 0deg) - 1deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.5), calc(var(--drift-y, 0px) * 0.5)) scale(1.15) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
     }
     65% {
         opacity: 0.25;
-        transform: translate(12px, -8px) scale(1.5) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.75), calc(var(--drift-y, 0px) * 0.75)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     85% {
         opacity: 0.2;
-        transform: translate(-5px, 5px) scale(1.5) rotate(calc(var(--initial-rotation, 0deg) - 1deg));
+        transform: translate(calc(var(--drift-x, 0px) * 0.9), calc(var(--drift-y, 0px) * 0.9)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     100% {
         opacity: 0;
-        transform: translate(0, 0) scale(1.5) rotate(var(--initial-rotation, 0deg));
+        transform: translate(var(--drift-x, 0px), var(--drift-y, 0px)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
 }
 
