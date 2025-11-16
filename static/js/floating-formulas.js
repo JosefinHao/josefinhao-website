@@ -308,6 +308,14 @@ class FloatingFormulas {
         // Random rotation
         const rotation = (Math.random() - 0.5) * 20; // -10 to 10 degrees
         element.style.setProperty('--initial-rotation', `${rotation}deg`);
+
+        // Random drift direction (single direction movement)
+        const angle = Math.random() * 2 * Math.PI; // Random angle in radians
+        const distance = 30 + Math.random() * 40; // 30-70px drift distance
+        const driftX = Math.cos(angle) * distance;
+        const driftY = Math.sin(angle) * distance;
+        element.style.setProperty('--drift-x', `${driftX}px`);
+        element.style.setProperty('--drift-y', `${driftY}px`);
     }
 
     startFormulaAnimation(element) {
@@ -336,5 +344,7 @@ class FloatingFormulas {
     }
 }
 
-// Initialize floating formulas
-new FloatingFormulas();
+// Initialize floating formulas only on the home page
+if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+    new FloatingFormulas();
+}
