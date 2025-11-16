@@ -123,48 +123,113 @@ class FloatingFormulas {
     }
 
     /**
-     * Get a position towards the edges of the viewport
-     * Avoids center where content blocks formulas
+     * Get category zone mapping - groups related formulas together
+     * Each category gets assigned to a specific edge zone
      */
-    getEdgePosition() {
-        // Define zones: top, right, bottom, left edges
-        const zones = ['top', 'right', 'bottom', 'left'];
-        const zone = zones[Math.floor(Math.random() * zones.length)];
+    getCategoryZone(category) {
+        const zoneMap = {
+            'regression': 'top-left',
+            'optimization': 'top-right',
+            'finance': 'right',
+            'pde': 'bottom-right',
+            'simulation': 'bottom',
+            'bayesian': 'bottom-left',
+            'boosting': 'left',
+            'neural': 'top',
+            'clustering': 'right-bottom',
+            'survival': 'left-top'
+        };
+        return zoneMap[category] || 'top';
+    }
 
+    /**
+     * Get a position in a specific zone towards the edges
+     * Groups formulas by category for better readability
+     */
+    getPositionInZone(zone, formulaIndex, totalInZone) {
         let x, y;
+
+        // Distribute formulas within their zone
+        const spacing = 100 / (totalInZone + 1);
+        const offset = spacing * (formulaIndex + 1);
 
         switch(zone) {
             case 'top':
-                x = Math.random() * 100; // Full width
-                y = Math.random() * 20;   // Top 20%
+                x = 20 + Math.random() * 60; // Center top area
+                y = 5 + Math.random() * 12;   // Top 5-17%
+                break;
+            case 'top-left':
+                x = 5 + Math.random() * 20;   // Left 5-25%
+                y = 5 + Math.random() * 20;   // Top 5-25%
+                break;
+            case 'top-right':
+                x = 75 + Math.random() * 20;  // Right 75-95%
+                y = 5 + Math.random() * 20;   // Top 5-25%
                 break;
             case 'right':
-                x = 70 + Math.random() * 30; // Right 30%
-                y = Math.random() * 100;      // Full height
+                x = 75 + Math.random() * 20;  // Right 75-95%
+                y = 25 + Math.random() * 30;  // Middle-upper
+                break;
+            case 'right-bottom':
+                x = 75 + Math.random() * 20;  // Right 75-95%
+                y = 60 + Math.random() * 30;  // Lower portion
                 break;
             case 'bottom':
-                x = Math.random() * 100; // Full width
-                y = 70 + Math.random() * 30; // Bottom 30%
+                x = 30 + Math.random() * 40;  // Center bottom
+                y = 80 + Math.random() * 15;  // Bottom 80-95%
+                break;
+            case 'bottom-right':
+                x = 65 + Math.random() * 30;  // Right side
+                y = 75 + Math.random() * 20;  // Bottom 75-95%
+                break;
+            case 'bottom-left':
+                x = 5 + Math.random() * 25;   // Left 5-30%
+                y = 75 + Math.random() * 20;  // Bottom 75-95%
                 break;
             case 'left':
-                x = Math.random() * 25;  // Left 25%
-                y = Math.random() * 100; // Full height
+                x = 5 + Math.random() * 20;   // Left 5-25%
+                y = 35 + Math.random() * 30;  // Middle
+                break;
+            case 'left-top':
+                x = 5 + Math.random() * 20;   // Left 5-25%
+                y = 10 + Math.random() * 25;  // Upper
                 break;
         }
 
-        return { x, y };
+        return { x, y, zone };
+    }
+
+    /**
+     * Estimate formula width in viewport percentage
+     */
+    estimateFormulaWidth(text, fontSize = 0.9) {
+        // Rough estimate: average character width in rem * number of characters
+        const avgCharWidth = 0.5; // rem
+        const textWidth = text.length * avgCharWidth * fontSize;
+        // Convert to approximate viewport percentage (assuming 1rem ≈ 16px, viewport ≈ 1200px)
+        return (textWidth * 16 / 1200) * 100;
     }
 
     /**
      * Check if a new position overlaps with existing formulas
+     * Now considers actual text width for more accurate collision detection
      */
-    checkOverlap(newPos, existingPositions, minDistance = 15) {
+    checkOverlap(newPos, newText, existingPositions, minDistance = 25) {
+        const newWidth = this.estimateFormulaWidth(newText);
+
         for (let pos of existingPositions) {
+            const posWidth = this.estimateFormulaWidth(pos.text);
+
+            // Calculate actual distance considering text width
             const dx = Math.abs(newPos.x - pos.x);
             const dy = Math.abs(newPos.y - pos.y);
-            const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < minDistance) {
+            // Horizontal overlap check
+            const horizontalOverlap = dx < ((newWidth + posWidth) / 2 + minDistance);
+            // Vertical overlap check (formulas are single line, so smaller vertical threshold)
+            const verticalOverlap = dy < 8;
+
+            if (horizontalOverlap && verticalOverlap) {
                 return true; // Overlaps
             }
         }
@@ -179,40 +244,60 @@ class FloatingFormulas {
 
         const existingPositions = [];
 
-        // Create formula elements
-        this.formulas.forEach((formula, index) => {
-            const formulaElement = document.createElement('div');
-            formulaElement.className = 'floating-formula';
-            formulaElement.textContent = formula.text;
-            formulaElement.setAttribute('data-category', formula.category);
+        // Group formulas by category for organized placement
+        const formulasByCategory = {};
+        this.formulas.forEach(formula => {
+            if (!formulasByCategory[formula.category]) {
+                formulasByCategory[formula.category] = [];
+            }
+            formulasByCategory[formula.category].push(formula);
+        });
 
-            // Get position towards edges, with overlap detection
-            let position;
-            let attempts = 0;
-            do {
-                position = this.getEdgePosition();
-                attempts++;
-            } while (this.checkOverlap(position, existingPositions) && attempts < 50);
+        // Process each category group
+        Object.keys(formulasByCategory).forEach(category => {
+            const categoryFormulas = formulasByCategory[category];
+            const zone = this.getCategoryZone(category);
+            const totalInZone = categoryFormulas.length;
 
-            existingPositions.push(position);
+            categoryFormulas.forEach((formula, indexInCategory) => {
+                const formulaElement = document.createElement('div');
+                formulaElement.className = 'floating-formula';
+                formulaElement.textContent = formula.text;
+                formulaElement.setAttribute('data-category', formula.category);
 
-            formulaElement.style.left = `${position.x}%`;
-            formulaElement.style.top = `${position.y}%`;
+                // Get position in category zone with overlap detection
+                let position;
+                let attempts = 0;
+                do {
+                    position = this.getPositionInZone(zone, indexInCategory, totalInZone);
+                    attempts++;
+                } while (this.checkOverlap(position, formula.text, existingPositions) && attempts < 100);
 
-            // Random initial rotation (-15 to 15 degrees)
-            const rotation = (Math.random() - 0.5) * 30;
-            formulaElement.style.setProperty('--initial-rotation', `${rotation}deg`);
-            formulaElement.style.transform = `rotate(${rotation}deg)`;
+                // Store position with text for overlap checking
+                existingPositions.push({
+                    x: position.x,
+                    y: position.y,
+                    text: formula.text
+                });
 
-            // Random animation duration (60-120 seconds for very slow movement)
-            const duration = 60 + Math.random() * 60;
-            formulaElement.style.animationDuration = `${duration}s`;
+                formulaElement.style.left = `${position.x}%`;
+                formulaElement.style.top = `${position.y}%`;
 
-            // Random animation delay for staggered start
-            const delay = Math.random() * 20;
-            formulaElement.style.animationDelay = `${delay}s`;
+                // Smaller random rotation (-10 to 10 degrees)
+                const rotation = (Math.random() - 0.5) * 20;
+                formulaElement.style.setProperty('--initial-rotation', `${rotation}deg`);
+                formulaElement.style.transform = `rotate(${rotation}deg)`;
 
-            container.appendChild(formulaElement);
+                // Random animation duration (100-180 seconds for very slow movement)
+                const duration = 100 + Math.random() * 80;
+                formulaElement.style.animationDuration = `${duration}s`;
+
+                // Staggered animation delay based on category
+                const delay = Math.random() * 30;
+                formulaElement.style.animationDelay = `${delay}s`;
+
+                container.appendChild(formulaElement);
+            });
         });
 
         // Insert at the beginning of body (furthest back)
