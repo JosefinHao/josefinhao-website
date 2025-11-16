@@ -1971,27 +1971,28 @@ body.dark-theme .theme-name {
 
 .floating-formula {
     position: absolute;
-    font-family: 'Courier New', 'Monaco', monospace;
-    font-size: 1rem;
-    color: var(--primary);
-    opacity: 0.15;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #5f7c8a;
+    opacity: 0.35;
     white-space: nowrap;
     user-select: none;
     animation: floatFormula 120s linear infinite;
     will-change: transform;
 }
 
-/* Vary opacity based on formula category for depth */
+/* Vary opacity and size based on formula category for depth */
 .floating-formula[data-category="neural"],
 .floating-formula[data-category="bayesian"] {
-    opacity: 0.2;
-    font-size: 1.1rem;
+    opacity: 0.4;
+    font-size: 1.3rem;
 }
 
 .floating-formula[data-category="finance"],
 .floating-formula[data-category="clustering"] {
-    opacity: 0.12;
-    font-size: 0.95rem;
+    opacity: 0.3;
+    font-size: 1.1rem;
 }
 
 /* Slow floating animation with subtle movement */
@@ -2015,21 +2016,21 @@ body.dark-theme .theme-name {
 
 /* Dark theme adjustments */
 body.dark-theme .floating-formula {
-    color: #ffffff;
-    opacity: 0.08;
+    color: #90caf9;
+    opacity: 0.25;
 }
 
 /* Responsive - reduce formula size on mobile */
 @media (max-width: 768px) {
     .floating-formula {
-        font-size: 0.85rem;
-        opacity: 0.1;
+        font-size: 0.9rem;
+        opacity: 0.25;
     }
 
     .floating-formula[data-category="neural"],
     .floating-formula[data-category="bayesian"] {
-        font-size: 0.95rem;
-        opacity: 0.12;
+        font-size: 1rem;
+        opacity: 0.3;
     }
 }
 

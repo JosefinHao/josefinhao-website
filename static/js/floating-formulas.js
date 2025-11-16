@@ -122,11 +122,62 @@ class FloatingFormulas {
         }
     }
 
+    /**
+     * Get a position towards the edges of the viewport
+     * Avoids center where content blocks formulas
+     */
+    getEdgePosition() {
+        // Define zones: top, right, bottom, left edges
+        const zones = ['top', 'right', 'bottom', 'left'];
+        const zone = zones[Math.floor(Math.random() * zones.length)];
+
+        let x, y;
+
+        switch(zone) {
+            case 'top':
+                x = Math.random() * 100; // Full width
+                y = Math.random() * 20;   // Top 20%
+                break;
+            case 'right':
+                x = 70 + Math.random() * 30; // Right 30%
+                y = Math.random() * 100;      // Full height
+                break;
+            case 'bottom':
+                x = Math.random() * 100; // Full width
+                y = 70 + Math.random() * 30; // Bottom 30%
+                break;
+            case 'left':
+                x = Math.random() * 25;  // Left 25%
+                y = Math.random() * 100; // Full height
+                break;
+        }
+
+        return { x, y };
+    }
+
+    /**
+     * Check if a new position overlaps with existing formulas
+     */
+    checkOverlap(newPos, existingPositions, minDistance = 15) {
+        for (let pos of existingPositions) {
+            const dx = Math.abs(newPos.x - pos.x);
+            const dy = Math.abs(newPos.y - pos.y);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < minDistance) {
+                return true; // Overlaps
+            }
+        }
+        return false; // No overlap
+    }
+
     createFormulas() {
         // Create container for formulas
         const container = document.createElement('div');
         container.id = 'floating-formulas-container';
         container.className = 'floating-formulas-container';
+
+        const existingPositions = [];
 
         // Create formula elements
         this.formulas.forEach((formula, index) => {
@@ -135,14 +186,22 @@ class FloatingFormulas {
             formulaElement.textContent = formula.text;
             formulaElement.setAttribute('data-category', formula.category);
 
-            // Random positioning
-            const startX = Math.random() * 100;
-            const startY = Math.random() * 100;
-            formulaElement.style.left = `${startX}%`;
-            formulaElement.style.top = `${startY}%`;
+            // Get position towards edges, with overlap detection
+            let position;
+            let attempts = 0;
+            do {
+                position = this.getEdgePosition();
+                attempts++;
+            } while (this.checkOverlap(position, existingPositions) && attempts < 50);
+
+            existingPositions.push(position);
+
+            formulaElement.style.left = `${position.x}%`;
+            formulaElement.style.top = `${position.y}%`;
 
             // Random initial rotation (-15 to 15 degrees)
             const rotation = (Math.random() - 0.5) * 30;
+            formulaElement.style.setProperty('--initial-rotation', `${rotation}deg`);
             formulaElement.style.transform = `rotate(${rotation}deg)`;
 
             // Random animation duration (60-120 seconds for very slow movement)
