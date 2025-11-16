@@ -159,7 +159,7 @@ class FloatingFormulas {
                 y = 5 + (verticalOffset * 0.12); // Distribute across top 5-17%
                 break;
             case 'top-left':
-                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
+                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
                 y = 5 + (verticalOffset * 0.20); // Distribute across top 5-25%
                 break;
             case 'top-right':
@@ -183,15 +183,15 @@ class FloatingFormulas {
                 y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
                 break;
             case 'bottom-left':
-                x = 0 + Math.random() * 30;   // Left 0-30% (from edge)
+                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
                 y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
                 break;
             case 'left':
-                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
+                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
                 y = 35 + (verticalOffset * 0.30); // Distribute across middle
                 break;
             case 'left-top':
-                x = 0 + Math.random() * 26;   // Left 0-26% (from edge)
+                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
                 y = 10 + (verticalOffset * 0.25); // Distribute across upper
                 break;
         }
@@ -242,7 +242,43 @@ class FloatingFormulas {
         container.id = 'floating-formulas-container';
         container.className = 'floating-formulas-container';
 
+        // Try to restore saved state from sessionStorage
+        const savedState = sessionStorage.getItem('floatingFormulasState');
+
+        if (savedState) {
+            // Restore formulas from saved state
+            this.restoreFormulas(container, JSON.parse(savedState));
+        } else {
+            // Create new formulas and save state
+            const formulaStates = this.generateNewFormulas(container);
+            sessionStorage.setItem('floatingFormulasState', JSON.stringify(formulaStates));
+        }
+
+        // Insert at the beginning of body (furthest back)
+        document.body.insertBefore(container, document.body.firstChild);
+    }
+
+    restoreFormulas(container, formulaStates) {
+        formulaStates.forEach(state => {
+            const formulaElement = document.createElement('div');
+            formulaElement.className = 'floating-formula';
+            formulaElement.textContent = state.text;
+            formulaElement.setAttribute('data-category', state.category);
+
+            formulaElement.style.left = `${state.x}%`;
+            formulaElement.style.top = `${state.y}%`;
+            formulaElement.style.setProperty('--initial-rotation', `${state.rotation}deg`);
+            formulaElement.style.transform = `rotate(${state.rotation}deg)`;
+            formulaElement.style.animationDuration = `${state.duration}s`;
+            formulaElement.style.animationDelay = `${state.delay}s`;
+
+            container.appendChild(formulaElement);
+        });
+    }
+
+    generateNewFormulas(container) {
         const existingPositions = [];
+        const formulaStates = [];
 
         // Group formulas by category for organized placement
         const formulasByCategory = {};
@@ -280,28 +316,38 @@ class FloatingFormulas {
                     text: formula.text
                 });
 
-                formulaElement.style.left = `${position.x}%`;
-                formulaElement.style.top = `${position.y}%`;
-
                 // Smaller random rotation (-10 to 10 degrees)
                 const rotation = (Math.random() - 0.5) * 20;
-                formulaElement.style.setProperty('--initial-rotation', `${rotation}deg`);
-                formulaElement.style.transform = `rotate(${rotation}deg)`;
 
                 // Random animation duration (100-180 seconds for very slow movement)
                 const duration = 100 + Math.random() * 80;
-                formulaElement.style.animationDuration = `${duration}s`;
 
                 // Staggered animation delay based on category
                 const delay = Math.random() * 30;
+
+                // Save state for persistence
+                formulaStates.push({
+                    text: formula.text,
+                    category: formula.category,
+                    x: position.x,
+                    y: position.y,
+                    rotation: rotation,
+                    duration: duration,
+                    delay: delay
+                });
+
+                formulaElement.style.left = `${position.x}%`;
+                formulaElement.style.top = `${position.y}%`;
+                formulaElement.style.setProperty('--initial-rotation', `${rotation}deg`);
+                formulaElement.style.transform = `rotate(${rotation}deg)`;
+                formulaElement.style.animationDuration = `${duration}s`;
                 formulaElement.style.animationDelay = `${delay}s`;
 
                 container.appendChild(formulaElement);
             });
         });
 
-        // Insert at the beginning of body (furthest back)
-        document.body.insertBefore(container, document.body.firstChild);
+        return formulaStates;
     }
 }
 
