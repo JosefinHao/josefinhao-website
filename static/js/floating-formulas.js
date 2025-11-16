@@ -289,29 +289,10 @@ class FloatingFormulas {
     }
 
     getRandomPosition() {
-        // Generate random position at the edges of viewport
-        // Formulas appear on top, bottom, left, or right edges
-        const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
-        let x, y;
-
-        switch(edge) {
-            case 0: // Top edge
-                x = Math.random() * 100; // 0-100%
-                y = Math.random() * 20;  // 0-20% from top
-                break;
-            case 1: // Right edge
-                x = 80 + Math.random() * 20; // 80-100% from left
-                y = Math.random() * 100;     // 0-100%
-                break;
-            case 2: // Bottom edge
-                x = Math.random() * 100;     // 0-100%
-                y = 80 + Math.random() * 20; // 80-100% from top
-                break;
-            case 3: // Left edge
-                x = Math.random() * 20;  // 0-20% from left
-                y = Math.random() * 100; // 0-100%
-                break;
-        }
+        // Generate completely random position across entire viewport
+        // Small margin to prevent formulas from being cut off at edges
+        const x = 5 + Math.random() * 90; // 5-95% horizontal
+        const y = 5 + Math.random() * 90; // 5-95% vertical
 
         return { x, y };
     }
