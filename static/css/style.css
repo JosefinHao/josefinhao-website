@@ -2240,6 +2240,8 @@ body.dark-theme .theme-name {
     overflow: hidden;
     z-index: 1;
     pointer-events: none;
+    /* Add padding to prevent formulas from being cut off at edges */
+    padding: 20px;
 }
 
 .floating-formula {
@@ -2255,6 +2257,10 @@ body.dark-theme .theme-name {
     line-height: 1.2;
     will-change: transform, opacity;
     opacity: 0; /* Start invisible, animation controls opacity */
+    /* Ensure formulas stay within viewport bounds */
+    max-width: calc(100vw - 60px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Vary size based on formula category for depth */
@@ -2331,8 +2337,13 @@ body.dark-theme .floating-formula {
 
 /* Responsive - reduce formula size on mobile */
 @media (max-width: 768px) {
+    .floating-formulas-container {
+        padding: 10px;
+    }
+
     .floating-formula {
         font-size: 0.7rem;
+        max-width: calc(100vw - 40px);
     }
 
     .floating-formula[data-category="neural"],
