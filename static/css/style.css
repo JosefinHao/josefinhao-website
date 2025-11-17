@@ -1,22 +1,22 @@
 /* CSS Variables for Theme Switching */
 :root {
-    --primary: #4a90e2;
-    --primary-light: #667eea;
-    --secondary: #5f7c8a;
-    --accent: #ec407a;
-    --text-dark: #2c3e50;
-    --text-light: #5f7c8a;
-    --bg-gradient-1: #e3f2fd;
-    --bg-gradient-2: #e1f5fe;
-    --bg-gradient-3: #e8eaf6;
+    --primary: #0099ff;
+    --primary-light: #00d4ff;
+    --secondary: #4a6572;
+    --accent: #00ffcc;
+    --text-dark: #1a2332;
+    --text-light: #546e7a;
+    --bg-gradient-1: #e8f4f8;
+    --bg-gradient-2: #e0f7fa;
+    --bg-gradient-3: #e1f5fe;
     --bg-gradient-4: #e0f2f1;
 
-    /* Holographic colors - Softer pastel tones */
-    --holo-1: #ffc4e1;  /* Soft pink */
-    --holo-2: #d4c4ff;  /* Soft lavender */
-    --holo-3: #c4f5f5;  /* Soft cyan */
-    --holo-4: #fff4c4;  /* Soft yellow */
-    --holo-5: #ffc4c4;  /* Soft coral */
+    /* Holographic colors - Professional cyber-tech palette */
+    --holo-1: #00d4ff;  /* Electric cyan */
+    --holo-2: #0099ff;  /* Bright azure */
+    --holo-3: #00ffcc;  /* Aqua turquoise */
+    --holo-4: #4dd0e1;  /* Light cyan */
+    --holo-5: #00b8d4;  /* Deep cyan */
 }
 
 * {
