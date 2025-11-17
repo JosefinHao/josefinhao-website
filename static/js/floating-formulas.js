@@ -6,6 +6,7 @@
 class FloatingFormulas {
     constructor() {
         this.formulaPositions = []; // Track all formula positions for overlap detection
+        this.gridCells = this.initializeGrid(); // Grid-based positioning for even distribution
         this.formulas = [
             // 1. Linear Regression (MSE Loss)
             {
@@ -115,138 +116,55 @@ class FloatingFormulas {
         this.init();
     }
 
+    /**
+     * Initialize a grid system for even formula distribution
+     * Divides the viewport edges into cells to prevent clustering
+     */
+    initializeGrid() {
+        // Create a grid around the edges of the viewport
+        // 8 columns x 6 rows = 48 potential positions
+        const cols = 8;
+        const rows = 6;
+        const cells = [];
+
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                // Only use edge cells (not center)
+                const isTopRow = row === 0;
+                const isBottomRow = row === rows - 1;
+                const isLeftCol = col === 0;
+                const isRightCol = col === cols - 1;
+                const isEdgeCell = isTopRow || isBottomRow || isLeftCol || isRightCol;
+
+                if (isEdgeCell) {
+                    const x = (col / (cols - 1)) * 100; // 0-100%
+                    const y = (row / (rows - 1)) * 100; // 0-100%
+
+                    cells.push({
+                        x,
+                        y,
+                        col,
+                        row,
+                        occupied: false,
+                        // Add slight randomness within cell (±5% jitter)
+                        getRandomPosition: () => ({
+                            x: Math.max(0, Math.min(100, x + (Math.random() - 0.5) * 10)),
+                            y: Math.max(0, Math.min(100, y + (Math.random() - 0.5) * 10))
+                        })
+                    });
+                }
+            }
+        }
+
+        return cells;
+    }
+
     init() {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.createFormulas());
         } else {
             this.createFormulas();
         }
-    }
-
-    /**
-     * Get category zone mapping - groups related formulas together
-     * Each category gets assigned to a specific edge zone
-     */
-    getCategoryZone(category) {
-        const zoneMap = {
-            'regression': 'top-left',
-            'optimization': 'top-right',
-            'finance': 'right',
-            'pde': 'bottom-right',
-            'simulation': 'bottom',
-            'bayesian': 'bottom-left',
-            'boosting': 'left',
-            'neural': 'top',
-            'clustering': 'right-bottom',
-            'survival': 'left-top'
-        };
-        return zoneMap[category] || 'top';
-    }
-
-    /**
-     * Get a position in a specific zone towards the edges
-     * Groups formulas by category for better readability
-     */
-    getPositionInZone(zone, formulaIndex, totalInZone) {
-        let x, y;
-
-        // Distribute formulas evenly within their zone vertically
-        const spacing = 100 / (totalInZone + 1);
-        const verticalOffset = spacing * (formulaIndex + 1);
-
-        switch(zone) {
-            case 'top':
-                x = 20 + Math.random() * 60; // Center top area
-                y = 5 + (verticalOffset * 0.12); // Distribute across top 5-17%
-                break;
-            case 'top-left':
-                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
-                y = 5 + (verticalOffset * 0.20); // Distribute across top 5-25%
-                break;
-            case 'top-right':
-                x = 74 + Math.random() * 18;  // Right 74-92%
-                y = 5 + (verticalOffset * 0.20); // Distribute across top 5-25%
-                break;
-            case 'right':
-                x = 76 + Math.random() * 18;  // Right 76-94%
-                y = 25 + (verticalOffset * 0.30); // Distribute across middle-upper
-                break;
-            case 'right-bottom':
-                x = 76 + Math.random() * 18;  // Right 76-94%
-                y = 60 + (verticalOffset * 0.30); // Distribute across lower portion
-                break;
-            case 'bottom':
-                x = 30 + Math.random() * 40;  // Center bottom
-                y = 80 + (verticalOffset * 0.15); // Distribute across bottom 80-95%
-                break;
-            case 'bottom-right':
-                x = 68 + Math.random() * 26;  // Right side 68-94%
-                y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
-                break;
-            case 'bottom-left':
-                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
-                y = 75 + (verticalOffset * 0.20); // Distribute across bottom 75-95%
-                break;
-            case 'left':
-                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
-                y = 35 + (verticalOffset * 0.30); // Distribute across middle
-                break;
-            case 'left-top':
-                x = 0 + Math.random() * 10;   // Left 0-10% (from edge)
-                y = 10 + (verticalOffset * 0.25); // Distribute across upper
-                break;
-        }
-
-        return { x, y, zone };
-    }
-
-    /**
-     * Estimate formula width in viewport percentage
-     */
-    estimateFormulaWidth(text, fontSize = 0.9) {
-        // Rough estimate: average character width in rem * number of characters
-        const avgCharWidth = 0.5; // rem
-        const textWidth = text.length * avgCharWidth * fontSize;
-        // Convert to approximate viewport percentage (assuming 1rem ≈ 16px, viewport ≈ 1200px)
-        return (textWidth * 16 / 1200) * 100;
-    }
-
-    /**
-     * Check if a new position overlaps with existing formulas
-     * Accounts for drift movement and growth to prevent collisions during animation
-     */
-    checkOverlap(newPos, newText, existingPositions, minDistance = 25) {
-        const newWidth = this.estimateFormulaWidth(newText);
-
-        // Account for maximum drift distance (40px) and growth (125%)
-        // Convert 40px to viewport percentage
-        const maxDriftPercent = (40 / window.innerWidth) * 100;
-        const growthFactor = 1.25; // 125% max size
-
-        // Safety buffer includes drift space and growth
-        // Use larger multiplier (3x) to ensure formulas don't drift into each other
-        const safetyBuffer = maxDriftPercent * 3 + minDistance;
-
-        for (let pos of existingPositions) {
-            const posWidth = this.estimateFormulaWidth(pos.text);
-
-            // Calculate distance between centers
-            const dx = Math.abs(newPos.x - pos.x);
-            const dy = Math.abs(newPos.y - pos.y);
-
-            // Combined width accounting for growth
-            const combinedWidth = ((newWidth + posWidth) / 2) * growthFactor;
-
-            // Check for overlap with safety buffer
-            // Use larger buffer for both horizontal and vertical to account for drift
-            const horizontalOverlap = dx < (combinedWidth + safetyBuffer);
-            const verticalOverlap = dy < safetyBuffer;
-
-            if (horizontalOverlap && verticalOverlap) {
-                return true; // Would overlap during animation
-            }
-        }
-        return false; // Safe distance
     }
 
     createFormulas() {
@@ -274,13 +192,15 @@ class FloatingFormulas {
             formulaElement.dataset.formulaText = formula.text;
             formulaElement.dataset.formulaIndex = index;
 
-            // Set initial random position with overlap detection
+            // Set initial random position with grid-based system
             this.repositionFormula(formulaElement, true);
 
-            // Stagger the initial appearance to spread formulas out over time
+            // Randomize the initial appearance delay (0-3 seconds)
+            // This makes formulas appear at different times, not synchronized
+            const randomDelay = Math.random() * 3000;
             setTimeout(() => {
                 this.startFormulaAnimation(formulaElement);
-            }, index * 500); // Stagger by 500ms each
+            }, randomDelay);
 
             container.appendChild(formulaElement);
         });
@@ -289,49 +209,53 @@ class FloatingFormulas {
         document.body.insertBefore(container, document.body.firstChild);
     }
 
+    /**
+     * Get a random position from the grid system
+     * Ensures even distribution by selecting from available grid cells
+     */
     getRandomPosition() {
-        // Randomly choose an edge: top, right, bottom, or left
-        // All formula types appear randomly at all edges
-        const edge = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
-        let x, y;
+        // Get all unoccupied cells
+        const availableCells = this.gridCells.filter(cell => !cell.occupied);
 
-        switch(edge) {
-            case 0: // Top edge
-                x = Math.random() * 100; // 0-100% across
-                y = Math.random() * 20;  // 0-20% from top
-                break;
-            case 1: // Right edge
-                x = 80 + Math.random() * 20; // 80-100% from left
-                y = Math.random() * 100;     // 0-100% vertical
-                break;
-            case 2: // Bottom edge
-                x = Math.random() * 100;     // 0-100% across
-                y = 80 + Math.random() * 20; // 80-100% from top
-                break;
-            case 3: // Left edge
-                x = Math.random() * 20;  // 0-20% from left
-                y = Math.random() * 100; // 0-100% vertical
-                break;
+        if (availableCells.length === 0) {
+            // All cells occupied, reset all cells and start over
+            this.gridCells.forEach(cell => cell.occupied = false);
+            return this.getRandomPosition();
         }
 
-        return { x, y };
+        // Randomly select an available cell
+        const randomIndex = Math.floor(Math.random() * availableCells.length);
+        const selectedCell = availableCells[randomIndex];
+
+        // Mark cell as occupied
+        selectedCell.occupied = true;
+
+        // Return position with slight randomness within the cell
+        return selectedCell.getRandomPosition();
     }
 
     repositionFormula(element, isInitial = false) {
         const formulaText = element.dataset.formulaText;
         const formulaIndex = parseInt(element.dataset.formulaIndex);
-        let pos;
-        let attempts = 0;
-        const maxAttempts = 100;
 
-        // Try to find a non-overlapping position
-        do {
-            pos = this.getRandomPosition();
-            attempts++;
-        } while (
-            attempts < maxAttempts &&
-            this.checkOverlap(pos, formulaText, this.formulaPositions, 15)
-        );
+        // If repositioning (not initial), free up the old cell
+        if (!isInitial) {
+            const oldCellIndex = element.dataset.cellIndex;
+            if (oldCellIndex !== undefined) {
+                const oldCell = this.gridCells[parseInt(oldCellIndex)];
+                if (oldCell) {
+                    oldCell.occupied = false;
+                }
+            }
+        }
+
+        // Get a new grid-based position
+        const pos = this.getRandomPosition();
+
+        // Find and store the cell index for later cleanup
+        const cellIndex = this.gridCells.findIndex(cell => cell.occupied &&
+            Math.abs(cell.x - pos.x) < 5 && Math.abs(cell.y - pos.y) < 5);
+        element.dataset.cellIndex = cellIndex;
 
         // Update position tracking
         if (isInitial) {
@@ -368,24 +292,28 @@ class FloatingFormulas {
     }
 
     startFormulaAnimation(element) {
-        // Start the animation cycle: appear → grow → dissolve
-        element.style.animation = 'formulaGrowDissolve 15s ease-in-out forwards';
+        // Randomize animation duration between 12-18 seconds for variety
+        const animationDuration = 12 + Math.random() * 6; // 12-18 seconds
+        element.style.animation = `formulaGrowDissolve ${animationDuration}s ease-in-out forwards`;
 
         // After animation completes, reposition and restart
         const repositionAndRestart = () => {
             setTimeout(() => {
-                // Reposition to new random edge location
+                // Reposition to new random grid cell location
                 this.repositionFormula(element);
 
-                // Restart animation
+                // Randomize next animation duration for organic appearance
+                const nextDuration = 12 + Math.random() * 6; // 12-18 seconds
+
+                // Restart animation with new duration
                 element.style.animation = 'none';
                 // Force reflow to restart animation
                 void element.offsetWidth;
-                element.style.animation = 'formulaGrowDissolve 15s ease-in-out forwards';
+                element.style.animation = `formulaGrowDissolve ${nextDuration}s ease-in-out forwards`;
 
                 // Schedule next cycle
                 repositionAndRestart();
-            }, 15000); // 15 second cycle
+            }, animationDuration * 1000); // Duration in milliseconds
         };
 
         // Start the continuous cycle
