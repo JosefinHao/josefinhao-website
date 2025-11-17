@@ -157,7 +157,7 @@ nav a.active {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem 1.5rem;
-    background: rgba(255, 255, 255, 0.45);
+    background: rgba(248, 250, 252, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-radius: 24px;
@@ -199,7 +199,7 @@ nav a.active {
     text-align: center;
     position: sticky;
     top: 70px;
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     padding: 1.5rem 1rem;
@@ -314,12 +314,12 @@ nav a.active {
 
 /* Enhanced Glassmorphism Content Placeholders with Holographic Hover */
 .content-placeholder {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(248, 250, 252, 0.88);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 2px solid transparent;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35)),
+        linear-gradient(rgba(248, 250, 252, 0.88), rgba(248, 250, 252, 0.88)),
         linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
     background-origin: border-box;
     background-clip: padding-box, border-box;
@@ -358,7 +358,7 @@ nav a.active {
 
 .content-placeholder:hover {
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),
+        linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
         linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1));
     transform: translateY(-6px) scale(1.02);
     box-shadow:
@@ -652,7 +652,7 @@ p {
 }
 
 .email-item {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(248, 250, 252, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 1rem;
@@ -664,7 +664,7 @@ p {
 }
 
 .email-item:hover {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.95);
     transform: translateY(-1px);
     box-shadow: 0 4px 16px rgba(74, 144, 226, 0.15);
 }
@@ -1254,7 +1254,7 @@ p {
 }
 
 .typing-game-area {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(248, 250, 252, 0.9);
     border: 2px solid rgba(95, 124, 138, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
@@ -1426,7 +1426,7 @@ p {
 }
 
 .leaderboard-section {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(248, 250, 252, 0.9);
     border: 2px solid rgba(95, 124, 138, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
@@ -1518,12 +1518,12 @@ p {
 }
 
 .game-card {
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 2px solid transparent;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
+        linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
         linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4));
     background-origin: border-box;
     background-clip: padding-box, border-box;
@@ -1565,7 +1565,7 @@ p {
         0 10px 30px rgba(255, 110, 199, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),
+        linear-gradient(rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.98)),
         linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1), var(--holo-2));
 }
 
@@ -1703,7 +1703,7 @@ p {
 /* ============================================ */
 
 .guess-game-area {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(248, 250, 252, 0.9);
     border: 2px solid rgba(95, 124, 138, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
@@ -2483,7 +2483,7 @@ body.dark-theme .floating-formula {
 
 .nn-canvas-container,
 .nn-chart-container {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(10px);
     padding: 1rem;
     border-radius: 8px;
@@ -2621,7 +2621,7 @@ body.dark-theme .floating-formula {
 }
 
 .blockchain-current-block {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(10px);
     padding: 1.5rem;
     border-radius: 8px;
@@ -2677,7 +2677,7 @@ body.dark-theme .floating-formula {
 }
 
 .blockchain-chain-container {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(10px);
     padding: 1.5rem;
     border-radius: 8px;
