@@ -1,6 +1,3 @@
-/* Import modern serif font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&display=swap');
-
 /* CSS Variables for Theme Switching */
 :root {
     --primary: #4a90e2;
