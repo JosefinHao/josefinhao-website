@@ -107,6 +107,36 @@ class NeuralNetworkGame {
             case 'gaussian':
                 this.generateGaussianData(numPoints);
                 break;
+            case 'moons':
+                this.generateMoonsData(numPoints);
+                break;
+            case 'blobs':
+                this.generateBlobsData(numPoints);
+                break;
+            case 'linear':
+                this.generateLinearData(numPoints);
+                break;
+            case 'checkerboard':
+                this.generateCheckerboardData(numPoints);
+                break;
+            case 'diagonal':
+                this.generateDiagonalData(numPoints);
+                break;
+            case 'squares':
+                this.generateSquaresData(numPoints);
+                break;
+            case 'ring':
+                this.generateRingData(numPoints);
+                break;
+            case 'vertical':
+                this.generateVerticalData(numPoints);
+                break;
+            case 'horizontal':
+                this.generateHorizontalData(numPoints);
+                break;
+            case 'clusters':
+                this.generateClustersData(numPoints);
+                break;
         }
     }
 
@@ -169,6 +199,158 @@ class NeuralNetworkGame {
                 x: gaussian() * 0.3 + 0.5,
                 y: gaussian() * 0.3 + 0.5,
                 label: 1
+            });
+        }
+    }
+
+    generateMoonsData(n) {
+        // Two half-moon shapes
+        const pointsPerClass = n / 2;
+        for (let i = 0; i < pointsPerClass; i++) {
+            const angle = Math.PI * (i / pointsPerClass);
+            const noise = (Math.random() - 0.5) * 0.15;
+
+            // First moon (top)
+            const x1 = Math.cos(angle) * 0.6 + noise;
+            const y1 = Math.sin(angle) * 0.6 + noise;
+            this.data.push({ x: x1, y: y1, label: 0 });
+
+            // Second moon (bottom, inverted)
+            const x2 = 1 - Math.cos(angle) * 0.6 + noise;
+            const y2 = 0.3 - Math.sin(angle) * 0.6 + noise;
+            this.data.push({ x: x2, y: y2, label: 1 });
+        }
+    }
+
+    generateBlobsData(n) {
+        // Four random blobs
+        const gaussian = () => {
+            let u = 0, v = 0;
+            while (u === 0) u = Math.random();
+            while (v === 0) v = Math.random();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        };
+
+        const centers = [
+            { x: -0.5, y: -0.5, label: 0 },
+            { x: 0.5, y: -0.5, label: 1 },
+            { x: -0.5, y: 0.5, label: 0 },
+            { x: 0.5, y: 0.5, label: 1 }
+        ];
+
+        for (let i = 0; i < n; i++) {
+            const center = centers[Math.floor(Math.random() * centers.length)];
+            this.data.push({
+                x: center.x + gaussian() * 0.2,
+                y: center.y + gaussian() * 0.2,
+                label: center.label
+            });
+        }
+    }
+
+    generateLinearData(n) {
+        // Linearly separable data with a diagonal boundary
+        for (let i = 0; i < n; i++) {
+            const x = Math.random() * 2 - 1;
+            const y = Math.random() * 2 - 1;
+            const noise = (Math.random() - 0.5) * 0.3;
+            const label = y > x + noise ? 1 : 0;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateCheckerboardData(n) {
+        // Checkerboard pattern (4x4 grid)
+        for (let i = 0; i < n; i++) {
+            const x = Math.random() * 2 - 1;
+            const y = Math.random() * 2 - 1;
+            const gridX = Math.floor((x + 1) * 2);
+            const gridY = Math.floor((y + 1) * 2);
+            const label = (gridX + gridY) % 2;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateDiagonalData(n) {
+        // Diagonal split with some noise
+        for (let i = 0; i < n; i++) {
+            const x = Math.random() * 2 - 1;
+            const y = Math.random() * 2 - 1;
+            const noise = (Math.random() - 0.5) * 0.2;
+            const label = x + y + noise > 0 ? 1 : 0;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateSquaresData(n) {
+        // Concentric squares
+        for (let i = 0; i < n; i++) {
+            const x = Math.random() * 2 - 1;
+            const y = Math.random() * 2 - 1;
+            const maxDist = Math.max(Math.abs(x), Math.abs(y));
+            const noise = (Math.random() - 0.5) * 0.15;
+            const label = maxDist + noise > 0.5 ? 1 : 0;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateRingData(n) {
+        // Ring/donut shape
+        for (let i = 0; i < n; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.random();
+            const noise = (Math.random() - 0.5) * 0.15;
+            const x = Math.cos(angle) * radius + noise;
+            const y = Math.sin(angle) * radius + noise;
+            const dist = Math.sqrt(x * x + y * y);
+            const label = (dist > 0.3 && dist < 0.7) ? 1 : 0;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateVerticalData(n) {
+        // Vertical split
+        for (let i = 0; i < n; i++) {
+            const x = Math.random() * 2 - 1;
+            const y = Math.random() * 2 - 1;
+            const noise = (Math.random() - 0.5) * 0.2;
+            const label = x + noise > 0 ? 1 : 0;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateHorizontalData(n) {
+        // Horizontal split
+        for (let i = 0; i < n; i++) {
+            const x = Math.random() * 2 - 1;
+            const y = Math.random() * 2 - 1;
+            const noise = (Math.random() - 0.5) * 0.2;
+            const label = y + noise > 0 ? 1 : 0;
+            this.data.push({ x, y, label });
+        }
+    }
+
+    generateClustersData(n) {
+        // Three clusters with varying difficulty
+        const gaussian = () => {
+            let u = 0, v = 0;
+            while (u === 0) u = Math.random();
+            while (v === 0) v = Math.random();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        };
+
+        const centers = [
+            { x: -0.6, y: 0, label: 0 },
+            { x: 0.3, y: 0.5, label: 1 },
+            { x: 0.3, y: -0.5, label: 1 }
+        ];
+
+        for (let i = 0; i < n; i++) {
+            const center = centers[Math.floor(Math.random() * centers.length)];
+            this.data.push({
+                x: center.x + gaussian() * 0.2,
+                y: center.y + gaussian() * 0.2,
+                label: center.label
             });
         }
     }
