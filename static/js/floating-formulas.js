@@ -218,13 +218,14 @@ class FloatingFormulas {
     checkOverlap(newPos, newText, existingPositions, minDistance = 25) {
         const newWidth = this.estimateFormulaWidth(newText);
 
-        // Account for maximum drift distance (50px) and growth (125%)
-        // Convert 50px to viewport percentage
-        const maxDriftPercent = (50 / window.innerWidth) * 100;
+        // Account for maximum drift distance (40px) and growth (125%)
+        // Convert 40px to viewport percentage
+        const maxDriftPercent = (40 / window.innerWidth) * 100;
         const growthFactor = 1.25; // 125% max size
 
         // Safety buffer includes drift space and growth
-        const safetyBuffer = maxDriftPercent * 2 + minDistance;
+        // Use larger multiplier (3x) to ensure formulas don't drift into each other
+        const safetyBuffer = maxDriftPercent * 3 + minDistance;
 
         for (let pos of existingPositions) {
             const posWidth = this.estimateFormulaWidth(pos.text);
@@ -276,10 +277,10 @@ class FloatingFormulas {
             // Set initial random position with overlap detection
             this.repositionFormula(formulaElement, true);
 
-            // Stagger the initial appearance
+            // Stagger the initial appearance to spread formulas out over time
             setTimeout(() => {
                 this.startFormulaAnimation(formulaElement);
-            }, index * 200); // Stagger by 200ms each
+            }, index * 500); // Stagger by 500ms each
 
             container.appendChild(formulaElement);
         });
@@ -329,7 +330,7 @@ class FloatingFormulas {
             attempts++;
         } while (
             attempts < maxAttempts &&
-            this.checkOverlap(pos, formulaText, this.formulaPositions, 50)
+            this.checkOverlap(pos, formulaText, this.formulaPositions, 15)
         );
 
         // Update position tracking
@@ -359,7 +360,7 @@ class FloatingFormulas {
 
         // Random drift direction (single direction movement)
         const angle = Math.random() * 2 * Math.PI; // Random angle in radians
-        const distance = 20 + Math.random() * 30; // 20-50px drift distance (reduced to minimize collisions)
+        const distance = 15 + Math.random() * 25; // 15-40px drift distance (reduced to prevent overlap)
         const driftX = Math.cos(angle) * distance;
         const driftY = Math.sin(angle) * distance;
         element.style.setProperty('--drift-x', `${driftX}px`);
@@ -368,7 +369,7 @@ class FloatingFormulas {
 
     startFormulaAnimation(element) {
         // Start the animation cycle: appear → grow → dissolve
-        element.style.animation = 'formulaGrowDissolve 10s ease-in-out forwards';
+        element.style.animation = 'formulaGrowDissolve 15s ease-in-out forwards';
 
         // After animation completes, reposition and restart
         const repositionAndRestart = () => {
@@ -380,11 +381,11 @@ class FloatingFormulas {
                 element.style.animation = 'none';
                 // Force reflow to restart animation
                 void element.offsetWidth;
-                element.style.animation = 'formulaGrowDissolve 10s ease-in-out forwards';
+                element.style.animation = 'formulaGrowDissolve 15s ease-in-out forwards';
 
                 // Schedule next cycle
                 repositionAndRestart();
-            }, 10000); // 10 second cycle
+            }, 15000); // 15 second cycle
         };
 
         // Start the continuous cycle
