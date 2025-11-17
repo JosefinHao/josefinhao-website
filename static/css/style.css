@@ -10,6 +10,13 @@
     --bg-gradient-2: #e1f5fe;
     --bg-gradient-3: #e8eaf6;
     --bg-gradient-4: #e0f2f1;
+
+    /* Holographic colors */
+    --holo-1: #ff6ec7;
+    --holo-2: #7c6eff;
+    --holo-3: #6efff9;
+    --holo-4: #ffd76e;
+    --holo-5: #ff6e6e;
 }
 
 * {
@@ -29,21 +36,32 @@ body.theme-transitioning * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
-/* Modern Mesh Gradient Background - Uses CSS Variables */
+/* Modern Animated Holographic Mesh Gradient Background */
 body {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     line-height: 1.4;
     color: var(--text-dark);
-    /* Modern mesh gradient with radial gradients for organic feel */
+    /* Animated holographic mesh gradient */
     background:
-        radial-gradient(at 20% 30%, var(--bg-gradient-1) 0px, transparent 50%),
-        radial-gradient(at 80% 20%, var(--bg-gradient-2) 0px, transparent 50%),
-        radial-gradient(at 40% 70%, var(--bg-gradient-3) 0px, transparent 50%),
-        radial-gradient(at 90% 80%, var(--bg-gradient-4) 0px, transparent 50%),
-        linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+        radial-gradient(at 20% 30%, rgba(255, 110, 199, 0.15) 0px, transparent 50%),
+        radial-gradient(at 80% 20%, rgba(124, 110, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 40% 70%, rgba(110, 255, 249, 0.15) 0px, transparent 50%),
+        radial-gradient(at 90% 80%, rgba(255, 215, 110, 0.15) 0px, transparent 50%),
+        linear-gradient(135deg, #f0f8ff 0%, #faf0ff 50%, #f0fffa 100%);
+    background-size: 200% 200%;
     background-attachment: fixed;
+    animation: holoShift 20s ease infinite;
     min-height: 100vh;
     position: relative;
+}
+
+@keyframes holoShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 /* Dark theme specific adjustments */
@@ -62,7 +80,7 @@ body.dark-theme header {
     border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Enhanced Glassmorphism Header */
+/* Enhanced Glassmorphism Header with Holographic Border */
 header {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(20px) saturate(180%);
@@ -70,10 +88,28 @@ header {
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg,
+        var(--holo-1),
+        var(--holo-2),
+        var(--holo-3),
+        var(--holo-4),
+        var(--holo-1)
+    ) 1;
+    border-image-slice: 1;
     position: sticky;
     top: 0;
     z-index: 1000;
+    animation: holoBorderShift 10s linear infinite;
+}
+
+@keyframes holoBorderShift {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
 }
 
 .header-container {
@@ -116,7 +152,7 @@ nav a.active {
     background: rgba(74, 144, 226, 0.05);
 }
 
-/* Enhanced Glassmorphism Main Container */
+/* Enhanced Glassmorphism Main Container with Holographic Border */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -129,12 +165,25 @@ nav a.active {
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 2px 8px rgba(0, 0, 0, 0.05),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid transparent;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),
+        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4), var(--holo-5));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
     min-height: calc(100vh - 75px);
     margin-top: 1rem;
     margin-bottom: 1rem;
     position: relative;
     z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.main-container:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        0 4px 16px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 /* Homepage Layout */
@@ -145,7 +194,7 @@ nav a.active {
     align-items: start;
 }
 
-/* Enhanced Glassmorphism Profile Section */
+/* Enhanced Glassmorphism Profile Section with Holographic Border */
 .profile-section {
     text-align: center;
     position: sticky;
@@ -158,14 +207,28 @@ nav a.active {
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid transparent;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35)),
+        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    transition: all 0.3s ease;
+}
+
+.profile-section:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .profile-photo-placeholder {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #4a90e2 0%, #5f7c8a 100%);
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
+    background-size: 200% 200%;
+    animation: holoRotate 10s ease infinite;
     margin: 0 auto 1rem;
     display: flex;
     align-items: center;
@@ -173,14 +236,50 @@ nav a.active {
     color: white;
     font-size: 3rem;
     font-weight: 300;
-    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.25);
+    box-shadow:
+        0 8px 25px rgba(255, 110, 199, 0.3),
+        0 4px 12px rgba(124, 110, 255, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid transparent;
+    position: relative;
+}
+
+.profile-photo-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: holoBorderRotate 8s linear infinite;
 }
 
 .profile-photo-placeholder:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow:
+        0 12px 35px rgba(255, 110, 199, 0.4),
+        0 6px 18px rgba(124, 110, 255, 0.3);
+}
+
+@keyframes holoRotate {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes holoBorderRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .profile-intro h2 {
@@ -205,15 +304,25 @@ nav a.active {
 }
 
 .main-content {
-    padding: 0.5rem;
+    padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
-/* Enhanced Glassmorphism Content Placeholders */
+/* Remove top margin from first element to align with profile section */
+.main-content > *:first-child {
+    margin-top: 0;
+}
+
+/* Enhanced Glassmorphism Content Placeholders with Holographic Hover */
 .content-placeholder {
     background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid transparent;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35)),
+        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
     border-radius: 16px;
     padding: 1.5rem;
     text-align: center;
@@ -222,17 +331,40 @@ nav a.active {
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.content-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.6s ease;
+}
+
+.content-placeholder:hover::before {
+    left: 100%;
 }
 
 .content-placeholder:hover {
-    background: rgba(255, 255, 255, 0.55);
-    transform: translateY(-4px);
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),
+        linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1));
+    transform: translateY(-6px) scale(1.02);
     box-shadow:
-        0 12px 40px rgba(74, 144, 226, 0.15),
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border-color: rgba(74, 144, 226, 0.3);
+        0 16px 48px rgba(110, 255, 249, 0.2),
+        0 8px 24px rgba(255, 110, 199, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .content-placeholder h3 {
@@ -273,26 +405,72 @@ nav a.active {
     color: var(--primary);
 }
 
-/* Headings */
+/* Headings with Animated Gradient Text */
 h1 {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 2rem;
     margin-bottom: 1rem;
-    color: #2c3e50;
+    background: linear-gradient(
+        90deg,
+        var(--holo-1),
+        var(--holo-2),
+        var(--holo-3),
+        var(--holo-4),
+        var(--holo-1)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 8s linear infinite;
+    font-weight: 700;
 }
 
 h2 {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.5rem;
-    color: #2c3e50;
     margin-bottom: 0.8rem;
+    background: linear-gradient(
+        90deg,
+        var(--holo-2),
+        var(--holo-3),
+        var(--holo-4),
+        var(--holo-2)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 6s linear infinite;
+    font-weight: 600;
 }
 
 h3 {
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     font-size: 1.1rem;
-    color: var(--primary);
     margin: 1rem 0 0.4rem 0;
+    background: linear-gradient(
+        90deg,
+        var(--holo-3),
+        var(--holo-2),
+        var(--holo-1),
+        var(--holo-3)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 5s linear infinite;
+    font-weight: 600;
+}
+
+@keyframes gradientText {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
 }
 
 p {
@@ -383,22 +561,57 @@ p {
 .btn {
     display: inline-block;
     padding: 0.7rem 2rem;
-    background: linear-gradient(135deg, #5f7c8a 0%, #667eea 100%);
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
+    background-size: 200% 200%;
     color: white;
     text-decoration: none;
     border: none;
     border-radius: 10px;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
-    box-shadow: 0 3px 12px rgba(117, 117, 255, 0.25);
+    box-shadow:
+        0 4px 15px rgba(255, 110, 199, 0.3),
+        0 2px 8px rgba(124, 110, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    animation: holoButtonShift 6s ease infinite;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(117, 117, 255, 0.35);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow:
+        0 8px 25px rgba(255, 110, 199, 0.4),
+        0 4px 15px rgba(124, 110, 255, 0.3);
+}
+
+@keyframes holoButtonShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 /* Glassmorphism Alert Messages */
@@ -530,7 +743,7 @@ p {
 /* AI CHAT WIDGET STYLES */
 /* ============================================ */
 
-/* Chat Widget Button */
+/* Chat Widget Button with Holographic Effects */
 .chat-widget-button {
     position: fixed;
     bottom: 25px;
@@ -538,20 +751,31 @@ p {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #f48fb1 0%, #ec407a 100%);
-    border: none;
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--accent));
+    background-size: 200% 200%;
+    animation: holoRotate 8s ease infinite;
+    border: 3px solid transparent;
+    background-image:
+        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--accent)),
+        linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(244, 143, 177, 0.35);
+    box-shadow:
+        0 6px 20px rgba(255, 110, 199, 0.4),
+        0 3px 10px rgba(236, 64, 122, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 999;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .chat-widget-button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 8px 24px rgba(244, 143, 177, 0.45);
+    transform: scale(1.12) rotate(5deg);
+    box-shadow:
+        0 10px 30px rgba(255, 110, 199, 0.5),
+        0 5px 15px rgba(236, 64, 122, 0.4);
 }
 
 .chat-widget-button svg {
@@ -1294,23 +1518,52 @@ p {
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid transparent;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)),
+        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
     border-radius: 20px;
     padding: 2rem;
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 70%
+    );
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+}
+
+.game-card:hover::before {
+    left: 100%;
 }
 
 .game-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-10px) scale(1.02);
     box-shadow:
-        0 16px 48px rgba(74, 144, 226, 0.2),
-        0 8px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    border-color: rgba(74, 144, 226, 0.4);
-    background: rgba(255, 255, 255, 0.75);
+        0 20px 60px rgba(110, 255, 249, 0.25),
+        0 10px 30px rgba(255, 110, 199, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),
+        linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1), var(--holo-2));
 }
 
 .game-card-header {
@@ -1327,7 +1580,9 @@ p {
 }
 
 .game-badge {
-    background: linear-gradient(135deg, #4a90e2 0%, #667eea 100%);
+    background: linear-gradient(135deg, var(--holo-2), var(--holo-3));
+    background-size: 200% 200%;
+    animation: holoShift 8s ease infinite;
     color: white;
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
@@ -1335,6 +1590,7 @@ p {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(124, 110, 255, 0.3);
 }
 
 .game-badge-soon {
@@ -1370,7 +1626,9 @@ p {
 .game-launch-btn {
     width: 100%;
     padding: 0.9rem 1.5rem;
-    background: linear-gradient(135deg, #4a90e2 0%, #667eea 100%);
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
+    background-size: 200% 200%;
+    animation: holoButtonShift 6s ease infinite;
     color: white;
     border: none;
     border-radius: 8px;
@@ -1378,17 +1636,41 @@ p {
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    transition: all 0.4s ease;
+    box-shadow:
+        0 4px 15px rgba(255, 110, 199, 0.3),
+        0 2px 8px rgba(124, 110, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.game-launch-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.game-launch-btn:hover::before {
+    width: 400px;
+    height: 400px;
 }
 
 .game-launch-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 8px 25px rgba(255, 110, 199, 0.4),
+        0 4px 15px rgba(124, 110, 255, 0.3);
 }
 
 .game-launch-btn:active {
-    transform: translateY(0);
+    transform: translateY(-1px) scale(1.01);
 }
 
 .game-container {
