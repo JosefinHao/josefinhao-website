@@ -1548,6 +1548,16 @@ p {
     color: var(--primary);
     margin: 0;
     font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-icon {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--primary);
+    flex-shrink: 0;
 }
 
 .game-badge {
@@ -1981,6 +1991,13 @@ p {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-modal-header .game-icon {
+    color: white;
 }
 
 .game-modal-close {
