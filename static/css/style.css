@@ -385,7 +385,7 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientText 30s linear infinite;
+    animation: gradientText 30s linear forwards;
     font-weight: 700;
 }
 
@@ -404,7 +404,7 @@ h2 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientText 30s linear infinite;
+    animation: gradientText 30s linear forwards;
     font-weight: 600;
 }
 
@@ -423,7 +423,7 @@ h3 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientText 30s linear infinite;
+    animation: gradientText 30s linear forwards;
     font-weight: 600;
 }
 
