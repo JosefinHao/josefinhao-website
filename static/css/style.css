@@ -1548,6 +1548,16 @@ p {
     color: var(--primary);
     margin: 0;
     font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-icon {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--primary);
+    flex-shrink: 0;
 }
 
 .game-badge {
@@ -1981,6 +1991,13 @@ p {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-modal-header .game-icon {
+    color: white;
 }
 
 .game-modal-close {
@@ -2245,27 +2262,27 @@ body.dark-theme .theme-name {
 @keyframes formulaGrowDissolve {
     0% {
         opacity: 0;
-        transform: translate(0, 0) scale(1) rotate(var(--initial-rotation, 0deg));
+        transform: translate(calc(-50% + 0px), calc(-50% + 0px)) scale(1) rotate(var(--initial-rotation, 0deg));
     }
     15% {
         opacity: 0.4;
-        transform: translate(calc(var(--drift-x, 0px) * 0.25), calc(var(--drift-y, 0px) * 0.25)) scale(1.08) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.25), calc(-50% + var(--drift-y, 0px) * 0.25)) scale(1.08) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
     }
     40% {
         opacity: 0.4;
-        transform: translate(calc(var(--drift-x, 0px) * 0.5), calc(var(--drift-y, 0px) * 0.5)) scale(1.15) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.5), calc(-50% + var(--drift-y, 0px) * 0.5)) scale(1.15) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
     }
     65% {
         opacity: 0.4;
-        transform: translate(calc(var(--drift-x, 0px) * 0.75), calc(var(--drift-y, 0px) * 0.75)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.75), calc(-50% + var(--drift-y, 0px) * 0.75)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     85% {
         opacity: 0.3;
-        transform: translate(calc(var(--drift-x, 0px) * 0.9), calc(var(--drift-y, 0px) * 0.9)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.9), calc(-50% + var(--drift-y, 0px) * 0.9)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     100% {
         opacity: 0;
-        transform: translate(var(--drift-x, 0px), var(--drift-y, 0px)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px)), calc(-50% + var(--drift-y, 0px))) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
 }
 
@@ -2277,27 +2294,27 @@ body.dark-theme .floating-formula {
 @keyframes formulaGrowDissolveDark {
     0% {
         opacity: 0;
-        transform: translate(0, 0) scale(1) rotate(var(--initial-rotation, 0deg));
+        transform: translate(calc(-50% + 0px), calc(-50% + 0px)) scale(1) rotate(var(--initial-rotation, 0deg));
     }
     15% {
         opacity: 0.25;
-        transform: translate(calc(var(--drift-x, 0px) * 0.25), calc(var(--drift-y, 0px) * 0.25)) scale(1.08) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.25), calc(-50% + var(--drift-y, 0px) * 0.25)) scale(1.08) rotate(calc(var(--initial-rotation, 0deg) + 1deg));
     }
     40% {
         opacity: 0.25;
-        transform: translate(calc(var(--drift-x, 0px) * 0.5), calc(var(--drift-y, 0px) * 0.5)) scale(1.15) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.5), calc(-50% + var(--drift-y, 0px) * 0.5)) scale(1.15) rotate(calc(var(--initial-rotation, 0deg) + 1.5deg));
     }
     65% {
         opacity: 0.25;
-        transform: translate(calc(var(--drift-x, 0px) * 0.75), calc(var(--drift-y, 0px) * 0.75)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.75), calc(-50% + var(--drift-y, 0px) * 0.75)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     85% {
         opacity: 0.2;
-        transform: translate(calc(var(--drift-x, 0px) * 0.9), calc(var(--drift-y, 0px) * 0.9)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px) * 0.9), calc(-50% + var(--drift-y, 0px) * 0.9)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
     100% {
         opacity: 0;
-        transform: translate(var(--drift-x, 0px), var(--drift-y, 0px)) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
+        transform: translate(calc(-50% + var(--drift-x, 0px)), calc(-50% + var(--drift-y, 0px))) scale(1.25) rotate(calc(var(--initial-rotation, 0deg) + 2deg));
     }
 }
 
