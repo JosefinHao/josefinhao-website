@@ -165,12 +165,6 @@ nav a.active {
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 2px 8px rgba(0, 0, 0, 0.05),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border: 2px solid transparent;
-    background-image:
-        linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)),
-        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4), var(--holo-5));
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
     min-height: calc(100vh - 75px);
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -207,12 +201,6 @@ nav a.active {
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border: 2px solid transparent;
-    background-image:
-        linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
-        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
     transition: all 0.3s ease;
 }
 
@@ -317,12 +305,6 @@ nav a.active {
     background: rgba(248, 250, 252, 0.88);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 2px solid transparent;
-    background-image:
-        linear-gradient(rgba(248, 250, 252, 0.88), rgba(248, 250, 252, 0.88)),
-        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
     border-radius: 16px;
     padding: 1.5rem;
     text-align: center;
@@ -357,9 +339,7 @@ nav a.active {
 }
 
 .content-placeholder:hover {
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
-        linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1));
+    background: rgba(255, 255, 255, 0.95);
     transform: translateY(-6px) scale(1.02);
     box-shadow:
         0 16px 48px rgba(110, 255, 249, 0.2),
@@ -474,6 +454,21 @@ h3 {
     100% {
         background-position: 200% center;
     }
+}
+
+/* Disable gradient text on Projects and About pages */
+body[data-page="projects"] h1,
+body[data-page="projects"] h2,
+body[data-page="projects"] h3,
+body[data-page="about"] h1,
+body[data-page="about"] h2,
+body[data-page="about"] h3 {
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+    color: var(--text-dark);
+    animation: none;
 }
 
 p {
@@ -1255,7 +1250,6 @@ p {
 
 .typing-game-area {
     background: rgba(248, 250, 252, 0.9);
-    border: 2px solid rgba(95, 124, 138, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -1427,7 +1421,6 @@ p {
 
 .leaderboard-section {
     background: rgba(248, 250, 252, 0.9);
-    border: 2px solid rgba(95, 124, 138, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
 }
@@ -1521,12 +1514,6 @@ p {
     background: rgba(248, 250, 252, 0.92);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 2px solid transparent;
-    background-image:
-        linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
-        linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4));
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
     border-radius: 20px;
     padding: 2rem;
     box-shadow:
@@ -1564,9 +1551,7 @@ p {
         0 20px 60px rgba(110, 255, 249, 0.25),
         0 10px 30px rgba(255, 110, 199, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.98)),
-        linear-gradient(135deg, var(--holo-3), var(--holo-4), var(--holo-1), var(--holo-2));
+    background: rgba(255, 255, 255, 0.98);
 }
 
 .game-card-header {
@@ -1704,7 +1689,6 @@ p {
 
 .guess-game-area {
     background: rgba(248, 250, 252, 0.9);
-    border: 2px solid rgba(95, 124, 138, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
 }
@@ -2240,6 +2224,8 @@ body.dark-theme .theme-name {
     overflow: hidden;
     z-index: 1;
     pointer-events: none;
+    /* Add padding to prevent formulas from being cut off at edges */
+    padding: 20px;
 }
 
 .floating-formula {
@@ -2255,6 +2241,10 @@ body.dark-theme .theme-name {
     line-height: 1.2;
     will-change: transform, opacity;
     opacity: 0; /* Start invisible, animation controls opacity */
+    /* Ensure formulas stay within viewport bounds */
+    max-width: calc(100vw - 60px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Vary size based on formula category for depth */
@@ -2331,8 +2321,13 @@ body.dark-theme .floating-formula {
 
 /* Responsive - reduce formula size on mobile */
 @media (max-width: 768px) {
+    .floating-formulas-container {
+        padding: 10px;
+    }
+
     .floating-formula {
         font-size: 0.7rem;
+        max-width: calc(100vw - 40px);
     }
 
     .floating-formula[data-category="neural"],
@@ -2487,7 +2482,6 @@ body.dark-theme .floating-formula {
     backdrop-filter: blur(10px);
     padding: 1rem;
     border-radius: 8px;
-    border: 2px solid rgba(74, 144, 226, 0.1);
 }
 
 .nn-canvas-container h4,
@@ -2625,7 +2619,6 @@ body.dark-theme .floating-formula {
     backdrop-filter: blur(10px);
     padding: 1.5rem;
     border-radius: 8px;
-    border: 2px solid rgba(74, 144, 226, 0.2);
 }
 
 .blockchain-current-block h4 {
@@ -2681,7 +2674,6 @@ body.dark-theme .floating-formula {
     backdrop-filter: blur(10px);
     padding: 1.5rem;
     border-radius: 8px;
-    border: 2px solid rgba(74, 144, 226, 0.2);
     max-height: 500px;
     overflow-y: auto;
 }
