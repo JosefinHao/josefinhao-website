@@ -82,35 +82,18 @@ body.dark-theme header {
 
 /* Enhanced Glassmorphism Header with Holographic Border */
 header {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(95, 124, 138, 0.15);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(90deg,
-        var(--holo-1),
-        var(--holo-2),
-        var(--holo-3),
-        var(--holo-4),
-        var(--holo-1)
-    ) 1;
-    border-image-slice: 1;
     position: sticky;
     top: 0;
     z-index: 1000;
-    animation: holoBorderShift 10s linear infinite;
 }
 
-@keyframes holoBorderShift {
-    0% {
-        filter: hue-rotate(0deg);
-    }
-    100% {
-        filter: hue-rotate(360deg);
-    }
-}
+/* Removed holoBorderShift animation - no longer needed */
 
 .header-container {
     max-width: 1200px;
@@ -1095,7 +1078,7 @@ p {
 
 .flip-card-front h3,
 .flip-card-front h4 {
-    color: var(--primary);
+    color: #2c3e50;
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
 }
