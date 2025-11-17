@@ -304,7 +304,12 @@ nav a.active {
 }
 
 .main-content {
-    padding: 0.5rem;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+}
+
+/* Remove top margin from first element to align with profile section */
+.main-content > *:first-child {
+    margin-top: 0;
 }
 
 /* Enhanced Glassmorphism Content Placeholders with Holographic Hover */
