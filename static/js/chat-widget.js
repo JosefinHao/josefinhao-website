@@ -23,6 +23,7 @@ class ChatWidget {
         this.chatMessages = document.getElementById('chatMessages');
         this.chatInput = document.getElementById('chatInput');
         this.sendButton = document.getElementById('chatSendBtn');
+        this.welcomeMessageAdded = false;
 
         // Add event listeners
         document.getElementById('chatWidgetBtn').addEventListener('click', () => this.toggleChat());
@@ -35,8 +36,8 @@ class ChatWidget {
             }
         });
 
-        // Add welcome message
-        this.addBotMessage("Hi! I'm Josefin. Feel free to ask me anything about my work, projects, or background!");
+        // Don't add welcome message immediately - defer until chat is opened
+        // This prevents DOM manipulation flash on page load
     }
 
     toggleChat() {
@@ -50,6 +51,13 @@ class ChatWidget {
     openChat() {
         this.chatContainer.classList.add('open');
         this.isOpen = true;
+
+        // Add welcome message only on first open to prevent page load flash
+        if (!this.welcomeMessageAdded) {
+            this.addBotMessage("Hi! I'm Josefin. Feel free to ask me anything about my work, projects, or background!");
+            this.welcomeMessageAdded = true;
+        }
+
         this.chatInput.focus();
     }
 
