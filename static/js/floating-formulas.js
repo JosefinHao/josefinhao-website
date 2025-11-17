@@ -195,12 +195,12 @@ class FloatingFormulas {
             // Set initial random position with grid-based system
             this.repositionFormula(formulaElement, true);
 
-            // Randomize the initial appearance delay (0-3 seconds)
-            // This makes formulas appear at different times, not synchronized
-            const randomDelay = Math.random() * 3000;
+            // Staggered appearance: each formula appears one by one at 250ms intervals
+            // This creates a sequential reveal effect when the page first loads
+            const staggeredDelay = index * 250; // 250ms between each formula
             setTimeout(() => {
                 this.startFormulaAnimation(formulaElement);
-            }, randomDelay);
+            }, staggeredDelay);
 
             container.appendChild(formulaElement);
         });
