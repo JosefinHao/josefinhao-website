@@ -167,7 +167,7 @@ nav a.active {
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
     border: 2px solid transparent;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)),
+        linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)),
         linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3), var(--holo-4), var(--holo-5));
     background-origin: border-box;
     background-clip: padding-box, border-box;
@@ -209,7 +209,7 @@ nav a.active {
         inset 0 1px 0 rgba(255, 255, 255, 0.6);
     border: 2px solid transparent;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.35)),
+        linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
         linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
     background-origin: border-box;
     background-clip: padding-box, border-box;
