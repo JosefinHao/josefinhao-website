@@ -30,28 +30,31 @@
             background-color: #e3f2fd;
         }
 
-        /* Exact body gradient matching style.css to prevent flash */
+        /* Exact body gradient matching style.css - USING CSS VARIABLES */
         body {
             font-family: Georgia, 'Times New Roman', serif;
             line-height: 1.4;
-            color: #2c3e50;
+            color: var(--text-dark);
             background:
-                radial-gradient(at 20% 30%, #e3f2fd 0px, transparent 50%),
-                radial-gradient(at 80% 20%, #e1f5fe 0px, transparent 50%),
-                radial-gradient(at 40% 70%, #e8eaf6 0px, transparent 50%),
-                radial-gradient(at 90% 80%, #e0f2f1 0px, transparent 50%),
-                linear-gradient(135deg, #e3f2fd 0%, #e1f5fe 100%);
+                radial-gradient(at 20% 30%, var(--bg-gradient-1) 0px, transparent 50%),
+                radial-gradient(at 80% 20%, var(--bg-gradient-2) 0px, transparent 50%),
+                radial-gradient(at 40% 70%, var(--bg-gradient-3) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, var(--bg-gradient-4) 0px, transparent 50%),
+                linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
         }
 
-        /* Prevent layout shift from header */
+        /* Prevent layout shift from header - exact match to style.css */
         header {
             background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
         }
 
         .header-container {
@@ -64,16 +67,19 @@
             height: 55px;
         }
 
-        /* Prevent layout shift from main container */
+        /* Prevent layout shift from main container - exact match to style.css */
         .main-container {
             max-width: 1200px;
             margin: 1rem auto;
             padding: 1.5rem;
             background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 24px;
             min-height: calc(100vh - 75px);
             position: relative;
             z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">

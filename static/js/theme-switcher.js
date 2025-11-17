@@ -30,7 +30,17 @@ class ThemeSwitcher {
     }
 
     init() {
-        // Always use blue-steel theme
+        // Skip theme application if variables are already set inline
+        // This prevents repaint/reflow flash on page load
+        const root = document.documentElement;
+        const alreadySet = getComputedStyle(root).getPropertyValue('--primary').trim();
+
+        if (alreadySet) {
+            // Variables already defined in inline CSS, skip to prevent flash
+            return;
+        }
+
+        // Fallback: Apply theme only if not already set
         this.applyTheme('blue-steel');
     }
 
