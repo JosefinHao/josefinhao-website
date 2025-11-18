@@ -2845,3 +2845,276 @@ body.dark-theme .floating-formula {
         min-width: auto;
     }
 }
+
+/* ============================================ */
+/* FEATURED PROJECTS CAROUSEL */
+/* ============================================ */
+
+.featured-carousel-container {
+    background: rgba(248, 250, 252, 0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: all 0.4s ease;
+}
+
+.featured-carousel-container:hover {
+    box-shadow:
+        0 12px 32px rgba(110, 255, 249, 0.15),
+        0 6px 16px rgba(220, 190, 150, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.carousel-track-container {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.carousel-slide-content {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 2px solid rgba(74, 144, 226, 0.15);
+    transition: all 0.3s ease;
+}
+
+.carousel-slide-content:hover {
+    border-color: rgba(74, 144, 226, 0.3);
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.1);
+}
+
+.carousel-slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.carousel-slide-header h4 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 600;
+    /* Override global h4 styles if needed */
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    background-clip: unset !important;
+    animation: none !important;
+}
+
+.carousel-badge {
+    background: linear-gradient(135deg, var(--holo-2), var(--holo-3));
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.carousel-badge-langgraph {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.carousel-badge-openai {
+    background: linear-gradient(135deg, #10a37f 0%, #059669 100%);
+}
+
+.carousel-badge-crewai {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.carousel-tagline {
+    color: var(--text-light);
+    font-size: 1.05rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.carousel-description {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.carousel-tech {
+    background: rgba(74, 144, 226, 0.05);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.carousel-tech strong {
+    color: var(--primary);
+}
+
+/* Navigation Arrows */
+.carousel-nav {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(74, 144, 226, 0.2);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-nav:hover {
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2));
+    border-color: transparent;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+}
+
+.carousel-nav:active {
+    transform: scale(1);
+}
+
+.carousel-nav svg {
+    width: 24px;
+    height: 24px;
+    color: var(--primary);
+    transition: color 0.3s ease;
+}
+
+.carousel-nav:hover svg {
+    color: white;
+}
+
+.carousel-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.carousel-nav:disabled:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(74, 144, 226, 0.2);
+    transform: scale(1);
+}
+
+.carousel-nav:disabled svg {
+    color: var(--primary);
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+.carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(74, 144, 226, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.carousel-indicator:hover {
+    background: rgba(74, 144, 226, 0.5);
+    transform: scale(1.2);
+}
+
+.carousel-indicator.active {
+    background: linear-gradient(135deg, var(--holo-1), var(--holo-2));
+    width: 28px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.4);
+}
+
+/* Responsive carousel */
+@media (max-width: 768px) {
+    .featured-carousel-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .carousel-wrapper {
+        gap: 0.5rem;
+    }
+
+    .carousel-slide-content {
+        padding: 1.5rem 1rem;
+    }
+
+    .carousel-slide-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .carousel-slide-header h4 {
+        font-size: 1.2rem;
+    }
+
+    .carousel-nav {
+        width: 38px;
+        height: 38px;
+    }
+
+    .carousel-nav svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carousel-tagline {
+        font-size: 0.95rem;
+    }
+
+    .carousel-description {
+        font-size: 0.9rem;
+    }
+
+    .carousel-tech {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+    }
+}
