@@ -1545,15 +1545,28 @@ p {
 }
 
 .game-card-header h3 {
-    color: var(--primary);
     margin: 0;
     font-size: 1.4rem;
+    background: linear-gradient(
+        90deg,
+        var(--holo-3),
+        var(--holo-2),
+        var(--holo-1),
+        var(--holo-3)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 30s linear forwards;
+    font-weight: 600;
 }
 
 .game-card-header h3 .game-icon {
     display: inline-block;
     vertical-align: middle;
-    color: var(--primary);
+    /* SVG icons inherit gradient color via currentColor */
+    color: var(--holo-2);
     width: 1.2em;
     height: 1.2em;
     margin-right: 0.3em;
