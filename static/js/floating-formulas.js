@@ -200,11 +200,10 @@ class FloatingFormulas {
                     try {
                         katex.render(formula.latex, formulaElement, {
                             throwOnError: false,
-                            displayMode: false, // Use inline mode for better floating formula rendering
+                            displayMode: true, // Display mode for proper math layout (fractions, etc.)
                             strict: false, // Allow some non-standard LaTeX
                             trust: false // Don't allow raw HTML
                         });
-                        console.log(`Rendered formula ${index}: ${formula.latex.substring(0, 30)}...`);
                     } catch (e) {
                         console.error('KaTeX rendering error for formula', index, ':', e);
                         console.error('LaTeX:', formula.latex);
@@ -212,7 +211,6 @@ class FloatingFormulas {
                     }
                 } else {
                     // KaTeX not loaded yet, try again in 100ms
-                    console.log('KaTeX not loaded yet, retrying in 100ms...');
                     setTimeout(renderFormula, 100);
                 }
             };
