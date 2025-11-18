@@ -208,7 +208,7 @@ nav a.active {
     font-size: 3rem;
     font-weight: 300;
     box-shadow:
-        0 8px 25px rgba(255, 110, 199, 0.3),
+        0 8px 25px rgba(220, 190, 150, 0.3),
         0 4px 12px rgba(124, 110, 255, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 3px solid transparent;
@@ -231,7 +231,7 @@ nav a.active {
 .profile-photo-placeholder:hover {
     transform: translateY(-5px) scale(1.05);
     box-shadow:
-        0 12px 35px rgba(255, 110, 199, 0.4),
+        0 12px 35px rgba(220, 190, 150, 0.4),
         0 6px 18px rgba(124, 110, 255, 0.3);
 }
 
@@ -326,7 +326,7 @@ nav a.active {
     transform: translateY(-6px) scale(1.02);
     box-shadow:
         0 16px 48px rgba(110, 255, 249, 0.2),
-        0 8px 24px rgba(255, 110, 199, 0.15),
+        0 8px 24px rgba(220, 190, 150, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
@@ -554,7 +554,7 @@ p {
     transition: all 0.4s ease;
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     box-shadow:
-        0 4px 15px rgba(255, 110, 199, 0.3),
+        0 4px 15px rgba(220, 190, 150, 0.3),
         0 2px 8px rgba(124, 110, 255, 0.2);
     position: relative;
     overflow: hidden;
@@ -582,7 +582,7 @@ p {
 .btn:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow:
-        0 8px 25px rgba(255, 110, 199, 0.4),
+        0 8px 25px rgba(220, 190, 150, 0.4),
         0 4px 15px rgba(124, 110, 255, 0.3);
 }
 
@@ -743,7 +743,7 @@ p {
     background-clip: padding-box, border-box;
     cursor: pointer;
     box-shadow:
-        0 6px 20px rgba(255, 110, 199, 0.4),
+        0 6px 20px rgba(220, 190, 150, 0.4),
         0 3px 10px rgba(236, 64, 122, 0.3);
     display: flex;
     align-items: center;
@@ -755,7 +755,7 @@ p {
 .chat-widget-button:hover {
     transform: scale(1.12) rotate(5deg);
     box-shadow:
-        0 10px 30px rgba(255, 110, 199, 0.5),
+        0 10px 30px rgba(220, 190, 150, 0.5),
         0 5px 15px rgba(236, 64, 122, 0.4);
 }
 
@@ -1532,7 +1532,7 @@ p {
     transform: translateY(-10px) scale(1.02);
     box-shadow:
         0 20px 60px rgba(110, 255, 249, 0.25),
-        0 10px 30px rgba(255, 110, 199, 0.2),
+        0 10px 30px rgba(220, 190, 150, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
     background: rgba(255, 255, 255, 0.98);
 }
@@ -1633,7 +1633,7 @@ p {
     cursor: pointer;
     transition: all 0.4s ease;
     box-shadow:
-        0 4px 15px rgba(255, 110, 199, 0.3),
+        0 4px 15px rgba(220, 190, 150, 0.3),
         0 2px 8px rgba(124, 110, 255, 0.2);
     position: relative;
     overflow: hidden;
@@ -1660,7 +1660,7 @@ p {
 .game-launch-btn:hover {
     transform: translateY(-3px) scale(1.02);
     box-shadow:
-        0 8px 25px rgba(255, 110, 199, 0.4),
+        0 8px 25px rgba(220, 190, 150, 0.4),
         0 4px 15px rgba(124, 110, 255, 0.3);
 }
 
