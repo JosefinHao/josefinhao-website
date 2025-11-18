@@ -71,10 +71,11 @@ Comprehensive code review and refactoring based on clean code principles, securi
 - **Issue**: 442 lines, multiple responsibilities (routes, models, config, helpers)
 - **Violation**: Single Responsibility Principle
 - **Fix**: Separated into modules:
-  - `app/models/` - Database models
-  - `app/config/` - Configuration management
-  - `app/utils/` - Utility functions
-  - `app/routes/` - Route handlers (future)
+  - `application/models/` - Database models
+  - `application/config/` - Configuration management
+  - `application/utils/` - Utility functions
+  - `application/routes/` - Route handlers (future)
+- **Note**: Directory named `application/` to avoid conflict with `app.py` during gunicorn deployment
 
 ### 6. Magic Numbers (MEDIUM)
 
@@ -92,7 +93,7 @@ Comprehensive code review and refactoring based on clean code principles, securi
 
 ```
 josefinhao-website/
-├── app/
+├── application/                # Renamed to avoid conflict with app.py
 │   ├── __init__.py
 │   ├── config/
 │   │   ├── __init__.py
@@ -115,9 +116,11 @@ josefinhao-website/
 │   ├── test_career_agent.py
 │   ├── test_utils.py
 │   └── test_config.py
-├── app.py                      # Main application (refactored)
+├── app.py                      # Main application (preserved, working)
 └── requirements.txt            # Updated with test dependencies
 ```
+
+**Note**: The refactored code directory is named `application/` to avoid conflicts with `app.py` during deployment (gunicorn looks for `app:app`).
 
 ## Files Created
 
@@ -197,7 +200,7 @@ pip install -r requirements.txt
 pytest
 
 # Run with coverage
-pytest --cov=app --cov=career_agent
+pytest --cov=application --cov=career_agent
 
 # Run specific test file
 pytest tests/test_models.py

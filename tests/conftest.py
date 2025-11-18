@@ -15,7 +15,7 @@ from flask_sqlalchemy import SQLAlchemy
 @pytest.fixture
 def app():
     """Create and configure a test Flask application"""
-    from app.config import TestingConfig
+    from application.config import TestingConfig
 
     test_app = Flask(__name__)
     test_app.config.from_object(TestingConfig)
