@@ -195,6 +195,7 @@ class FloatingFormulas {
             formulaElement.setAttribute('data-category', formula.category);
 
             // Render LaTeX using KaTeX (wait for KaTeX to be loaded)
+            let retryCount = 0;
             const renderFormula = () => {
                 if (typeof katex !== 'undefined') {
                     try {
@@ -204,14 +205,25 @@ class FloatingFormulas {
                             strict: false, // Allow some non-standard LaTeX
                             trust: false // Don't allow raw HTML
                         });
+                        // Debug: Check if KaTeX rendered properly
+                        if (index === 0) {
+                            console.log('KaTeX rendered formula 0:', formulaElement.innerHTML.substring(0, 100));
+                            console.log('Formula element classes:', formulaElement.firstChild?.className);
+                        }
                     } catch (e) {
                         console.error('KaTeX rendering error for formula', index, ':', e);
                         console.error('LaTeX:', formula.latex);
                         formulaElement.textContent = formula.latex; // Fallback to plain text
                     }
                 } else {
-                    // KaTeX not loaded yet, try again in 100ms
-                    setTimeout(renderFormula, 100);
+                    // KaTeX not loaded yet, try again in 100ms (max 50 retries = 5 seconds)
+                    retryCount++;
+                    if (retryCount < 50) {
+                        setTimeout(renderFormula, 100);
+                    } else {
+                        console.error('KaTeX failed to load after 5 seconds');
+                        formulaElement.textContent = formula.latex; // Fallback to plain text
+                    }
                 }
             };
             renderFormula();

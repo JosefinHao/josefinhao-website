@@ -2248,28 +2248,32 @@ body.dark-theme .theme-name {
 
 .floating-formula {
     position: absolute;
-    /* Set base font-size here so KaTeX can use relative em units for sub/superscripts */
-    font-size: 0.48rem; /* Reduced to 60% of original 0.8rem */
+    /* Don't set font-size - let KaTeX use its default sizing */
+    /* We'll scale the entire formula using transform instead */
     color: #5f7c8a;
     user-select: none;
     will-change: transform, opacity;
     opacity: 0; /* Start invisible, animation controls opacity */
+    /* Scale to 60% using CSS variable (default) */
+    --formula-scale: 0.6;
 }
 
 /* Vary size based on formula category for depth */
 .floating-formula[data-category="neural"],
 .floating-formula[data-category="bayesian"] {
-    font-size: 0.51rem; /* 60% of original 0.85rem */
+    --formula-scale: 0.64; /* Slightly larger: 60% * 1.0625 */
 }
 
 .floating-formula[data-category="finance"],
 .floating-formula[data-category="clustering"] {
-    font-size: 0.45rem; /* 60% of original 0.75rem */
+    --formula-scale: 0.56; /* Slightly smaller: 60% * 0.9375 */
 }
 
-/* Remove default margins from KaTeX display wrapper */
+/* Remove default margins from KaTeX display wrapper and apply scaling */
 .floating-formula .katex-display {
     margin: 0;
+    transform: scale(var(--formula-scale));
+    transform-origin: left center;
 }
 
 /* Formula animation: appear → grow slowly to 125% → dissolve gradually, moving in one direction */
