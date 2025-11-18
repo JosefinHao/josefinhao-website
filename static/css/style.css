@@ -814,8 +814,22 @@ p {
 .chat-header h3 {
     margin: 0;
     font-size: 0.9rem;
-    color: white;
     font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+    /* Override global h3 gradient - use bright white/cyan gradient for contrast on blue background */
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #e0f7ff 25%,
+        #ffffff 50%,
+        #e0f7ff 75%,
+        #ffffff 100%
+    ) !important;
+    background-size: 200% auto !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: gradientText 8s linear infinite !important;
+    font-weight: 600;
 }
 
 .chat-header-subtitle {
