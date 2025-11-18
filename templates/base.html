@@ -163,6 +163,8 @@
     <!-- Modals Block (outside main-container to avoid backdrop-filter containing block) -->
     {% block modals %}{% endblock %}
 
+    <!-- Shared utilities - must load first -->
+    <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
     <script src="{{ url_for('static', filename='js/floating-formulas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat-widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>

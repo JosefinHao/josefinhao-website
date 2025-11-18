@@ -1,6 +1,7 @@
 /**
  * Interactive Particle Network
  * Subtle particle system that reacts to hover interactions
+ * Uses shared utilities from utils.js for safe math operations
  */
 
 class InteractiveParticleNetwork {
@@ -11,8 +12,8 @@ class InteractiveParticleNetwork {
         this.mouseX = null;
         this.mouseY = null;
         this.hoveredSection = null;
-        this.activeRadius = 200; // Radius around mouse where particles activate
-        this.maxParticles = 25;
+        this.activeRadius = GameConstants.ACTIVE_RADIUS;
+        this.maxParticles = GameConstants.MAX_PARTICLES;
 
         this.init();
     }
@@ -132,11 +133,12 @@ class InteractiveParticleNetwork {
                 const dy = this.mouseY - particle.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < this.activeRadius) {
+                if (distance < this.activeRadius && distance > 0.01) { // Prevent division by zero
                     // Attract particles slightly towards mouse
-                    const force = (this.activeRadius - distance) / this.activeRadius * 0.02;
-                    particle.vx += (dx / distance) * force;
-                    particle.vy += (dy / distance) * force;
+                    const force = (this.activeRadius - distance) / this.activeRadius * GameConstants.FORCE_MULTIPLIER;
+                    // Use safe division to prevent errors when distance is very small
+                    particle.vx += MathUtils.safeDivide(dx * force, distance);
+                    particle.vy += MathUtils.safeDivide(dy * force, distance);
 
                     // Increase opacity near mouse
                     const proximityOpacity = (this.activeRadius - distance) / this.activeRadius;
@@ -175,8 +177,8 @@ class InteractiveParticleNetwork {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 // Draw connection if particles are close enough
-                if (distance < 150) {
-                    const opacity = (150 - distance) / 150 * Math.min(p1.opacity, p2.opacity) * 0.5;
+                if (distance < GameConstants.CONNECTION_DISTANCE) {
+                    const opacity = (GameConstants.CONNECTION_DISTANCE - distance) / GameConstants.CONNECTION_DISTANCE * Math.min(p1.opacity, p2.opacity) * 0.5;
 
                     this.ctx.beginPath();
                     this.ctx.moveTo(p1.x, p1.y);
@@ -236,15 +238,9 @@ class InteractiveParticleNetwork {
     }
 }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (document.querySelector('.home-layout')) {
-            new InteractiveParticleNetwork();
-        }
-    });
-} else {
+// Initialize when DOM is ready using shared utility
+onDOMReady(() => {
     if (document.querySelector('.home-layout')) {
         new InteractiveParticleNetwork();
     }
-}
+});
