@@ -1548,16 +1548,17 @@ p {
     color: var(--primary);
     margin: 0;
     font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-.game-icon {
+.game-card-header h3 .game-icon {
     display: inline-block;
     vertical-align: middle;
     color: var(--primary);
-    flex-shrink: 0;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+    position: relative;
+    top: -0.05em;
 }
 
 .game-badge {
@@ -1991,13 +1992,17 @@ p {
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 }
 
-.game-modal-header .game-icon {
+.game-modal-header h2 .game-icon {
+    display: inline-block;
+    vertical-align: middle;
     color: white;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.3em;
+    position: relative;
+    top: -0.05em;
 }
 
 .game-modal-close {
