@@ -2248,33 +2248,35 @@ body.dark-theme .theme-name {
 
 .floating-formula {
     position: absolute;
-    /* Don't set font-family - let KaTeX handle it */
-    /* Don't set font-size here - set it on .katex instead */
+    /* Don't set font-family, font-size, line-height, white-space - let KaTeX handle typography */
     color: #5f7c8a;
-    white-space: nowrap;
     user-select: none;
     will-change: transform, opacity;
     opacity: 0; /* Start invisible, animation controls opacity */
-    /* Ensure formulas stay within viewport bounds */
-    max-width: calc(100vw - 60px);
-    overflow: hidden;
 }
 
 /* Set font-size on KaTeX output to scale entire formula proportionally */
-.floating-formula .katex {
-    font-size: 0.48rem; /* Reduced to 60% of original 0.8rem */
+/* Using !important to ensure KaTeX internal sizing is preserved while scaling the whole formula */
+.floating-formula .katex,
+.floating-formula .katex-display {
+    font-size: 0.48rem !important; /* Reduced to 60% of original 0.8rem */
     color: inherit;
+    margin: 0 !important; /* Remove default margins */
 }
 
 /* Vary size based on formula category for depth */
 .floating-formula[data-category="neural"] .katex,
-.floating-formula[data-category="bayesian"] .katex {
-    font-size: 0.51rem; /* 60% of original 0.85rem */
+.floating-formula[data-category="neural"] .katex-display,
+.floating-formula[data-category="bayesian"] .katex,
+.floating-formula[data-category="bayesian"] .katex-display {
+    font-size: 0.51rem !important; /* 60% of original 0.85rem */
 }
 
 .floating-formula[data-category="finance"] .katex,
-.floating-formula[data-category="clustering"] .katex {
-    font-size: 0.45rem; /* 60% of original 0.75rem */
+.floating-formula[data-category="finance"] .katex-display,
+.floating-formula[data-category="clustering"] .katex,
+.floating-formula[data-category="clustering"] .katex-display {
+    font-size: 0.45rem !important; /* 60% of original 0.75rem */
 }
 
 /* Formula animation: appear → grow slowly to 125% → dissolve gradually, moving in one direction */
