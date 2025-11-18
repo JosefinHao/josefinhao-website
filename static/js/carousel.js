@@ -28,7 +28,7 @@
         let currentSlide = 0;
         const totalSlides = slides.length;
         let autoPlayInterval = null;
-        const autoPlayDelay = 5000; // 5 seconds
+        const autoPlayDelay = 10000; // 10 seconds
 
         /**
          * Update the carousel to show the specified slide
@@ -199,8 +199,8 @@
         }
 
         // Initialize carousel
+        // goToSlide(0) already calls resetAutoPlay(), so we don't need to call startAutoPlay() separately
         goToSlide(0);
-        startAutoPlay();
 
         console.log('Featured projects carousel initialized');
     }
