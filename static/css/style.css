@@ -2248,31 +2248,32 @@ body.dark-theme .theme-name {
 
 .floating-formula {
     position: absolute;
-    font-family: 'Computer Modern', 'Latin Modern Math', 'Cambria Math', 'Times New Roman', serif;
-    font-size: 0.48rem; /* Reduced to 60% of original 0.8rem */
-    font-style: normal;
-    font-weight: 400;
+    /* Don't set font-family - let KaTeX handle it */
+    /* Don't set font-size here - set it on .katex instead */
     color: #5f7c8a;
     white-space: nowrap;
     user-select: none;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
     will-change: transform, opacity;
     opacity: 0; /* Start invisible, animation controls opacity */
     /* Ensure formulas stay within viewport bounds */
     max-width: calc(100vw - 60px);
     overflow: hidden;
-    text-overflow: ellipsis;
+}
+
+/* Set font-size on KaTeX output to scale entire formula proportionally */
+.floating-formula .katex {
+    font-size: 0.48rem; /* Reduced to 60% of original 0.8rem */
+    color: inherit;
 }
 
 /* Vary size based on formula category for depth */
-.floating-formula[data-category="neural"],
-.floating-formula[data-category="bayesian"] {
+.floating-formula[data-category="neural"] .katex,
+.floating-formula[data-category="bayesian"] .katex {
     font-size: 0.51rem; /* 60% of original 0.85rem */
 }
 
-.floating-formula[data-category="finance"],
-.floating-formula[data-category="clustering"] {
+.floating-formula[data-category="finance"] .katex,
+.floating-formula[data-category="clustering"] .katex {
     font-size: 0.45rem; /* 60% of original 0.75rem */
 }
 
