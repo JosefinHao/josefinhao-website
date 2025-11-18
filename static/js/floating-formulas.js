@@ -10,105 +10,105 @@ class FloatingFormulas {
         this.formulas = [
             // 1. Linear Regression (MSE Loss)
             {
-                text: 'MSE = 1/n Σ(yᵢ - ŷᵢ)²',
+                latex: '\\text{MSE} = \\frac{1}{n} \\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2',
                 category: 'regression'
             },
             // 2. Logistic Regression (Cross-Entropy Loss)
             {
-                text: 'L(θ) = -Σ[yᵢlog(hθ(x)) + (1-yᵢ)log(1-hθ(x))]',
+                latex: 'L(\\theta) = -\\sum[y_i\\log(h_\\theta(x)) + (1-y_i)\\log(1-h_\\theta(x))]',
                 category: 'regression'
             },
             // 3. Gradient Descent
             {
-                text: 'θ := θ - α∇J(θ)',
+                latex: '\\theta := \\theta - \\alpha\\nabla J(\\theta)',
                 category: 'optimization'
             },
             {
-                text: '∂J/∂θⱼ = 1/m Σ(hθ(x⁽ⁱ⁾) - y⁽ⁱ⁾)xⱼ⁽ⁱ⁾',
+                latex: '\\frac{\\partial J}{\\partial \\theta_j} = \\frac{1}{m} \\sum_{i=1}^{m}(h_\\theta(x^{(i)}) - y^{(i)})x_j^{(i)}',
                 category: 'optimization'
             },
             // 4. Black-Scholes Formula
             {
-                text: 'C = S₀N(d₁) - Ke⁻ʳᵗN(d₂)',
+                latex: 'C = S_0N(d_1) - Ke^{-rt}N(d_2)',
                 category: 'finance'
             },
             {
-                text: 'd₁ = [ln(S₀/K) + (r + σ²/2)t] / σ√t',
+                latex: 'd_1 = \\frac{\\ln(S_0/K) + (r + \\sigma^2/2)t}{\\sigma\\sqrt{t}}',
                 category: 'finance'
             },
             // 5. PDE (Heat Equation / Diffusion)
             {
-                text: '∂u/∂t = α∇²u',
+                latex: '\\frac{\\partial u}{\\partial t} = \\alpha\\nabla^2u',
                 category: 'pde'
             },
             {
-                text: '∂²u/∂x² + ∂²u/∂y² = 0',
+                latex: '\\frac{\\partial^2 u}{\\partial x^2} + \\frac{\\partial^2 u}{\\partial y^2} = 0',
                 category: 'pde'
             },
             // 6. Monte Carlo
             {
-                text: 'E[f(X)] ≈ 1/N Σf(Xᵢ)',
+                latex: '\\mathbb{E}[f(X)] \\approx \\frac{1}{N} \\sum_{i=1}^{N}f(X_i)',
                 category: 'simulation'
             },
             {
-                text: '∫f(x)dx ≈ (b-a)/N Σf(xᵢ)',
+                latex: '\\int_a^b f(x)dx \\approx \\frac{b-a}{N} \\sum_{i=1}^{N}f(x_i)',
                 category: 'simulation'
             },
             // 7. Bayesian with Beta and Binomial
             {
-                text: 'P(θ|D) = P(D|θ)P(θ) / P(D)',
+                latex: 'P(\\theta|D) = \\frac{P(D|\\theta)P(\\theta)}{P(D)}',
                 category: 'bayesian'
             },
             {
-                text: 'Beta(α,β) = Γ(α+β)/[Γ(α)Γ(β)] θᵅ⁻¹(1-θ)ᵝ⁻¹',
+                latex: '\\text{Beta}(\\alpha,\\beta) = \\frac{\\Gamma(\\alpha+\\beta)}{\\Gamma(\\alpha)\\Gamma(\\beta)} \\theta^{\\alpha-1}(1-\\theta)^{\\beta-1}',
                 category: 'bayesian'
             },
             {
-                text: 'P(k|n,θ) = (n k)θᵏ(1-θ)ⁿ⁻ᵏ',
+                latex: 'P(k|n,\\theta) = \\binom{n}{k}\\theta^k(1-\\theta)^{n-k}',
                 category: 'bayesian'
             },
             // 8. XGBoost
             {
-                text: 'Obj = ΣL(yᵢ,ŷᵢ) + ΣΩ(fₖ)',
+                latex: '\\text{Obj} = \\sum_{i=1}^{n}L(y_i,\\hat{y}_i) + \\sum_{k=1}^{K}\\Omega(f_k)',
                 category: 'boosting'
             },
             {
-                text: 'Ω(f) = γT + ½λ||w||²',
+                latex: '\\Omega(f) = \\gamma T + \\frac{1}{2}\\lambda\\|w\\|^2',
                 category: 'boosting'
             },
             // 9. Neural Networks
             {
-                text: 'aⱼ = σ(Σwᵢⱼxᵢ + bⱼ)',
+                latex: 'a_j = \\sigma\\left(\\sum_{i}w_{ij}x_i + b_j\\right)',
                 category: 'neural'
             },
             {
-                text: 'δⱼ = ∂E/∂netⱼ = (tⱼ - yⱼ)σ\'(netⱼ)',
+                latex: '\\delta_j = \\frac{\\partial E}{\\partial \\text{net}_j} = (t_j - y_j)\\sigma\'(\\text{net}_j)',
                 category: 'neural'
             },
             {
-                text: 'σ(x) = 1/(1 + e⁻ˣ)',
+                latex: '\\sigma(x) = \\frac{1}{1 + e^{-x}}',
                 category: 'neural'
             },
             {
-                text: 'ReLU(x) = max(0, x)',
+                latex: '\\text{ReLU}(x) = \\max(0, x)',
                 category: 'neural'
             },
             // 10. Clustering (K-means)
             {
-                text: 'argmin Σₖ Σₓ∈Cₖ ||x - μₖ||²',
+                latex: '\\arg\\min_{C} \\sum_{k=1}^{K} \\sum_{x \\in C_k} \\|x - \\mu_k\\|^2',
                 category: 'clustering'
             },
             {
-                text: 'μₖ = 1/|Cₖ| Σₓ∈Cₖ x',
+                latex: '\\mu_k = \\frac{1}{|C_k|} \\sum_{x \\in C_k} x',
                 category: 'clustering'
             },
             // 11. Survival Analysis
             {
-                text: 'S(t) = exp(-Λ(t)) = exp(-∫₀ᵗλ(u)du)',
+                latex: 'S(t) = \\exp(-\\Lambda(t)) = \\exp\\left(-\\int_0^t\\lambda(u)du\\right)',
                 category: 'survival'
             },
             {
-                text: 'h(t) = lim[P(t≤T<t+Δt|T≥t)] / Δt',
+                latex: 'h(t) = \\lim_{\\Delta t \\to 0}\\frac{P(t\\leq T<t+\\Delta t|T\\geq t)}{\\Delta t}',
                 category: 'survival'
             }
         ];
@@ -192,11 +192,29 @@ class FloatingFormulas {
         this.formulas.forEach((formula, index) => {
             const formulaElement = document.createElement('div');
             formulaElement.className = 'floating-formula';
-            formulaElement.textContent = formula.text;
             formulaElement.setAttribute('data-category', formula.category);
 
-            // Store reference to formula text for overlap detection
-            formulaElement.dataset.formulaText = formula.text;
+            // Render LaTeX using KaTeX (wait for KaTeX to be loaded)
+            const renderFormula = () => {
+                if (typeof katex !== 'undefined') {
+                    try {
+                        katex.render(formula.latex, formulaElement, {
+                            throwOnError: false,
+                            displayMode: true
+                        });
+                    } catch (e) {
+                        console.warn('KaTeX rendering error:', e);
+                        formulaElement.textContent = formula.latex; // Fallback to plain text
+                    }
+                } else {
+                    // KaTeX not loaded yet, try again in 100ms
+                    setTimeout(renderFormula, 100);
+                }
+            };
+            renderFormula();
+
+            // Store reference to formula for overlap detection
+            formulaElement.dataset.formulaLatex = formula.latex;
             formulaElement.dataset.formulaIndex = index;
 
             // Set initial random position with grid-based system
@@ -242,7 +260,7 @@ class FloatingFormulas {
     }
 
     repositionFormula(element, isInitial = false) {
-        const formulaText = element.dataset.formulaText;
+        const formulaLatex = element.dataset.formulaLatex;
         const formulaIndex = parseInt(element.dataset.formulaIndex);
 
         // If repositioning (not initial), free up the old cell
@@ -270,7 +288,7 @@ class FloatingFormulas {
             this.formulaPositions.push({
                 x: pos.x,
                 y: pos.y,
-                text: formulaText,
+                latex: formulaLatex,
                 index: formulaIndex
             });
         } else {
