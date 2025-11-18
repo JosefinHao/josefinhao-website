@@ -347,6 +347,7 @@ class FloatingFormulas {
     }
 }
 
-// Initialize floating formulas on all pages
-// Note: Will reload when navigating between pages (multi-page app limitation)
-new FloatingFormulas();
+// Initialize floating formulas only on the home page
+if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+    new FloatingFormulas();
+}
