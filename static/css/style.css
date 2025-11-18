@@ -1578,6 +1578,9 @@ p {
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
+    /* Flexbox to push button to bottom */
+    display: flex;
+    flex-direction: column;
 }
 
 .game-card::before {
@@ -1698,6 +1701,8 @@ p {
         0 2px 8px rgba(124, 110, 255, 0.2);
     position: relative;
     overflow: hidden;
+    /* Push button to bottom of flex container */
+    margin-top: auto;
 }
 
 .game-launch-btn::before {
