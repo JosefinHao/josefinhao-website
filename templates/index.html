@@ -17,9 +17,131 @@
 
     <!-- Right Side: Main Content Area -->
     <main class="main-content">
-        <div class="content-placeholder">
-            <h3>Featured Content</h3>
-            <p>This area is reserved for featured projects, blog posts, or announcements.</p>
+        <!-- Featured Projects Carousel -->
+        <div class="featured-carousel-container">
+            <h3 style="text-align: center; margin-bottom: 1.5rem;">Featured Projects</h3>
+
+            <div class="carousel-wrapper">
+                <button class="carousel-nav carousel-nav-prev" aria-label="Previous project">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
+
+                <div class="carousel-track-container">
+                    <div class="carousel-track">
+                        <!-- Slide 1: Multi-Agent Data Analytics -->
+                        <div class="carousel-slide active">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Multi-Agent Data Analytics</h4>
+                                    <span class="carousel-badge">Current Project</span>
+                                </div>
+                                <p class="carousel-tagline">Agentic AI workflows to automate data science tasks</p>
+                                <p class="carousel-description">Prototyping multi-agent systems that coordinate intelligent workflows to clean data, perform exploratory analysis, uncover causal relationships, and build predictive models across complex datasets.</p>
+                                <div class="carousel-tech">
+                                    <strong>Tech Stack:</strong> LangChain, LangGraph, Python, scikit-learn, PyTorch, Pandas, Polars
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2: GPT-Backed Financial Advisor -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>GPT-Backed Financial Advisor</h4>
+                                    <span class="carousel-badge">Current Project</span>
+                                </div>
+                                <p class="carousel-tagline">Personalized financial guidance and practical tools</p>
+                                <p class="carousel-description">Full-featured financial planning application with mortgage calculator, retirement planner, network calculator, goal tracking, document analysis, payment reminders, and conversation management.</p>
+                                <div class="carousel-tech">
+                                    <strong>Tech Stack:</strong> React, Flask, OpenAI, Python
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3: Sidekick - Autonomous AI Assistant -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Sidekick - Autonomous AI Assistant</h4>
+                                    <span class="carousel-badge carousel-badge-langgraph">LangGraph</span>
+                                </div>
+                                <p class="carousel-tagline">Autonomous task completion with worker-evaluator architecture</p>
+                                <p class="carousel-description">Developed an autonomous AI assistant system using LangGraph and LangChain that iteratively completes user-defined tasks through a worker-evaluator architecture.</p>
+                                <div class="carousel-tech">
+                                    <strong>Integrated Tools:</strong> Playwright, Web Search APIs, Python execution, File management, Gradio interface
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4: Career Agent/Bot -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Career Agent/Bot</h4>
+                                    <span class="carousel-badge carousel-badge-openai">OpenAI SDK</span>
+                                </div>
+                                <p class="carousel-tagline">Intelligent chatbot with push notifications</p>
+                                <p class="carousel-description">Answers user questions about my background and experience, and sends push notifications via Pushover for unknown questions and user outreach opportunities.</p>
+                                <div class="carousel-tech">
+                                    <strong>Features:</strong> Natural language understanding, Push notifications, User interaction tracking
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5: Engineering Team -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Engineering Team</h4>
+                                    <span class="carousel-badge carousel-badge-crewai">CrewAI</span>
+                                </div>
+                                <p class="carousel-tagline">Multi-agent collaborative development system</p>
+                                <p class="carousel-description">Multi-agent team including engineering lead, backend engineer, frontend engineer, and test engineer that collaboratively designs, codes, and tests according to user requirements.</p>
+                                <div class="carousel-tech">
+                                    <strong>Agents:</strong> Engineering Lead, Backend Dev, Frontend Dev, Test Engineer
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 6: Deep Research Agent -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Deep Research Agent</h4>
+                                    <span class="carousel-badge carousel-badge-openai">OpenAI SDK</span>
+                                </div>
+                                <p class="carousel-tagline">Comprehensive research with automated reporting</p>
+                                <p class="carousel-description">Takes user queries, plans multiple related searches, executes them concurrently, writes comprehensive reports, and emails the results automatically.</p>
+                                <div class="carousel-tech">
+                                    <strong>Features:</strong> Multi-query planning, Concurrent execution, Report generation, Email delivery
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-nav carousel-nav-next" aria-label="Next project">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators">
+                <button class="carousel-indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+                <button class="carousel-indicator" data-slide="1" aria-label="Go to slide 2"></button>
+                <button class="carousel-indicator" data-slide="2" aria-label="Go to slide 3"></button>
+                <button class="carousel-indicator" data-slide="3" aria-label="Go to slide 4"></button>
+                <button class="carousel-indicator" data-slide="4" aria-label="Go to slide 5"></button>
+                <button class="carousel-indicator" data-slide="5" aria-label="Go to slide 6"></button>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="/projects" class="btn" style="display: inline-block;">View All Projects</a>
+            </div>
         </div>
 
         <div class="content-placeholder">
@@ -37,4 +159,8 @@
         </div>
     </main>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
 {% endblock %}
