@@ -1023,37 +1023,37 @@ p {
 
 /* Color-code individual project cards by category */
 
-/* Current Projects - Soft Sky Blue */
+/* Current Projects - Steel Mist */
 .flip-card-current .flip-card-front {
-    background: linear-gradient(135deg, rgba(224, 242, 254, 0.7) 0%, rgba(224, 242, 254, 0.5) 50%, rgba(224, 242, 254, 0.7) 100%);
-    border: 2px solid rgba(0, 153, 255, 0.2);
-}
-
-.flip-card-current .flip-card-back {
-    background: linear-gradient(135deg, rgba(224, 242, 254, 0.8) 0%, rgba(224, 242, 254, 0.6) 50%, rgba(224, 242, 254, 0.8) 100%);
-    border: 2px solid rgba(0, 153, 255, 0.25);
-}
-
-/* OpenAI Agents SDK - Steel Mist */
-.flip-card-openai .flip-card-front {
     background: linear-gradient(135deg, rgba(226, 232, 240, 0.7) 0%, rgba(226, 232, 240, 0.5) 50%, rgba(226, 232, 240, 0.7) 100%);
     border: 2px solid rgba(95, 124, 138, 0.2);
 }
 
-.flip-card-openai .flip-card-back {
+.flip-card-current .flip-card-back {
     background: linear-gradient(135deg, rgba(226, 232, 240, 0.8) 0%, rgba(226, 232, 240, 0.6) 50%, rgba(226, 232, 240, 0.8) 100%);
     border: 2px solid rgba(95, 124, 138, 0.25);
 }
 
-/* CrewAI - Aqua Frost */
+/* OpenAI Agents SDK - Light Forest Green */
+.flip-card-openai .flip-card-front {
+    background: linear-gradient(135deg, rgba(220, 237, 228, 0.7) 0%, rgba(220, 237, 228, 0.5) 50%, rgba(220, 237, 228, 0.7) 100%);
+    border: 2px solid rgba(76, 140, 105, 0.2);
+}
+
+.flip-card-openai .flip-card-back {
+    background: linear-gradient(135deg, rgba(220, 237, 228, 0.8) 0%, rgba(220, 237, 228, 0.6) 50%, rgba(220, 237, 228, 0.8) 100%);
+    border: 2px solid rgba(76, 140, 105, 0.25);
+}
+
+/* CrewAI - Light Sand */
 .flip-card-crewai .flip-card-front {
-    background: linear-gradient(135deg, rgba(207, 250, 254, 0.7) 0%, rgba(207, 250, 254, 0.5) 50%, rgba(207, 250, 254, 0.7) 100%);
-    border: 2px solid rgba(0, 184, 212, 0.2);
+    background: linear-gradient(135deg, rgba(242, 235, 223, 0.7) 0%, rgba(242, 235, 223, 0.5) 50%, rgba(242, 235, 223, 0.7) 100%);
+    border: 2px solid rgba(180, 160, 130, 0.2);
 }
 
 .flip-card-crewai .flip-card-back {
-    background: linear-gradient(135deg, rgba(207, 250, 254, 0.8) 0%, rgba(207, 250, 254, 0.6) 50%, rgba(207, 250, 254, 0.8) 100%);
-    border: 2px solid rgba(0, 184, 212, 0.25);
+    background: linear-gradient(135deg, rgba(242, 235, 223, 0.8) 0%, rgba(242, 235, 223, 0.6) 50%, rgba(242, 235, 223, 0.8) 100%);
+    border: 2px solid rgba(180, 160, 130, 0.25);
 }
 
 /* LangGraph - Lavender Sky */
