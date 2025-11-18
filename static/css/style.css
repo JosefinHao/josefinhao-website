@@ -169,6 +169,8 @@ nav a.active {
     grid-template-columns: 280px 1fr;
     gap: 2rem;
     align-items: start;
+    /* Prevent grid children from overflowing */
+    max-width: 100%;
 }
 
 /* Enhanced Glassmorphism Profile Section with Holographic Border */
@@ -276,6 +278,10 @@ nav a.active {
 
 .main-content {
     padding: 0 0.5rem 0.5rem 0.5rem;
+    /* Prevent overflow in grid layout */
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* Remove top margin from first element to align with profile section */
@@ -299,6 +305,9 @@ nav a.active {
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
+    /* Ensure placeholders stay within container */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .content-placeholder::before {
@@ -2920,6 +2929,9 @@ body.dark-theme .floating-formula {
         0 8px 24px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.5);
     transition: all 0.4s ease;
+    /* Ensure carousel stays within container */
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .featured-carousel-container:hover {
