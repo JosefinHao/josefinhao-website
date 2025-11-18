@@ -122,10 +122,15 @@ class FloatingFormulas {
      */
     initializeGrid() {
         // Create a grid around the edges of the viewport
-        // 8 columns x 6 rows = 48 potential positions
-        const cols = 8;
-        const rows = 6;
+        // Using constants for grid dimensions
+        const cols = GameConstants.FORMULA_GRID_COLUMNS;
+        const rows = GameConstants.FORMULA_GRID_ROWS;
         const cells = [];
+
+        // Define safe bounds to keep formulas within viewport
+        // Account for formula width/height and transform: translate(-50%, -50%)
+        const minPercent = 5;  // 5% from left/top edge
+        const maxPercent = 95; // 95% from left/top edge (keeps formulas within viewport)
 
         for (let row = 0; row < rows; row++) {
             for (let col = 0; col < cols; col++) {
@@ -137,8 +142,13 @@ class FloatingFormulas {
                 const isEdgeCell = isTopRow || isBottomRow || isLeftCol || isRightCol;
 
                 if (isEdgeCell) {
-                    const x = (col / (cols - 1)) * 100; // 0-100%
-                    const y = (row / (rows - 1)) * 100; // 0-100%
+                    // Map to safe range (5% - 95% instead of 0% - 100%)
+                    const rawX = (col / (cols - 1)) * 100;
+                    const rawY = (row / (rows - 1)) * 100;
+
+                    // Scale to safe bounds
+                    const x = minPercent + (rawX / 100) * (maxPercent - minPercent);
+                    const y = minPercent + (rawY / 100) * (maxPercent - minPercent);
 
                     cells.push({
                         x,
@@ -146,10 +156,10 @@ class FloatingFormulas {
                         col,
                         row,
                         occupied: false,
-                        // Add slight randomness within cell (±5% jitter)
+                        // Add slight randomness within cell (±3% jitter, reduced to stay in bounds)
                         getRandomPosition: () => ({
-                            x: Math.max(0, Math.min(100, x + (Math.random() - 0.5) * 10)),
-                            y: Math.max(0, Math.min(100, y + (Math.random() - 0.5) * 10))
+                            x: MathUtils.clamp(x + (Math.random() - 0.5) * 6, minPercent, maxPercent),
+                            y: MathUtils.clamp(y + (Math.random() - 0.5) * 6, minPercent, maxPercent)
                         })
                     });
                 }
@@ -160,11 +170,8 @@ class FloatingFormulas {
     }
 
     init() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.createFormulas());
-        } else {
-            this.createFormulas();
-        }
+        // Use shared DOM ready utility for consistency
+        onDOMReady(() => this.createFormulas());
     }
 
     createFormulas() {
@@ -195,9 +202,9 @@ class FloatingFormulas {
             // Set initial random position with grid-based system
             this.repositionFormula(formulaElement, true);
 
-            // Staggered appearance: each formula appears one by one at 250ms intervals
+            // Staggered appearance: each formula appears one by one
             // This creates a sequential reveal effect when the page first loads
-            const staggeredDelay = index * 250; // 250ms between each formula
+            const staggeredDelay = index * GameConstants.FORMULA_STAGGER_DELAY;
             setTimeout(() => {
                 this.startFormulaAnimation(formulaElement);
             }, staggeredDelay);
@@ -278,13 +285,14 @@ class FloatingFormulas {
         element.style.left = `${pos.x}%`;
         element.style.top = `${pos.y}%`;
 
-        // Random rotation
-        const rotation = (Math.random() - 0.5) * 20; // -10 to 10 degrees
+        // Random rotation (using constant from GameConstants)
+        const rotation = (Math.random() - 0.5) * GameConstants.FORMULA_ROTATION_RANGE;
         element.style.setProperty('--initial-rotation', `${rotation}deg`);
 
         // Random drift direction (single direction movement)
+        // Reduced distance to keep formulas within viewport bounds
         const angle = Math.random() * 2 * Math.PI; // Random angle in radians
-        const distance = 15 + Math.random() * 25; // 15-40px drift distance (reduced to prevent overlap)
+        const distance = GameConstants.FORMULA_DRIFT_MIN + Math.random() * (GameConstants.FORMULA_DRIFT_MAX - GameConstants.FORMULA_DRIFT_MIN);
         const driftX = Math.cos(angle) * distance;
         const driftY = Math.sin(angle) * distance;
         element.style.setProperty('--drift-x', `${driftX}px`);
