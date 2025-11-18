@@ -1562,37 +1562,6 @@ p {
     font-weight: 600;
 }
 
-.game-card-header h3 .game-icon {
-    display: inline-block;
-    vertical-align: middle;
-    width: 1.2em;
-    height: 1.2em;
-    margin-right: 0.3em;
-    position: relative;
-    top: -0.05em;
-    /* Animate color through gradient colors to match h3 text gradient */
-    animation: iconGradientColor 30s linear forwards;
-}
-
-@keyframes iconGradientColor {
-    0% {
-        color: var(--holo-3);
-        filter: drop-shadow(0 0 2px var(--holo-3));
-    }
-    33% {
-        color: var(--holo-2);
-        filter: drop-shadow(0 0 2px var(--holo-2));
-    }
-    66% {
-        color: var(--holo-1);
-        filter: drop-shadow(0 0 2px var(--holo-1));
-    }
-    100% {
-        color: var(--holo-3);
-        filter: drop-shadow(0 0 2px var(--holo-3));
-    }
-}
-
 .game-badge {
     background: linear-gradient(135deg, var(--holo-2), var(--holo-3));
     background-size: 200% 200%;
