@@ -1071,7 +1071,7 @@ p {
 
 /* Front of card */
 .flip-card-front {
-    background: linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(95, 124, 138, 0.08) 100%);
+    background: linear-gradient(135deg, #e8f4f8 0%, #f0f6fa 50%, #e8f1f8 100%);
     border: 2px solid rgba(95, 124, 138, 0.2);
     text-align: center;
 }
@@ -1090,7 +1090,7 @@ p {
 
 /* Back of card */
 .flip-card-back {
-    background: white;
+    background: linear-gradient(135deg, #f0f6fa 0%, #e8f4f8 50%, #f5f8fb 100%);
     border: 2px solid rgba(95, 124, 138, 0.3);
     transform: rotateY(180deg);
     text-align: left;
