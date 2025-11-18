@@ -2,7 +2,7 @@
 Tests for configuration
 """
 import pytest
-from app.config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
+from application.config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
 
 
 class TestConfig:

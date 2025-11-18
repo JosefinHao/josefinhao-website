@@ -3,7 +3,7 @@ Tests for database models
 """
 import pytest
 from datetime import datetime
-from app.models import ContactMessage, InboundEmail
+from application.models import ContactMessage, InboundEmail
 
 
 class TestContactMessage:

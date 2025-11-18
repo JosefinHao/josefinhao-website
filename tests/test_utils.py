@@ -3,8 +3,8 @@ Tests for utility functions
 """
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from app.utils.auth_utils import verify_admin_credentials, requires_auth
-from app.utils.email_utils import send_contact_notification
+from application.utils.auth_utils import verify_admin_credentials, requires_auth
+from application.utils.email_utils import send_contact_notification
 
 
 class TestAuthUtils:
