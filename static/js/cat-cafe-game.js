@@ -1491,7 +1491,9 @@
         balls: [],
         animationId: null,
         spawnInterval: null,
-        difficulty: 1
+        difficulty: 1,
+        yarnImages: [],
+        imagesLoaded: false
     };
 
     function initYarnGame() {
@@ -1507,6 +1509,9 @@
 
         yarnGame.canvas = yarnCanvas;
         yarnGame.ctx = yarnCanvas.getContext('2d');
+
+        // Load yarn ball images
+        loadYarnBallImages();
 
         // Open game modal
         yarnGameBtn.addEventListener('click', () => {
@@ -1534,6 +1539,39 @@
 
         // Click on canvas
         yarnCanvas.addEventListener('click', handleYarnClick);
+    }
+
+    function loadYarnBallImages() {
+        // Use realistic yarn ball images from pngimg.com with different colors
+        const yarnImageURLs = [
+            'https://pngimg.com/uploads/yarn/yarn_PNG108081.png', // Pink yarn
+            'https://pngimg.com/uploads/yarn/yarn_PNG108093.png', // Blue yarn
+            'https://pngimg.com/uploads/yarn/yarn_PNG108087.png', // Purple yarn
+            'https://pngimg.com/uploads/yarn/yarn_PNG108065.png', // Orange yarn
+            'https://pngimg.com/uploads/yarn/yarn_PNG108086.png'  // Green yarn
+        ];
+
+        let loadedCount = 0;
+        yarnImageURLs.forEach((url, index) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                loadedCount++;
+                if (loadedCount === yarnImageURLs.length) {
+                    yarnGame.imagesLoaded = true;
+                    console.log('All yarn ball images loaded');
+                }
+            };
+            img.onerror = () => {
+                console.log(`Yarn image ${index} failed to load, will use fallback`);
+                loadedCount++;
+                if (loadedCount === yarnImageURLs.length) {
+                    yarnGame.imagesLoaded = true;
+                }
+            };
+            img.src = url;
+            yarnGame.yarnImages.push(img);
+        });
     }
 
     function startYarnGame() {
@@ -1565,16 +1603,18 @@
 
         // Choose random spawn direction
         const spawnType = Math.random();
+        const imageIndex = Math.floor(Math.random() * yarnGame.yarnImages.length);
         let ball = {
-            radius: 20 + Math.random() * 10,
+            radius: 25 + Math.random() * 10, // Slightly larger for visibility
             color: colors[Math.floor(Math.random() * colors.length)],
             rotation: 0,
-            rotationSpeed: (Math.random() - 0.5) * 0.2
+            rotationSpeed: (Math.random() - 0.5) * 0.2,
+            imageIndex: imageIndex
         };
 
-        // Much slower initial speed with gradual difficulty increase
-        const baseSpeed = 0.15 + Math.random() * 0.15; // Start very slow: 0.15-0.3
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.08; // Gradual 8% increase per level
+        // Moderate speed with gradual difficulty increase
+        const baseSpeed = 0.4 + Math.random() * 0.3; // Start at moderate speed: 0.4-0.7
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.1; // Gradual 10% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         // Spawn from any edge with random angle across the screen
@@ -1624,9 +1664,8 @@
             const dist = Math.sqrt(Math.pow(x - ball.x, 2) + Math.pow(y - ball.y, 2));
 
             if (dist < ball.radius) {
-                // Hit! Bat it away
-                ball.vy = -8 - Math.random() * 4;
-                ball.vx = (x - ball.x) * 0.3;
+                // Hit! Remove the ball
+                yarnGame.balls.splice(i, 1);
                 yarnGame.score++;
                 document.getElementById('yarnScore').textContent = yarnGame.score;
 
@@ -1688,20 +1727,28 @@
             ctx.translate(ball.x, ball.y);
             ctx.rotate(ball.rotation);
 
-            // Draw ball
-            ctx.fillStyle = ball.color;
-            ctx.beginPath();
-            ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Draw yarn texture
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            ctx.lineWidth = 2;
-            for (let j = 0; j < 3; j++) {
-                const angle = j * Math.PI / 3;
+            // Use realistic yarn ball image if loaded, otherwise use fallback
+            const yarnImg = yarnGame.yarnImages[ball.imageIndex];
+            if (yarnGame.imagesLoaded && yarnImg && yarnImg.complete && yarnImg.naturalWidth > 0) {
+                // Draw realistic yarn ball image
+                const size = ball.radius * 2;
+                ctx.drawImage(yarnImg, -size / 2, -size / 2, size, size);
+            } else {
+                // Fallback: Draw simple ball with yarn texture
+                ctx.fillStyle = ball.color;
                 ctx.beginPath();
-                ctx.arc(0, 0, ball.radius * 0.7, angle, angle + Math.PI);
-                ctx.stroke();
+                ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw yarn texture
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 2;
+                for (let j = 0; j < 3; j++) {
+                    const angle = j * Math.PI / 3;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, ball.radius * 0.7, angle, angle + Math.PI);
+                    ctx.stroke();
+                }
             }
 
             ctx.restore();
