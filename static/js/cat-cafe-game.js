@@ -183,17 +183,27 @@
         game.canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
         game.canvas.addEventListener('touchend', handlePointerUp);
 
-        document.querySelectorAll('.color-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                game.wallColor = e.target.dataset.color;
-                game.scratches = [];
-                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-            });
-        });
+        // Color picker functionality
+        const colorPickerBtn = document.getElementById('colorPickerBtn');
+        const colorInput = document.getElementById('wallColorPicker');
 
-        const firstColorBtn = document.querySelector('.color-btn');
-        if (firstColorBtn) firstColorBtn.classList.add('active');
+        if (colorPickerBtn && colorInput) {
+            // When button is clicked, open the color picker
+            colorPickerBtn.addEventListener('click', () => {
+                colorInput.click();
+            });
+
+            // When color is selected, update wall color
+            colorInput.addEventListener('input', (e) => {
+                game.wallColor = e.target.value;
+                game.scratches = []; // Clear scratches when color changes
+            });
+
+            // Also handle change event for better compatibility
+            colorInput.addEventListener('change', (e) => {
+                game.wallColor = e.target.value;
+            });
+        }
     }
 
     function getObjectAtPosition(screenX, screenY) {

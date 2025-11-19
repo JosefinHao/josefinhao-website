@@ -12,17 +12,15 @@
         <p>You are now a cute cat in a cozy cafe! Click anywhere to move, drag on walls to scratch, and explore the space.</p>
     </div>
 
-    <!-- Color Palette -->
-    <div class="color-palette">
-        <div class="palette-title">Wall Color</div>
-        <div class="color-options">
-            <button class="color-btn" data-color="#f5e6d3" style="background-color: #f5e6d3;" title="Beige"></button>
-            <button class="color-btn" data-color="#ffd4e5" style="background-color: #ffd4e5;" title="Pink"></button>
-            <button class="color-btn" data-color="#d4e5ff" style="background-color: #d4e5ff;" title="Blue"></button>
-            <button class="color-btn" data-color="#e5ffd4" style="background-color: #e5ffd4;" title="Green"></button>
-            <button class="color-btn" data-color="#ffe5d4" style="background-color: #ffe5d4;" title="Peach"></button>
-            <button class="color-btn" data-color="#f0e5ff" style="background-color: #f0e5ff;" title="Lavender"></button>
-        </div>
+    <!-- Color Picker Icon -->
+    <div class="color-picker-container">
+        <button class="color-picker-btn" id="colorPickerBtn" title="Change wall color">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C10.9 2 10 2.9 10 4C10 4.7 10.4 5.4 11 5.7V7H13V5.7C13.6 5.4 14 4.7 14 4C14 2.9 13.1 2 12 2ZM12 9C8.1 9 5 12.1 5 16C5 19.9 8.1 23 12 23C15.9 23 19 19.9 19 16C19 12.1 15.9 9 12 9ZM12 21C9.2 21 7 18.8 7 16C7 13.2 9.2 11 12 11C14.8 11 17 13.2 17 16C17 18.8 14.8 21 12 21Z" fill="currentColor"/>
+                <circle cx="12" cy="16" r="2" fill="currentColor"/>
+            </svg>
+        </button>
+        <input type="color" id="wallColorPicker" class="color-input" value="#f5e6d3">
     </div>
 
     <!-- Main Canvas -->
