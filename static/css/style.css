@@ -3353,11 +3353,76 @@ body.dark-theme .floating-formula {
     font-size: 1.1rem;
 }
 
-/* Game Icons */
-.game-icons-left {
+/* Food Bowl Container (Left Side) */
+.food-bowl-container {
     position: absolute;
     top: 20px;
     left: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.food-bowl-btn {
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 152, 0, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    transition: all 0.3s ease;
+    color: #ff9800;
+}
+
+.food-bowl-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+    background: rgba(255, 255, 255, 1);
+}
+
+.food-bowl-btn:active {
+    transform: scale(0.95);
+}
+
+.points-display {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.points-label {
+    font-size: 0.7rem;
+    color: #5f7c8a;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.points-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* Game Icons (Right Side) */
+.game-icons-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     z-index: 100;
     display: flex;
     flex-direction: column;
@@ -4198,17 +4263,41 @@ body.dark-theme .floating-formula {
     border: 3px solid rgba(255, 255, 255, 0.8);
 }
 
+/* Message Display */
+.cafe-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(102, 126, 234, 0.95);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    text-align: center;
+    max-width: 80%;
+}
+
 /* Instructions */
 .cafe-instructions {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
+    text-align: center;
     margin-top: 1.5rem;
     padding: 1rem;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 12px;
     backdrop-filter: blur(10px);
+}
+
+.cafe-instructions p {
+    font-size: 0.95rem;
+    color: #5f7c8a;
+    margin: 0;
 }
 
 .instruction-item {
