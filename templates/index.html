@@ -1,8 +1,8 @@
-{% extends "base.html" %}
+{% if not spa_mode %}{% extends "base.html" %}
 
 {% block title %}Josefin Hao - Home{% endblock %}
 
-{% block content %}
+{% block content %}{% endif %}
 <div class="home-layout">
     <!-- Left Sidebar: Profile Section -->
     <aside class="profile-section">
@@ -17,18 +17,177 @@
 
     <!-- Right Side: Main Content Area -->
     <main class="main-content">
-        <div class="content-placeholder">
-            <h3>Featured Content</h3>
-            <p>This area is reserved for featured projects, blog posts, or announcements.</p>
-        </div>
+        <!-- Featured Projects Carousel -->
+        <div class="featured-carousel-container">
+            <div class="carousel-wrapper">
+                <button class="carousel-nav carousel-nav-prev" aria-label="Previous project">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
 
-        <div class="content-placeholder">
-            <h3>Recent Work</h3>
-            <ul class="project-list">
-                <li><strong>Multi-Agent Data Analytics:</strong> Advanced multi-agent systems for data exploration, causal inference, and predictive modeling</li>
-                <li><strong>GPT-Backed Financial Advisor:</strong> React + Flask application with personalized financial planning tools</li>
-                <li><strong>Domain-Specific AI Models:</strong> Training and fine-tuning specialized AI models for enhanced contextual understanding</li>
-            </ul>
+                <div class="carousel-track-container">
+                    <div class="carousel-track">
+                        <!-- Slide 1: Multi-Agent Data Analytics -->
+                        <div class="carousel-slide active">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Multi-Agent Data Analytics</h4>
+                                    <span class="carousel-badge">Current Project</span>
+                                </div>
+                                <p class="carousel-tagline">Agentic AI workflows to automate data science tasks</p>
+                                <p class="carousel-description">Prototyping multi-agent systems that coordinate intelligent workflows to clean data, perform exploratory analysis, uncover causal relationships, and build predictive models across complex datasets.</p>
+                                <div class="carousel-tech">
+                                    <strong>Tech Stack:</strong> LangChain, LangGraph, Python, scikit-learn, PyTorch, Pandas, Polars
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2: Financial Advisor -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Financial Advisor</h4>
+                                    <span class="carousel-badge">Current Project</span>
+                                </div>
+                                <p class="carousel-tagline">Personalized financial guidance and practical tools</p>
+                                <p class="carousel-description">Full-featured financial planning application with mortgage calculator, retirement planner, network calculator, goal tracking, document analysis, payment reminders, and conversation management.</p>
+                                <div class="carousel-tech">
+                                    <strong>Tech Stack:</strong> React, Flask, OpenAI, Python
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3: Autonomous AI Assistant -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Autonomous AI Assistant</h4>
+                                    <span class="carousel-badge carousel-badge-langgraph">LangGraph</span>
+                                </div>
+                                <p class="carousel-tagline">Autonomous task completion with worker-evaluator architecture</p>
+                                <p class="carousel-description">Developed an autonomous AI assistant system using LangGraph and LangChain that iteratively completes user-defined tasks through a worker-evaluator architecture.</p>
+                                <div class="carousel-tech">
+                                    <strong>Integrated Tools:</strong> Playwright, Web Search APIs, Python execution, File management, Gradio interface
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4: Engineering Team -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Engineering Team</h4>
+                                    <span class="carousel-badge carousel-badge-crewai">CrewAI</span>
+                                </div>
+                                <p class="carousel-tagline">Multi-agent collaborative development system</p>
+                                <p class="carousel-description">Multi-agent team including engineering lead, backend engineer, frontend engineer, and test engineer that collaboratively designs, codes, and tests according to user requirements.</p>
+                                <div class="carousel-tech">
+                                    <strong>Agents:</strong> Engineering Lead, Backend Dev, Frontend Dev, Test Engineer
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5: Deep Research Agent -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Deep Research Agent</h4>
+                                    <span class="carousel-badge carousel-badge-openai">OpenAI SDK</span>
+                                </div>
+                                <p class="carousel-tagline">Comprehensive research with automated reporting</p>
+                                <p class="carousel-description">Takes user queries, plans multiple related searches, executes them concurrently, writes comprehensive reports, and emails the results automatically.</p>
+                                <div class="carousel-tech">
+                                    <strong>Features:</strong> Multi-query planning, Concurrent execution, Report generation, Email delivery
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 6: SDR Agent -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>SDR Agent</h4>
+                                    <span class="carousel-badge carousel-badge-openai">OpenAI SDK</span>
+                                </div>
+                                <p class="carousel-tagline">Intelligent sales email generation and delivery</p>
+                                <p class="carousel-description">Generates multiple sales emails in various tones, uses AI to select the most effective one based on the context, then formats and sends to specified email addresses automatically.</p>
+                                <div class="carousel-tech">
+                                    <strong>Features:</strong> Multi-tone generation, AI-powered selection, Email automation, Personalization
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 7: Stock Picker -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Stock Picker</h4>
+                                    <span class="carousel-badge carousel-badge-crewai">CrewAI</span>
+                                </div>
+                                <p class="carousel-tagline">AI-powered investment opportunity identification</p>
+                                <p class="carousel-description">Multi-agent system that identifies trending companies, performs comprehensive research on market position and financials, and selects the best investment opportunities based on data-driven analysis.</p>
+                                <div class="carousel-tech">
+                                    <strong>Capabilities:</strong> Trend analysis, Financial research, Investment scoring, Risk assessment
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 8: Trading Simulation Platform -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Trading Simulation Platform</h4>
+                                    <span class="carousel-badge carousel-badge-crewai">CrewAI</span>
+                                </div>
+                                <p class="carousel-tagline">Complete trading system built by AI agents</p>
+                                <p class="carousel-description">A comprehensive trading simulation system built entirely by the Engineering Team multi-agent system. Demonstrates the capability of AI agents to collaboratively design, develop, and test complex applications from requirements.</p>
+                                <div class="carousel-tech">
+                                    <strong>Built By:</strong> CrewAI Engineering Team (Lead, Backend, Frontend, Test Engineer agents)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 9: Financial Researcher -->
+                        <div class="carousel-slide">
+                            <div class="carousel-slide-content">
+                                <div class="carousel-slide-header">
+                                    <h4>Financial Researcher</h4>
+                                    <span class="carousel-badge carousel-badge-crewai">CrewAI</span>
+                                </div>
+                                <p class="carousel-tagline">Comprehensive topic analysis and reporting</p>
+                                <p class="carousel-description">Research crew system for comprehensive financial topic analysis and reporting. Uses Serper for web search to gather current market data, analyze trends, and generate detailed research reports.</p>
+                                <div class="carousel-tech">
+                                    <strong>Features:</strong> Web search integration (Serper), Market analysis, Report generation, Data synthesis
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-nav carousel-nav-next" aria-label="Next project">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators">
+                <button class="carousel-indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+                <button class="carousel-indicator" data-slide="1" aria-label="Go to slide 2"></button>
+                <button class="carousel-indicator" data-slide="2" aria-label="Go to slide 3"></button>
+                <button class="carousel-indicator" data-slide="3" aria-label="Go to slide 4"></button>
+                <button class="carousel-indicator" data-slide="4" aria-label="Go to slide 5"></button>
+                <button class="carousel-indicator" data-slide="5" aria-label="Go to slide 6"></button>
+                <button class="carousel-indicator" data-slide="6" aria-label="Go to slide 7"></button>
+                <button class="carousel-indicator" data-slide="7" aria-label="Go to slide 8"></button>
+                <button class="carousel-indicator" data-slide="8" aria-label="Go to slide 9"></button>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="/projects" class="btn" style="display: inline-block;">View All Projects</a>
+            </div>
         </div>
 
         <div class="content-placeholder">
@@ -37,4 +196,8 @@
         </div>
     </main>
 </div>
-{% endblock %}
+{% if not spa_mode %}{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+{% endblock %}{% endif %}

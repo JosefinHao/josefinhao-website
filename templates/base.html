@@ -112,17 +112,20 @@
 
     <!-- Main Content Container -->
     <div class="main-container">
-        {% block flash_messages %}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% endblock %}
+        <!-- SPA Content Wrapper - Content inside this div will be swapped during navigation -->
+        <div id="spa-content">
+            {% block flash_messages %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% endblock %}
 
-        {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
     </div>
 
     <!-- AI Chat Widget -->
@@ -171,6 +174,8 @@
     <script src="{{ url_for('static', filename='js/floating-formulas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat-widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
+    <!-- SPA Router - enables navigation without page reloads -->
+    <script src="{{ url_for('static', filename='js/spa-router.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
