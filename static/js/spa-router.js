@@ -8,6 +8,7 @@
 
     // Configuration
     const CONTENT_CONTAINER_ID = 'spa-content';
+    const MODALS_CONTAINER_ID = 'spa-modals';
 
     // Track current page to avoid redundant loads
     let currentPath = window.location.pathname;
@@ -118,6 +119,10 @@
                 throw new Error('Content container not found in response');
             }
 
+            // Extract the modals (if any)
+            const newModals = doc.querySelector(`#${MODALS_CONTAINER_ID}`);
+            const modalsContainer = document.getElementById(MODALS_CONTAINER_ID);
+
             // Extract the title
             const newTitle = doc.querySelector('title');
             if (newTitle) {
@@ -129,6 +134,14 @@
 
             // Update the content instantly
             container.innerHTML = newContent.innerHTML;
+
+            // Update the modals (if both containers exist)
+            if (modalsContainer && newModals) {
+                modalsContainer.innerHTML = newModals.innerHTML;
+            } else if (modalsContainer) {
+                // Clear modals if new page has none
+                modalsContainer.innerHTML = '';
+            }
 
             // Update body data-page attribute
             if (newBodyPage) {
