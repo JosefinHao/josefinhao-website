@@ -1,8 +1,8 @@
-{% if not spa_mode %}{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Josefin Hao - Home{% endblock %}
 
-{% block content %}{% endif %}
+{% block content %}
 <div class="home-layout">
     <!-- Left Sidebar: Profile Section -->
     <aside class="profile-section">
@@ -196,8 +196,8 @@
         </div>
     </main>
 </div>
-{% if not spa_mode %}{% endblock %}
+{% endblock %}
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
-{% endblock %}{% endif %}
+{% endblock %}
