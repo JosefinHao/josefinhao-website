@@ -1464,8 +1464,8 @@
             wand.style.display = 'block';
             wandGame.wandVisible = true;
 
-            // Hide wand after a short time (400ms to 700ms)
-            const visibleTime = 400 + Math.random() * 300;
+            // Hide wand after a reasonable time (1200ms to 1800ms)
+            const visibleTime = 1200 + Math.random() * 600;
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
