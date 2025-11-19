@@ -106,6 +106,16 @@ class ContactForm(FlaskForm):
 # HELPER FUNCTIONS
 # ============================================
 
+def is_spa_request():
+    """
+    Check if the request is from the SPA router (AJAX request)
+    Returns True if this is an SPA/AJAX request, False otherwise
+    """
+    return (
+        request.headers.get('X-Requested-With') == 'XMLHttpRequest' or
+        request.headers.get('X-SPA-Request') == 'true'
+    )
+
 def send_contact_notification(name, email, subject, message):
     """
     Send email notification when someone submits the contact form

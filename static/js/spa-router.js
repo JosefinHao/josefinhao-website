@@ -228,77 +228,25 @@
      * Initialize page-specific JavaScript after content swap
      */
     function initializePageScripts(path) {
-        // Extract and execute scripts from the new content
-        const newContentScripts = extractPageScripts(path);
-
         // Re-initialize carousel on homepage
         if (path === '/') {
-            // Dynamically load carousel.js if not already loaded
-            loadScriptIfNeeded('/static/js/carousel.js').then(() => {
-                if (window.initCarousel && typeof window.initCarousel === 'function') {
-                    window.initCarousel();
-                    console.log('Carousel reinitialized');
-                }
-            });
+            // Carousel script is already loaded, just reinitialize
+            if (window.initCarousel && typeof window.initCarousel === 'function') {
+                setTimeout(() => window.initCarousel(), 50);
+            }
         }
 
-        // Re-initialize games scripts on games page
+        // Dispatch event for games to initialize
         if (path === '/games') {
-            // Load all game scripts
-            const gameScripts = [
-                '/static/js/typing-game.js',
-                '/static/js/guess-output-game.js',
-                '/static/js/bigo-game.js',
-                '/static/js/neural-network-game.js',
-                '/static/js/blockchain-game.js'
-            ];
-
-            Promise.all(gameScripts.map(src => loadScriptIfNeeded(src))).then(() => {
-                console.log('Game scripts loaded');
-                // Dispatch event for games to initialize
+            setTimeout(() => {
                 const event = new CustomEvent('spa-page-loaded', {
                     detail: { path: path }
                 });
                 document.dispatchEvent(event);
-            });
+            }, 50);
         }
 
-        // Re-initialize contact form validation if needed
-        if (path === '/contact') {
-            // Contact form uses Flask-WTF which handles its own validation
-            // No additional initialization needed
-        }
-    }
-
-    /**
-     * Extract page-specific scripts from path
-     */
-    function extractPageScripts(path) {
-        // This would extract script tags from extra_js block if needed
-        // For now, we handle it in initializePageScripts directly
-        return [];
-    }
-
-    /**
-     * Load a script dynamically if not already loaded
-     */
-    function loadScriptIfNeeded(src) {
-        return new Promise((resolve, reject) => {
-            // Check if script is already loaded
-            const existingScript = document.querySelector(`script[src="${src}"]`);
-            if (existingScript) {
-                // Script already loaded, just resolve
-                resolve();
-                return;
-            }
-
-            // Create and load the script
-            const script = document.createElement('script');
-            script.src = src;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-            document.body.appendChild(script);
-        });
+        // No special initialization needed for other pages
     }
 
     // Wait for DOM to be ready before initializing
