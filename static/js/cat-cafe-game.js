@@ -1134,8 +1134,13 @@
         wand.style.display = 'none';
         wandGame.wandVisible = false;
 
-        // Random delay before showing next wand (300ms to 800ms)
-        const delay = 300 + Math.random() * 500;
+        // Difficulty progression: game gets faster as time goes on
+        const timeElapsed = 30 - wandGame.timeLeft;
+        const speedMultiplier = Math.max(0.5, 1 - (timeElapsed / 60)); // Slows down in beginning, speeds up over time
+
+        // Random delay before showing next wand (starts at 800-1500ms, gets faster)
+        const baseDelay = 800 + Math.random() * 700;
+        const delay = baseDelay * speedMultiplier;
 
         wandGame.wandTimeout = setTimeout(() => {
             if (!wandGame.isPlaying) return;
@@ -1169,8 +1174,10 @@
             wand.style.display = 'block';
             wandGame.wandVisible = true;
 
-            // Hide wand after a reasonable time (1200ms to 1800ms)
-            const visibleTime = 1200 + Math.random() * 600;
+            // Hide wand after a reasonable time (starts at 2000-2800ms, gets shorter)
+            // Wands stay visible longer at the beginning for easier gameplay
+            const baseVisibleTime = 2000 + Math.random() * 800;
+            const visibleTime = baseVisibleTime * Math.max(0.6, speedMultiplier);
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
