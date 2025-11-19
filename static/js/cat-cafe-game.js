@@ -1706,7 +1706,7 @@
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 1800); // Start with slower spawn rate
+        }, 2500); // Start with slower spawn rate
 
         // Start game loop
         yarnGameLoop();
@@ -1725,9 +1725,9 @@
             rotationSpeed: (Math.random() - 0.5) * 0.2
         };
 
-        // Slower initial speed with gradual difficulty increase
-        const baseSpeed = 0.8 + Math.random() * 0.7; // Start slow: 0.8-1.5
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
+        // Much slower initial speed with gradual difficulty increase
+        const baseSpeed = 0.3 + Math.random() * 0.3; // Start very slow: 0.3-0.6
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.12; // Gradual 12% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         if (spawnType < 0.5) {
@@ -1735,19 +1735,19 @@
             ball.x = Math.random() * (canvas.width - 60) + 30;
             ball.y = -ball.radius;
             ball.vy = speed;
-            ball.vx = (Math.random() - 0.5) * 2;
+            ball.vx = (Math.random() - 0.5) * 1; // Reduced horizontal movement
         } else if (spawnType < 0.75) {
             // Spawn from left (25% chance)
             ball.x = -ball.radius;
             ball.y = Math.random() * (canvas.height * 0.3);
-            ball.vx = speed;
-            ball.vy = speed * 0.5;
+            ball.vx = speed * 0.8; // Slower horizontal movement
+            ball.vy = speed * 0.4; // Slower downward movement
         } else {
             // Spawn from right (25% chance)
             ball.x = canvas.width + ball.radius;
             ball.y = Math.random() * (canvas.height * 0.3);
-            ball.vx = -speed;
-            ball.vy = speed * 0.5;
+            ball.vx = -speed * 0.8; // Slower horizontal movement
+            ball.vy = speed * 0.4; // Slower downward movement
         }
 
         yarnGame.balls.push(ball);
@@ -1778,7 +1778,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(600, 1800 - yarnGame.difficulty * 100);
+                        const newInterval = Math.max(1000, 2500 - yarnGame.difficulty * 120);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -2046,8 +2046,8 @@
         melodyGame.playerPattern = [];
         melodyGame.currentStep = 0;
 
-        // Add new random toy to pattern
-        melodyGame.pattern.push(Math.floor(Math.random() * 4));
+        // Generate completely new random pattern (length increases with round)
+        melodyGame.pattern = Array.from({ length: 3 + melodyGame.round }, () => Math.floor(Math.random() * 4));
 
         // Show pattern
         showPattern();
