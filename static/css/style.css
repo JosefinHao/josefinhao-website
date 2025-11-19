@@ -3664,24 +3664,35 @@ body.dark-theme .floating-formula {
 
 .cat-paw {
     position: absolute;
-    bottom: 20px;
+    bottom: -20px;
     left: 50%;
-    transform: translate(-50%, 0);
-    width: 120px;
-    height: 150px;
+    transform: translate(-50%, 0) rotate(0deg);
+    width: 100px;
+    height: 180px;
     background-image: url('https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=300&h=400&fit=crop&q=80');
     background-size: cover;
-    background-position: center;
+    background-position: center top;
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     opacity: 0;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.1s ease-out, opacity 0.3s ease;
     transform-origin: bottom center;
     z-index: 100;
+    pointer-events: none;
 }
 
-.cat-paw.reaching {
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+.cat-paw.hitting {
+    animation: pawHit 0.2s ease;
+}
+
+@keyframes pawHit {
+    0%, 100% {
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+        transform: translate(-50%, -5px);
+    }
 }
 
 /* Hide the old paw elements */

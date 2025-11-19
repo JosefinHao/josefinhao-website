@@ -1292,12 +1292,8 @@
         wandTimeout: null,
         hideTimeout: null,
         gameInterval: null,
-        currentPosition: -1,
-        positions: [
-            { left: '10%', top: '60px' },      // left position
-            { left: '50%', top: '60px', transform: 'translateX(-50%)' },  // middle
-            { right: '10%', top: '60px' }      // right position
-        ]
+        mouseX: 0,
+        mouseY: 0
     };
 
     function initWandGame() {
@@ -1306,6 +1302,7 @@
         const wandGameClose = document.getElementById('wandGameClose');
         const wandGameStart = document.getElementById('wandGameStart');
         const wand = document.getElementById('wand');
+        const wandGameArea = document.getElementById('wandGameArea');
 
         if (!wandGameBtn || !wandGameOverlay) {
             return; // Elements not ready yet
@@ -1339,6 +1336,41 @@
         if (wand) {
             wand.addEventListener('click', hitWand);
         }
+
+        // Mouse tracking for cat paw
+        if (wandGameArea) {
+            wandGameArea.addEventListener('mousemove', (e) => {
+                if (!wandGame.isPlaying) return;
+
+                const rect = wandGameArea.getBoundingClientRect();
+                wandGame.mouseX = e.clientX - rect.left;
+                wandGame.mouseY = e.clientY - rect.top;
+                updateCatPawRotation();
+            });
+        }
+    }
+
+    function updateCatPawRotation() {
+        const catPaw = document.getElementById('catPaw');
+        if (!catPaw || !wandGame.isPlaying) return;
+
+        const gameArea = document.getElementById('wandGameArea');
+        const gameRect = gameArea.getBoundingClientRect();
+
+        // Paw anchor point at bottom center
+        const pawX = gameRect.width / 2;
+        const pawY = gameRect.height;
+
+        // Calculate angle to mouse
+        const dx = wandGame.mouseX - pawX;
+        const dy = wandGame.mouseY - pawY;
+        const angle = Math.atan2(dx, -dy) * (180 / Math.PI);
+
+        // Limit the angle to prevent unrealistic bending
+        const limitedAngle = Math.max(-60, Math.min(60, angle));
+
+        // Apply rotation
+        catPaw.style.transform = `translate(-50%, 0) rotate(${limitedAngle}deg)`;
     }
 
     function startWandGame() {
@@ -1347,6 +1379,14 @@
         wandGame.score = 0;
         wandGame.timeLeft = 30;
         wandGame.wandVisible = false;
+
+        // Show cat paw
+        const catPaw = document.getElementById('catPaw');
+        if (catPaw) {
+            catPaw.style.display = 'block';
+            catPaw.style.opacity = '1';
+            catPaw.style.transform = 'translate(-50%, 0) rotate(0deg)';
+        }
 
         // Update UI
         document.getElementById('wandScore').textContent = '0';
@@ -1372,7 +1412,8 @@
         if (!wandGame.isPlaying) return;
 
         const wand = document.getElementById('wand');
-        if (!wand) return;
+        const gameArea = document.getElementById('wandGameArea');
+        if (!wand || !gameArea) return;
 
         // Clear any existing timeouts to prevent overlapping cycles
         if (wandGame.wandTimeout) {
@@ -1394,20 +1435,32 @@
         wandGame.wandTimeout = setTimeout(() => {
             if (!wandGame.isPlaying) return;
 
-            // Choose random position (different from previous)
-            let newPosition;
-            do {
-                newPosition = Math.floor(Math.random() * 3);
-            } while (newPosition === wandGame.currentPosition && Math.random() > 0.3);
+            // Get game area dimensions
+            const gameRect = gameArea.getBoundingClientRect();
+            const wandWidth = 80;
+            const wandHeight = 80;
 
-            wandGame.currentPosition = newPosition;
-            const pos = wandGame.positions[newPosition];
+            // Generate random position anywhere in the upper area of the game
+            // Leave bottom 150px for the cat paw area
+            const minX = wandWidth / 2;
+            const maxX = gameRect.width - wandWidth / 2;
+            const minY = 40;
+            const maxY = gameRect.height - 150;
 
-            // Position the wand
-            wand.style.left = pos.left || '';
-            wand.style.right = pos.right || '';
-            wand.style.top = pos.top;
-            wand.style.transform = pos.transform || '';
+            const randomX = minX + Math.random() * (maxX - minX);
+            const randomY = minY + Math.random() * (maxY - minY);
+
+            // Clear all positioning styles first to prevent conflicts
+            wand.style.left = '';
+            wand.style.right = '';
+            wand.style.top = '';
+            wand.style.transform = '';
+            wand.style.bottom = '';
+
+            // Set new position using left/top for consistency
+            wand.style.left = randomX + 'px';
+            wand.style.top = randomY + 'px';
+            wand.style.transform = 'translate(-50%, -50%)'; // Center the wand on the position
             wand.style.display = 'block';
             wandGame.wandVisible = true;
 
@@ -1429,34 +1482,24 @@
 
         e.stopPropagation();
 
-        // Get wand position for cat paw animation
         const wand = document.getElementById('wand');
-        const wandRect = wand.getBoundingClientRect();
-        const gameArea = document.getElementById('wandGameArea');
-        const gameRect = gameArea.getBoundingClientRect();
-
-        // Calculate relative position within game area
-        const wandX = wandRect.left - gameRect.left + wandRect.width / 2;
-        const wandY = wandRect.top - gameRect.top + wandRect.height / 2;
-
-        // Animate cat paw to wand position
-        animateCatPaw(wandX, wandY);
 
         // Score!
         wandGame.score++;
         document.getElementById('wandScore').textContent = wandGame.score;
 
-        // Hide wand after paw animation starts
-        setTimeout(() => {
-            wand.style.display = 'none';
-            wandGame.wandVisible = false;
-        }, 200);
+        // Add hit effect to paw
+        const catPaw = document.getElementById('catPaw');
+        if (catPaw) {
+            catPaw.classList.add('hitting');
+            setTimeout(() => {
+                catPaw.classList.remove('hitting');
+            }, 200);
+        }
 
-        // Add hit effect
-        wand.style.animation = 'none';
-        setTimeout(() => {
-            wand.style.animation = 'wandAppear 0.2s ease';
-        }, 10);
+        // Hide wand immediately
+        wand.style.display = 'none';
+        wandGame.wandVisible = false;
 
         // Clear all timeouts and spawn next wand
         if (wandGame.wandTimeout) {
@@ -1468,42 +1511,10 @@
             wandGame.hideTimeout = null;
         }
 
-        // Wait for paw animation to complete before spawning next wand
+        // Spawn next wand quickly
         setTimeout(() => {
             spawnWand();
-        }, 400);
-    }
-
-    function animateCatPaw(targetX, targetY) {
-        const catPaw = document.getElementById('catPaw');
-        if (!catPaw) return;
-
-        // Show and position the paw
-        catPaw.style.display = 'block';
-        catPaw.style.opacity = '1';
-
-        // Calculate angle to target
-        const gameArea = document.getElementById('wandGameArea');
-        const gameRect = gameArea.getBoundingClientRect();
-        const pawStartX = gameRect.width / 2;
-        const pawStartY = gameRect.height - 50;
-
-        const dx = targetX - pawStartX;
-        const dy = targetY - pawStartY;
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-        // Apply transform to reach toward target
-        catPaw.style.transform = `translate(${dx * 0.6}px, ${dy * 0.6}px) rotate(${angle - 90}deg)`;
-        catPaw.classList.add('reaching');
-
-        // Reset paw after animation
-        setTimeout(() => {
-            catPaw.style.transform = 'translate(-50%, 0) rotate(0deg)';
-            catPaw.classList.remove('reaching');
-            setTimeout(() => {
-                catPaw.style.opacity = '0';
-            }, 200);
-        }, 300);
+        }, 100);
     }
 
     function endWandGame() {
@@ -1527,6 +1538,15 @@
         const wand = document.getElementById('wand');
         if (wand) {
             wand.style.display = 'none';
+        }
+
+        // Hide cat paw
+        const catPaw = document.getElementById('catPaw');
+        if (catPaw) {
+            catPaw.style.opacity = '0';
+            setTimeout(() => {
+                catPaw.style.display = 'none';
+            }, 300);
         }
 
         // Update UI
