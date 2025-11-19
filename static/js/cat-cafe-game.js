@@ -13,6 +13,7 @@
         width: 0,
         height: 0,
         points: 0,
+        catSize: 1, // Logical cat size (starts at 1, increases with feeding, decreases with exercise)
         catHunger: 100,
         catEnergy: 100,
         isDragging: false,
@@ -55,6 +56,30 @@
         window.removeEventListener('resize', resizeCanvas);
         game.initialized = false;
         console.log('Cat Cafe cleaned up');
+    }
+
+    function saveCatSize() {
+        try {
+            localStorage.setItem('catCafeSize', game.catSize.toString());
+        } catch (e) {
+            console.error('Failed to save cat size:', e);
+        }
+    }
+
+    function loadCatSize() {
+        try {
+            const savedSize = localStorage.getItem('catCafeSize');
+            if (savedSize) {
+                game.catSize = parseFloat(savedSize);
+                // Ensure cat size is at least 1
+                if (game.catSize < 1) {
+                    game.catSize = 1;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load cat size:', e);
+            game.catSize = 1;
+        }
     }
 
     function loadImages(callback) {
@@ -131,6 +156,9 @@
 
         game.canvas = canvas;
         game.ctx = canvas.getContext('2d');
+
+        // Load saved cat size
+        loadCatSize();
 
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -227,8 +255,9 @@
             foodBowlBtn.addEventListener('click', feedCat);
         }
 
-        // Update points display
+        // Update points and cat size display
         updatePointsDisplay();
+        updateCatSizeDisplay();
     }
 
     function updatePointsDisplay() {
@@ -238,15 +267,28 @@
         }
     }
 
+    function updateCatSizeDisplay() {
+        const catSizeDisplay = document.getElementById('catSizeDisplay');
+        if (catSizeDisplay) {
+            catSizeDisplay.textContent = game.catSize.toFixed(1);
+        }
+    }
+
     function feedCat() {
         const FOOD_COST = 10;
         if (game.points >= FOOD_COST) {
             game.points -= FOOD_COST;
             game.catHunger = Math.min(100, game.catHunger + 30);
+
+            // Increase cat size by 1 (10 points × 0.1 per point)
+            game.catSize += 1;
+            saveCatSize();
+
             updatePointsDisplay();
+            updateCatSizeDisplay();
 
             // Show feeding animation or message
-            showMessage(`Fed the cat! Hunger: ${Math.floor(game.catHunger)}%`);
+            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)} | Hunger: ${Math.floor(game.catHunger)}%`);
         } else {
             showMessage(`Need ${FOOD_COST} points to feed the cat!`);
         }
@@ -261,6 +303,14 @@
                 messageEl.style.opacity = '0';
             }, 2000);
         }
+    }
+
+    function exerciseCat(points) {
+        // Each point of exercise reduces cat size by 0.1
+        const sizeReduction = points * 0.1;
+        game.catSize = Math.max(1, game.catSize - sizeReduction);
+        saveCatSize();
+        updateCatSizeDisplay();
     }
 
     function getObjectAtPosition(x, y) {
@@ -831,7 +881,7 @@
         const ctx = game.ctx;
         const x = game.cat.x;
         const y = game.cat.y - game.cat.jumpHeight;
-        const size = game.cat.size;
+        const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow
         ctx.save();
@@ -939,7 +989,7 @@
         const ctx = game.ctx;
         const x = game.cat.x;
         const y = game.cat.y;
-        const size = game.cat.size;
+        const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow (wider for lying position)
         ctx.save();
@@ -1348,8 +1398,12 @@
 
         // Award points to main game
         game.points += wandGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(wandGame.score);
+
         updatePointsDisplay();
-        showMessage(`Earned ${wandGame.score} points from Wand Game!`);
+        showMessage(`Earned ${wandGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         // Show game over message
         setTimeout(() => {
@@ -1675,8 +1729,12 @@
 
         // Award points to main game
         game.points += yarnGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(yarnGame.score);
+
         updatePointsDisplay();
-        showMessage(`Earned ${yarnGame.score} points from Yarn Ball Bounce!`);
+        showMessage(`Earned ${yarnGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         setTimeout(() => {
             alert(`Game Over! Your score: ${yarnGame.score}`);
@@ -1946,8 +2004,12 @@
 
         // Award points to main game
         game.points += melodyGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(melodyGame.score);
+
         updatePointsDisplay();
-        showMessage(`Earned ${melodyGame.score} points from Meow Melody!`);
+        showMessage(`Earned ${melodyGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         setTimeout(() => {
             const message = completed ?
