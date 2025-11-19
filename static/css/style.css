@@ -3130,3 +3130,16 @@ body.dark-theme .floating-formula {
         padding: 0.6rem 0.8rem;
     }
 }
+
+/* ============================================ */
+/* SPA ROUTER TRANSITIONS */
+/* ============================================ */
+
+#spa-content {
+    transition: opacity 300ms ease-in-out;
+}
+
+#spa-content.spa-loading {
+    opacity: 0.5;
+    pointer-events: none;
+}

@@ -6,6 +6,9 @@
 (function() {
     'use strict';
 
+    // Make initCarousel available globally for SPA router
+    window.initCarousel = initCarousel;
+
     // Wait for DOM to be fully loaded
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initCarousel);
