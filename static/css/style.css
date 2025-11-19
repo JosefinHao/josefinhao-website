@@ -1027,7 +1027,6 @@ p {
 
 .flip-card-current:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-3px);
     box-shadow:
         0 12px 32px rgba(125, 140, 153, 0.25),
         0 6px 16px rgba(125, 140, 153, 0.2),
@@ -1059,7 +1058,6 @@ p {
 
 .flip-card-openai:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-3px);
     box-shadow:
         0 12px 32px rgba(16, 185, 129, 0.28),
         0 6px 16px rgba(16, 185, 129, 0.22),
@@ -1091,7 +1089,6 @@ p {
 
 .flip-card-crewai:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-3px);
     box-shadow:
         0 12px 32px rgba(255, 140, 66, 0.28),
         0 6px 16px rgba(255, 140, 66, 0.22),
@@ -1123,7 +1120,6 @@ p {
 
 .flip-card-langgraph:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-3px);
     box-shadow:
         0 12px 32px rgba(167, 139, 250, 0.28),
         0 6px 16px rgba(167, 139, 250, 0.22),
