@@ -12,13 +12,33 @@
         <p>You are now a cute cat in a cozy cafe! Click anywhere to move, drag on walls to scratch, and explore the space.</p>
     </div>
 
-    <!-- Wand Game Icon -->
-    <div class="wand-game-container">
-        <button class="wand-game-btn" id="wandGameBtn" title="Play Wand Game">
+    <!-- Game Icons Container -->
+    <div class="game-icons-left">
+        <!-- Wand Game Icon -->
+        <button class="game-icon-btn wand-game-btn" id="wandGameBtn" title="Play Wand Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3 3L8 8M8 8L21 21M8 8L21 3L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="19" cy="5" r="2" fill="currentColor"/>
                 <path d="M17 7L19 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+
+        <!-- Yarn Ball Game Icon -->
+        <button class="game-icon-btn yarn-game-btn" id="yarnGameBtn" title="Play Yarn Ball Bounce">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="M4 12 Q8 8, 12 12 T20 12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M12 4 Q8 8, 12 12 T12 20" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            </svg>
+        </button>
+
+        <!-- Meow Melody Game Icon -->
+        <button class="game-icon-btn melody-game-btn" id="melodyGameBtn" title="Play Meow Melody">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18V5L21 3V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/>
+                <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
             </svg>
         </button>
     </div>
@@ -43,7 +63,7 @@
         <div class="instruction-item">✨ Drag on walls to scratch</div>
         <div class="instruction-item">📦 Click boxes to interact</div>
         <div class="instruction-item">🌲 Explore cat trees and walkways</div>
-        <div class="instruction-item">🎮 Play the wand game</div>
+        <div class="instruction-item">🎮 Play 3 mini-games!</div>
     </div>
 
     <!-- Wand Mini-Game Overlay -->
@@ -95,6 +115,97 @@
             <div class="wand-leaderboard">
                 <h3>🏆 Leaderboard</h3>
                 <ol id="wandLeaderboardList">
+                    <li>No scores yet</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yarn Ball Bounce Mini-Game Overlay -->
+    <div class="yarn-game-overlay" id="yarnGameOverlay" style="display: none;">
+        <div class="yarn-game-modal">
+            <button class="yarn-game-close" id="yarnGameClose">✕</button>
+
+            <h2>🧶 Yarn Ball Bounce</h2>
+            <p class="yarn-game-instructions">Click yarn balls to bat them away! Don't let them reach the bottom!</p>
+
+            <div class="yarn-game-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="yarnScore">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Lives</span>
+                    <span class="stat-value" id="yarnLives">3</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Best</span>
+                    <span class="stat-value" id="yarnBest">0</span>
+                </div>
+            </div>
+
+            <canvas id="yarnCanvas" width="500" height="400"></canvas>
+
+            <button class="yarn-game-start" id="yarnGameStart">Start Game</button>
+
+            <div class="yarn-leaderboard">
+                <h3>🏆 Leaderboard</h3>
+                <ol id="yarnLeaderboardList">
+                    <li>No scores yet</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meow Melody Mini-Game Overlay -->
+    <div class="melody-game-overlay" id="melodyGameOverlay" style="display: none;">
+        <div class="melody-game-modal">
+            <button class="melody-game-close" id="melodyGameClose">✕</button>
+
+            <h2>🎵 Meow Melody</h2>
+            <p class="melody-game-instructions">Watch the pattern, then repeat it!</p>
+
+            <div class="melody-game-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Round</span>
+                    <span class="stat-value" id="melodyRound">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="melodyScore">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Best</span>
+                    <span class="stat-value" id="melodyBest">0</span>
+                </div>
+            </div>
+
+            <div class="melody-game-area" id="melodyGameArea">
+                <div class="melody-toys">
+                    <div class="melody-toy ball" data-toy="0" data-sound="meow1">
+                        <div class="toy-icon">🔴</div>
+                        <div class="toy-label">Ball</div>
+                    </div>
+                    <div class="melody-toy mouse" data-toy="1" data-sound="meow2">
+                        <div class="toy-icon">🐭</div>
+                        <div class="toy-label">Mouse</div>
+                    </div>
+                    <div class="melody-toy feather" data-toy="2" data-sound="meow3">
+                        <div class="toy-icon">🪶</div>
+                        <div class="toy-label">Feather</div>
+                    </div>
+                    <div class="melody-toy fish" data-toy="3" data-sound="meow4">
+                        <div class="toy-icon">🐟</div>
+                        <div class="toy-label">Fish</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="melody-game-start" id="melodyGameStart">Start Game</button>
+
+            <div class="melody-leaderboard">
+                <h3>🏆 Leaderboard</h3>
+                <ol id="melodyLeaderboardList">
                     <li>No scores yet</li>
                 </ol>
             </div>

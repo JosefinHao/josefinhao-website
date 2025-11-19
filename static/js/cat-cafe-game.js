@@ -1081,6 +1081,546 @@
     }
 
     // ============================================
+    // YARN BALL BOUNCE GAME
+    // ============================================
+
+    const yarnGame = {
+        canvas: null,
+        ctx: null,
+        isPlaying: false,
+        score: 0,
+        lives: 3,
+        balls: [],
+        animationId: null,
+        spawnInterval: null,
+        difficulty: 1
+    };
+
+    function initYarnGame() {
+        const yarnGameBtn = document.getElementById('yarnGameBtn');
+        const yarnGameOverlay = document.getElementById('yarnGameOverlay');
+        const yarnGameClose = document.getElementById('yarnGameClose');
+        const yarnGameStart = document.getElementById('yarnGameStart');
+        const yarnCanvas = document.getElementById('yarnCanvas');
+
+        if (!yarnGameBtn || !yarnGameOverlay || !yarnCanvas) {
+            return;
+        }
+
+        yarnGame.canvas = yarnCanvas;
+        yarnGame.ctx = yarnCanvas.getContext('2d');
+
+        // Open game modal
+        yarnGameBtn.addEventListener('click', () => {
+            yarnGameOverlay.style.display = 'flex';
+            loadYarnLeaderboard();
+            updateYarnBestScore();
+        });
+
+        // Close game modal
+        yarnGameClose.addEventListener('click', () => {
+            stopYarnGame();
+            yarnGameOverlay.style.display = 'none';
+        });
+
+        // Close on overlay click
+        yarnGameOverlay.addEventListener('click', (e) => {
+            if (e.target === yarnGameOverlay) {
+                stopYarnGame();
+                yarnGameOverlay.style.display = 'none';
+            }
+        });
+
+        // Start game
+        yarnGameStart.addEventListener('click', startYarnGame);
+
+        // Click on canvas
+        yarnCanvas.addEventListener('click', handleYarnClick);
+    }
+
+    function startYarnGame() {
+        yarnGame.isPlaying = true;
+        yarnGame.score = 0;
+        yarnGame.lives = 3;
+        yarnGame.balls = [];
+        yarnGame.difficulty = 1;
+
+        document.getElementById('yarnScore').textContent = '0';
+        document.getElementById('yarnLives').textContent = '3';
+        document.getElementById('yarnGameStart').disabled = true;
+        document.getElementById('yarnGameStart').textContent = 'Playing...';
+
+        // Spawn balls periodically
+        yarnGame.spawnInterval = setInterval(() => {
+            if (yarnGame.isPlaying) {
+                spawnYarnBall();
+            }
+        }, Math.max(800, 2000 - yarnGame.score * 20));
+
+        // Start game loop
+        yarnGameLoop();
+    }
+
+    function spawnYarnBall() {
+        const colors = ['#e91e63', '#9c27b0', '#3f51b5', '#ff9800', '#4caf50'];
+        const ball = {
+            x: Math.random() * (yarnGame.canvas.width - 60) + 30,
+            y: 0,
+            radius: 20 + Math.random() * 10,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vy: 2 + Math.random() * 2 + yarnGame.difficulty * 0.5,
+            vx: (Math.random() - 0.5) * 3,
+            rotation: 0,
+            rotationSpeed: (Math.random() - 0.5) * 0.2
+        };
+        yarnGame.balls.push(ball);
+    }
+
+    function handleYarnClick(e) {
+        if (!yarnGame.isPlaying) return;
+
+        const rect = yarnGame.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Check if clicked on any ball
+        for (let i = yarnGame.balls.length - 1; i >= 0; i--) {
+            const ball = yarnGame.balls[i];
+            const dist = Math.sqrt(Math.pow(x - ball.x, 2) + Math.pow(y - ball.y, 2));
+
+            if (dist < ball.radius) {
+                // Hit! Bat it away
+                ball.vy = -8 - Math.random() * 4;
+                ball.vx = (x - ball.x) * 0.3;
+                yarnGame.score++;
+                document.getElementById('yarnScore').textContent = yarnGame.score;
+
+                // Increase difficulty every 5 points
+                if (yarnGame.score % 5 === 0) {
+                    yarnGame.difficulty++;
+                }
+                break;
+            }
+        }
+    }
+
+    function yarnGameLoop() {
+        if (!yarnGame.isPlaying) return;
+
+        const ctx = yarnGame.ctx;
+        const canvas = yarnGame.canvas;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Update and draw balls
+        for (let i = yarnGame.balls.length - 1; i >= 0; i--) {
+            const ball = yarnGame.balls[i];
+
+            // Update position
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            ball.vy += 0.3; // Gravity
+            ball.rotation += ball.rotationSpeed;
+
+            // Bounce off walls
+            if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) {
+                ball.vx *= -0.8;
+                ball.x = Math.max(ball.radius, Math.min(canvas.width - ball.radius, ball.x));
+            }
+
+            // Remove if off-screen top
+            if (ball.y < -ball.radius * 2) {
+                yarnGame.balls.splice(i, 1);
+                continue;
+            }
+
+            // Check if reached bottom
+            if (ball.y > canvas.height - ball.radius && ball.vy > 0) {
+                yarnGame.balls.splice(i, 1);
+                yarnGame.lives--;
+                document.getElementById('yarnLives').textContent = yarnGame.lives;
+
+                if (yarnGame.lives <= 0) {
+                    endYarnGame();
+                    return;
+                }
+                continue;
+            }
+
+            // Draw yarn ball
+            ctx.save();
+            ctx.translate(ball.x, ball.y);
+            ctx.rotate(ball.rotation);
+
+            // Draw ball
+            ctx.fillStyle = ball.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw yarn texture
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            for (let j = 0; j < 3; j++) {
+                const angle = j * Math.PI / 3;
+                ctx.beginPath();
+                ctx.arc(0, 0, ball.radius * 0.7, angle, angle + Math.PI);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        yarnGame.animationId = requestAnimationFrame(yarnGameLoop);
+    }
+
+    function endYarnGame() {
+        yarnGame.isPlaying = false;
+
+        if (yarnGame.animationId) {
+            cancelAnimationFrame(yarnGame.animationId);
+        }
+        if (yarnGame.spawnInterval) {
+            clearInterval(yarnGame.spawnInterval);
+        }
+
+        document.getElementById('yarnGameStart').disabled = false;
+        document.getElementById('yarnGameStart').textContent = 'Play Again';
+
+        saveYarnScore(yarnGame.score);
+        loadYarnLeaderboard();
+        updateYarnBestScore();
+
+        setTimeout(() => {
+            alert(`Game Over! Your score: ${yarnGame.score}`);
+        }, 100);
+    }
+
+    function stopYarnGame() {
+        if (yarnGame.isPlaying) {
+            endYarnGame();
+        }
+    }
+
+    function saveYarnScore(score) {
+        try {
+            let scores = JSON.parse(localStorage.getItem('catYarnScores') || '[]');
+            scores.push({ score: score, date: new Date().toISOString() });
+            scores.sort((a, b) => b.score - a.score);
+            scores = scores.slice(0, 10);
+            localStorage.setItem('catYarnScores', JSON.stringify(scores));
+        } catch (e) {
+            console.error('Failed to save yarn score:', e);
+        }
+    }
+
+    function loadYarnLeaderboard() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('catYarnScores') || '[]');
+            const list = document.getElementById('yarnLeaderboardList');
+            if (!list) return;
+
+            if (scores.length === 0) {
+                list.innerHTML = '<li>No scores yet</li>';
+                return;
+            }
+
+            list.innerHTML = scores.map((entry, index) => {
+                const date = new Date(entry.date);
+                const dateStr = date.toLocaleDateString();
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                return `<li>
+                    <span>${medal} ${entry.score} points</span>
+                    <span style="font-size: 0.85rem; opacity: 0.7;">${dateStr}</span>
+                </li>`;
+            }).join('');
+        } catch (e) {
+            console.error('Failed to load yarn leaderboard:', e);
+        }
+    }
+
+    function updateYarnBestScore() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('catYarnScores') || '[]');
+            const bestScore = scores.length > 0 ? scores[0].score : 0;
+            const bestElement = document.getElementById('yarnBest');
+            if (bestElement) {
+                bestElement.textContent = bestScore;
+            }
+        } catch (e) {
+            console.error('Failed to update yarn best score:', e);
+        }
+    }
+
+    // ============================================
+    // MEOW MELODY GAME
+    // ============================================
+
+    const melodyGame = {
+        isPlaying: false,
+        round: 1,
+        score: 0,
+        pattern: [],
+        playerPattern: [],
+        isShowingPattern: false,
+        currentStep: 0
+    };
+
+    // Simple meow sounds with different pitches (using oscillator)
+    function playMeow(pitch) {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Different pitches for different toys
+            const frequencies = [392, 440, 494, 523]; // G, A, B, C
+            oscillator.frequency.value = frequencies[pitch];
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch (e) {
+            console.error('Audio playback failed:', e);
+        }
+    }
+
+    function initMelodyGame() {
+        const melodyGameBtn = document.getElementById('melodyGameBtn');
+        const melodyGameOverlay = document.getElementById('melodyGameOverlay');
+        const melodyGameClose = document.getElementById('melodyGameClose');
+        const melodyGameStart = document.getElementById('melodyGameStart');
+
+        if (!melodyGameBtn || !melodyGameOverlay) {
+            return;
+        }
+
+        // Open game modal
+        melodyGameBtn.addEventListener('click', () => {
+            melodyGameOverlay.style.display = 'flex';
+            loadMelodyLeaderboard();
+            updateMelodyBestScore();
+        });
+
+        // Close game modal
+        melodyGameClose.addEventListener('click', () => {
+            stopMelodyGame();
+            melodyGameOverlay.style.display = 'none';
+        });
+
+        // Close on overlay click
+        melodyGameOverlay.addEventListener('click', (e) => {
+            if (e.target === melodyGameOverlay) {
+                stopMelodyGame();
+                melodyGameOverlay.style.display = 'none';
+            }
+        });
+
+        // Start game
+        melodyGameStart.addEventListener('click', startMelodyGame);
+
+        // Toy click handlers
+        const toys = document.querySelectorAll('.melody-toy');
+        toys.forEach((toy, index) => {
+            toy.addEventListener('click', () => handleToyClick(index));
+        });
+    }
+
+    function startMelodyGame() {
+        melodyGame.isPlaying = true;
+        melodyGame.round = 1;
+        melodyGame.score = 0;
+        melodyGame.pattern = [];
+        melodyGame.playerPattern = [];
+
+        document.getElementById('melodyRound').textContent = '1';
+        document.getElementById('melodyScore').textContent = '0';
+        document.getElementById('melodyGameStart').disabled = true;
+        document.getElementById('melodyGameStart').textContent = 'Watch...';
+
+        // Disable toys during pattern display
+        setToysEnabled(false);
+
+        // Start first round
+        setTimeout(() => {
+            nextRound();
+        }, 1000);
+    }
+
+    function nextRound() {
+        melodyGame.playerPattern = [];
+        melodyGame.currentStep = 0;
+
+        // Add new random toy to pattern
+        melodyGame.pattern.push(Math.floor(Math.random() * 4));
+
+        // Show pattern
+        showPattern();
+    }
+
+    function showPattern() {
+        melodyGame.isShowingPattern = true;
+        setToysEnabled(false);
+
+        let delay = 0;
+        melodyGame.pattern.forEach((toyIndex, i) => {
+            setTimeout(() => {
+                highlightToy(toyIndex);
+                playMeow(toyIndex);
+            }, delay);
+            delay += 600;
+        });
+
+        // Enable player input after pattern is shown
+        setTimeout(() => {
+            melodyGame.isShowingPattern = false;
+            setToysEnabled(true);
+            document.getElementById('melodyGameStart').textContent = 'Your turn!';
+        }, delay + 200);
+    }
+
+    function highlightToy(index) {
+        const toys = document.querySelectorAll('.melody-toy');
+        const toy = toys[index];
+
+        toy.classList.add('active');
+        setTimeout(() => {
+            toy.classList.remove('active');
+        }, 400);
+    }
+
+    function handleToyClick(index) {
+        if (!melodyGame.isPlaying || melodyGame.isShowingPattern) return;
+
+        // Play sound and highlight
+        playMeow(index);
+        highlightToy(index);
+
+        // Add to player pattern
+        melodyGame.playerPattern.push(index);
+
+        // Check if correct
+        if (melodyGame.playerPattern[melodyGame.currentStep] !== melodyGame.pattern[melodyGame.currentStep]) {
+            // Wrong!
+            endMelodyGame(false);
+            return;
+        }
+
+        melodyGame.currentStep++;
+
+        // Check if pattern complete
+        if (melodyGame.currentStep === melodyGame.pattern.length) {
+            // Correct! Next round
+            melodyGame.score++;
+            melodyGame.round++;
+
+            document.getElementById('melodyScore').textContent = melodyGame.score;
+            document.getElementById('melodyRound').textContent = melodyGame.round;
+            document.getElementById('melodyGameStart').textContent = 'Correct!';
+
+            setToysEnabled(false);
+
+            setTimeout(() => {
+                document.getElementById('melodyGameStart').textContent = 'Watch...';
+                nextRound();
+            }, 1500);
+        }
+    }
+
+    function setToysEnabled(enabled) {
+        const toys = document.querySelectorAll('.melody-toy');
+        toys.forEach(toy => {
+            if (enabled) {
+                toy.classList.remove('disabled');
+            } else {
+                toy.classList.add('disabled');
+            }
+        });
+    }
+
+    function endMelodyGame(completed = true) {
+        melodyGame.isPlaying = false;
+        setToysEnabled(false);
+
+        document.getElementById('melodyGameStart').disabled = false;
+        document.getElementById('melodyGameStart').textContent = 'Play Again';
+
+        saveMelodyScore(melodyGame.score);
+        loadMelodyLeaderboard();
+        updateMelodyBestScore();
+
+        setTimeout(() => {
+            const message = completed ?
+                `Amazing! You completed ${melodyGame.score} rounds!` :
+                `Game Over! You reached round ${melodyGame.round} with ${melodyGame.score} points!`;
+            alert(message);
+        }, 100);
+    }
+
+    function stopMelodyGame() {
+        if (melodyGame.isPlaying) {
+            endMelodyGame(false);
+        }
+    }
+
+    function saveMelodyScore(score) {
+        try {
+            let scores = JSON.parse(localStorage.getItem('catMelodyScores') || '[]');
+            scores.push({ score: score, date: new Date().toISOString() });
+            scores.sort((a, b) => b.score - a.score);
+            scores = scores.slice(0, 10);
+            localStorage.setItem('catMelodyScores', JSON.stringify(scores));
+        } catch (e) {
+            console.error('Failed to save melody score:', e);
+        }
+    }
+
+    function loadMelodyLeaderboard() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('catMelodyScores') || '[]');
+            const list = document.getElementById('melodyLeaderboardList');
+            if (!list) return;
+
+            if (scores.length === 0) {
+                list.innerHTML = '<li>No scores yet</li>';
+                return;
+            }
+
+            list.innerHTML = scores.map((entry, index) => {
+                const date = new Date(entry.date);
+                const dateStr = date.toLocaleDateString();
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                return `<li>
+                    <span>${medal} ${entry.score} rounds</span>
+                    <span style="font-size: 0.85rem; opacity: 0.7;">${dateStr}</span>
+                </li>`;
+            }).join('');
+        } catch (e) {
+            console.error('Failed to load melody leaderboard:', e);
+        }
+    }
+
+    function updateMelodyBestScore() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('catMelodyScores') || '[]');
+            const bestScore = scores.length > 0 ? scores[0].score : 0;
+            const bestElement = document.getElementById('melodyBest');
+            if (bestElement) {
+                bestElement.textContent = bestScore;
+            }
+        } catch (e) {
+            console.error('Failed to update melody best score:', e);
+        }
+    }
+
+    // ============================================
     // INITIALIZATION
     // ============================================
 
@@ -1090,11 +1630,15 @@
             document.addEventListener('DOMContentLoaded', () => {
                 init();
                 initWandGame();
+                initYarnGame();
+                initMelodyGame();
             });
         } else {
             setTimeout(() => {
                 init();
                 initWandGame();
+                initYarnGame();
+                initMelodyGame();
             }, 50);
         }
     }
@@ -1105,6 +1649,8 @@
             setTimeout(() => {
                 init();
                 initWandGame();
+                initYarnGame();
+                initMelodyGame();
             }, 150);
         }
     });
