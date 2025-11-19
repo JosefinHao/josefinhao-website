@@ -3323,3 +3323,180 @@ body.dark-theme .floating-formula {
     opacity: 0.5;
     pointer-events: none;
 }
+
+/* ============================================ */
+/* CAT CAFE INTERACTIVE PAGE */
+/* ============================================ */
+
+.cat-cafe-container {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+}
+
+.cat-cafe-intro {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.cat-cafe-intro h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cat-cafe-intro p {
+    color: #5f7c8a;
+    font-size: 1.1rem;
+}
+
+/* Color Palette */
+.color-palette {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.palette-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.color-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.color-btn {
+    width: 35px;
+    height: 35px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.color-btn.active {
+    border: 3px solid #667eea;
+    box-shadow: 0 0 12px rgba(102, 126, 234, 0.5);
+    transform: scale(1.15);
+}
+
+.color-btn.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Main Canvas */
+#cat-cafe-canvas {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: #f5e6d3;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Instructions */
+.cafe-instructions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.instruction-item {
+    font-size: 0.95rem;
+    color: #5f7c8a;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s ease;
+}
+
+.instruction-item:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design for Cat Cafe */
+@media (max-width: 768px) {
+    .cat-cafe-intro h1 {
+        font-size: 2rem;
+    }
+
+    .cat-cafe-intro p {
+        font-size: 1rem;
+    }
+
+    .color-palette {
+        top: 10px;
+        right: 10px;
+        padding: 0.75rem;
+    }
+
+    .color-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .color-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .cafe-instructions {
+        gap: 0.5rem;
+    }
+
+    .instruction-item {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    #cat-cafe-canvas {
+        border-width: 2px;
+    }
+}

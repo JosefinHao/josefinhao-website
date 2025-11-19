@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Cat Cafe - Josefin Hao{% endblock %}
+
+{% block body_attrs %} data-page="cat-cafe"{% endblock %}
+
+{% block content %}
+<div class="cat-cafe-container">
+    <!-- Welcome message -->
+    <div class="cat-cafe-intro">
+        <h1>🐱 Welcome to the Cat Cafe</h1>
+        <p>You are now a cute cat in a cozy cafe! Click anywhere to move, drag on walls to scratch, and explore the space.</p>
+    </div>
+
+    <!-- Color Palette -->
+    <div class="color-palette">
+        <div class="palette-title">Wall Color</div>
+        <div class="color-options">
+            <button class="color-btn" data-color="#f5e6d3" style="background-color: #f5e6d3;" title="Beige"></button>
+            <button class="color-btn" data-color="#ffd4e5" style="background-color: #ffd4e5;" title="Pink"></button>
+            <button class="color-btn" data-color="#d4e5ff" style="background-color: #d4e5ff;" title="Blue"></button>
+            <button class="color-btn" data-color="#e5ffd4" style="background-color: #e5ffd4;" title="Green"></button>
+            <button class="color-btn" data-color="#ffe5d4" style="background-color: #ffe5d4;" title="Peach"></button>
+            <button class="color-btn" data-color="#f0e5ff" style="background-color: #f0e5ff;" title="Lavender"></button>
+        </div>
+    </div>
+
+    <!-- Main Canvas -->
+    <canvas id="cat-cafe-canvas"></canvas>
+
+    <!-- Instructions -->
+    <div class="cafe-instructions">
+        <div class="instruction-item">🖱️ Click to move</div>
+        <div class="instruction-item">✨ Drag on walls to scratch</div>
+        <div class="instruction-item">📦 Click boxes to interact</div>
+        <div class="instruction-item">🌲 Explore cat trees and walkways</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cat-cafe-game.js') }}"></script>
+{% endblock %}
