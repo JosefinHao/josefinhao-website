@@ -1012,134 +1012,132 @@ p {
 
 /* Color-code individual project cards by category */
 
-/* Current Projects - Pure Holographic Cyan with Intense Glow */
+/* Current Projects - Steel Blue with Subtle Glow */
 .flip-card-current .flip-card-front {
-    background: linear-gradient(135deg, #cceeff 0%, #b3e0ff 50%, #99d6ff 100%);
+    background: linear-gradient(135deg, #f0f5fa 0%, #e8eff7 50%, #e0ebf5 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #00d4ff;
+    border: 3px solid #7d8c99;
     box-shadow:
-        0 8px 32px rgba(0, 212, 255, 0.35),
-        0 4px 16px rgba(0, 153, 255, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(125, 140, 153, 0.15),
+        0 2px 8px rgba(125, 140, 153, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     transition: all 0.4s ease;
 }
 
 .flip-card-current:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow:
-        0 20px 60px rgba(0, 212, 255, 0.5),
-        0 12px 40px rgba(0, 153, 255, 0.4),
-        0 0 40px rgba(0, 255, 255, 0.3),
+        0 12px 32px rgba(125, 140, 153, 0.25),
+        0 6px 16px rgba(125, 140, 153, 0.2),
+        0 0 20px rgba(125, 140, 153, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .flip-card-current .flip-card-back {
-    background: linear-gradient(135deg, #b3e0ff 0%, #80ccff 50%, #99d6ff 100%);
-    border: 3px solid #0099ff;
+    background: linear-gradient(135deg, #e8eff7 0%, #dde7f2 50%, #e0ebf5 100%);
+    border: 3px solid #7d8c99;
     box-shadow:
-        0 8px 32px rgba(0, 153, 255, 0.4),
-        0 4px 16px rgba(0, 212, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(125, 140, 153, 0.2),
+        0 2px 8px rgba(125, 140, 153, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* OpenAI Agents SDK - Cyan with Emerald Tech-Green Intense Glow */
+/* OpenAI Agents SDK - Fresh Green with Subtle Glow */
 .flip-card-openai .flip-card-front {
-    background: linear-gradient(135deg, #ccf5ff 0%, #b3f0e6 50%, #99ebdc 100%);
+    background: linear-gradient(135deg, #f0faf5 0%, #e6f5ed 50%, #ddf0e6 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #00ffcc;
+    border: 3px solid #10b981;
     box-shadow:
-        0 8px 32px rgba(0, 255, 204, 0.4),
-        0 4px 16px rgba(0, 255, 204, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(16, 185, 129, 0.18),
+        0 2px 8px rgba(16, 185, 129, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     transition: all 0.4s ease;
 }
 
 .flip-card-openai:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow:
-        0 20px 60px rgba(0, 255, 204, 0.55),
-        0 12px 40px rgba(0, 255, 204, 0.45),
-        0 0 40px rgba(110, 255, 249, 0.35),
+        0 12px 32px rgba(16, 185, 129, 0.28),
+        0 6px 16px rgba(16, 185, 129, 0.22),
+        0 0 20px rgba(16, 185, 129, 0.18),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .flip-card-openai .flip-card-back {
-    background: linear-gradient(135deg, #b3f0e6 0%, #80e6d9 50%, #99ebdc 100%);
-    border: 3px solid #00ffcc;
+    background: linear-gradient(135deg, #e6f5ed 0%, #d9f0e3 50%, #ddf0e6 100%);
+    border: 3px solid #10b981;
     box-shadow:
-        0 8px 32px rgba(0, 255, 204, 0.45),
-        0 4px 16px rgba(0, 255, 204, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(16, 185, 129, 0.22),
+        0 2px 8px rgba(16, 185, 129, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* CrewAI - Cyan with Light Cyan Intense Glow */
+/* CrewAI - Warm Sunset with Subtle Glow */
 .flip-card-crewai .flip-card-front {
-    background: linear-gradient(135deg, #e6f7ff 0%, #d4edff 50%, #c2e3ff 100%);
+    background: linear-gradient(135deg, #fff9f5 0%, #fff3eb 50%, #ffede0 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #4dd0e1;
+    border: 3px solid #ff8c42;
     box-shadow:
-        0 8px 32px rgba(77, 208, 225, 0.4),
-        0 4px 16px rgba(77, 208, 225, 0.3),
-        0 0 20px rgba(0, 184, 212, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(255, 140, 66, 0.18),
+        0 2px 8px rgba(255, 140, 66, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     transition: all 0.4s ease;
 }
 
 .flip-card-crewai:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow:
-        0 20px 60px rgba(77, 208, 225, 0.55),
-        0 12px 40px rgba(0, 184, 212, 0.45),
-        0 0 40px rgba(77, 208, 225, 0.35),
+        0 12px 32px rgba(255, 140, 66, 0.28),
+        0 6px 16px rgba(255, 140, 66, 0.22),
+        0 0 20px rgba(255, 140, 66, 0.18),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .flip-card-crewai .flip-card-back {
-    background: linear-gradient(135deg, #d4edff 0%, #b3dff5 50%, #c2e3ff 100%);
-    border: 3px solid #00b8d4;
+    background: linear-gradient(135deg, #fff3eb 0%, #ffe9d9 50%, #ffede0 100%);
+    border: 3px solid #ff8c42;
     box-shadow:
-        0 8px 32px rgba(0, 184, 212, 0.45),
-        0 4px 16px rgba(77, 208, 225, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(255, 140, 66, 0.22),
+        0 2px 8px rgba(255, 140, 66, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* LangGraph - Cyan with Electric Purple Intense Glow */
+/* LangGraph - Bright Purple with Subtle Glow */
 .flip-card-langgraph .flip-card-front {
-    background: linear-gradient(135deg, #e6ebff 0%, #d4ddff 50%, #c2d1ff 100%);
+    background: linear-gradient(135deg, #faf8ff 0%, #f3f0ff 50%, #ede8ff 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #667eea;
+    border: 3px solid #a78bfa;
     box-shadow:
-        0 8px 32px rgba(102, 126, 234, 0.4),
-        0 4px 16px rgba(102, 126, 234, 0.3),
-        0 0 20px rgba(102, 126, 234, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(167, 139, 250, 0.18),
+        0 2px 8px rgba(167, 139, 250, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     transition: all 0.4s ease;
 }
 
 .flip-card-langgraph:hover .flip-card-front {
     background-position: 100% 50%;
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow:
-        0 20px 60px rgba(102, 126, 234, 0.55),
-        0 12px 40px rgba(102, 126, 234, 0.45),
-        0 0 40px rgba(138, 155, 255, 0.35),
+        0 12px 32px rgba(167, 139, 250, 0.28),
+        0 6px 16px rgba(167, 139, 250, 0.22),
+        0 0 20px rgba(167, 139, 250, 0.18),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .flip-card-langgraph .flip-card-back {
-    background: linear-gradient(135deg, #d4ddff 0%, #b3c2ff 50%, #c2d1ff 100%);
-    border: 3px solid #667eea;
+    background: linear-gradient(135deg, #f3f0ff 0%, #ebe5ff 50%, #ede8ff 100%);
+    border: 3px solid #a78bfa;
     box-shadow:
-        0 8px 32px rgba(102, 126, 234, 0.45),
-        0 4px 16px rgba(102, 126, 234, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        0 4px 16px rgba(167, 139, 250, 0.22),
+        0 2px 8px rgba(167, 139, 250, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ============================================ */
