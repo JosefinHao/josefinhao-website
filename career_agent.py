@@ -124,6 +124,73 @@ Keep responses concise (2-4 sentences), friendly, professional. Emphasize multi-
             logger.error(f"Error in Career Agent: {str(e)}", exc_info=True)
             return self._fallback_response(user_message)
 
+    def chat_stream(self, user_message: str, reset_history: bool = False):
+        """
+        Process a user message and stream the AI-generated response.
+
+        Args:
+            user_message: The user's question or message
+            reset_history: If True, clears conversation history
+
+        Yields:
+            Chunks of the AI-generated response as they arrive
+        """
+        if reset_history:
+            self.conversation_history = []
+
+        # If no API key, use fallback
+        if not self.client:
+            yield self._fallback_response(user_message)
+            return
+
+        try:
+            # Add user message to history
+            self.conversation_history.append({
+                "role": "user",
+                "content": user_message
+            })
+
+            # Prepare messages for API call
+            messages = [
+                {"role": "system", "content": self.system_prompt}
+            ] + self.conversation_history
+
+            # Call OpenAI API with streaming
+            stream = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=0.7,
+                max_tokens=200,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+                stream=True  # Enable streaming
+            )
+
+            # Collect full response while streaming
+            full_response = ""
+            for chunk in stream:
+                if chunk.choices[0].delta.content is not None:
+                    content = chunk.choices[0].delta.content
+                    full_response += content
+                    yield content
+
+            # Add complete response to history
+            self.conversation_history.append({
+                "role": "assistant",
+                "content": full_response
+            })
+
+            # Keep history manageable
+            if len(self.conversation_history) > 10:
+                self.conversation_history = self.conversation_history[-10:]
+
+            logger.info(f"Career Agent streamed response for: {user_message[:50]}...")
+
+        except Exception as e:
+            logger.error(f"Error in Career Agent streaming: {str(e)}", exc_info=True)
+            yield self._fallback_response(user_message)
+
     def _fallback_response(self, message: str) -> str:
         """Fallback response system when OpenAI API is unavailable"""
         message_lower = message.lower()
