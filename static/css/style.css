@@ -1319,15 +1319,15 @@ p {
 .typing-game-area {
     background: rgba(248, 250, 252, 0.9);
     border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
 .snippet-container {
     background: #2c3e50;
     border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
     overflow-x: auto;
 }
 
@@ -1368,8 +1368,8 @@ p {
 
 .typing-input {
     width: 100%;
-    min-height: 150px;
-    padding: 1rem;
+    min-height: 120px;
+    padding: 0.75rem;
     font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -1394,8 +1394,8 @@ p {
 .typing-controls {
     display: flex;
     gap: 0.75rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .typing-btn {
@@ -1490,7 +1490,7 @@ p {
 .leaderboard-section {
     background: rgba(248, 250, 252, 0.9);
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: 1rem;
 }
 
 .leaderboard-table {
@@ -1777,7 +1777,7 @@ p {
 .guess-game-area {
     background: rgba(248, 250, 252, 0.9);
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: 1rem;
 }
 
 .guess-controls {
@@ -2044,11 +2044,11 @@ p {
     transform: translate(-50%, -50%);
 
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 16px;
+    border-radius: 12px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 90%;
-    max-width: 1200px;
-    max-height: 90vh;
+    max-width: 1000px;
+    max-height: 85vh;
     overflow-y: auto;
     overflow-x: hidden;
     animation: modalFadeIn 0.3s ease;
@@ -2071,8 +2071,8 @@ p {
 .game-modal-header {
     background: linear-gradient(135deg, #4a90e2 0%, #667eea 100%);
     color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 16px 16px 0 0;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px 12px 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -2083,7 +2083,7 @@ p {
 
 .game-modal-header h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 600;
 }
 
@@ -2102,9 +2102,9 @@ p {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: white;
-    font-size: 1.8rem;
-    width: 40px;
-    height: 40px;
+    font-size: 1.6rem;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -2121,7 +2121,7 @@ p {
 }
 
 .game-modal-body {
-    padding: 1.5rem;
+    padding: 1rem;
 }
 
 /* Modal scrollbar styling */
@@ -2148,7 +2148,7 @@ p {
     .game-modal-content {
         width: 95%;
         max-width: 95%;
-        max-height: 95vh;
+        max-height: 90vh;
         /* Keep centered even on mobile */
         top: 50%;
         left: 50%;
@@ -2156,21 +2156,21 @@ p {
     }
 
     .game-modal-header {
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1rem;
     }
 
     .game-modal-header h2 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
     .game-modal-close {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1.4rem;
     }
 
     .game-modal-body {
-        padding: 1.5rem;
+        padding: 0.75rem;
     }
 
     /* Fix animation on mobile */
