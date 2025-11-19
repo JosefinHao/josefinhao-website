@@ -167,7 +167,9 @@
     </div>
 
     <!-- Modals Block (outside main-container to avoid backdrop-filter containing block) -->
-    {% block modals %}{% endblock %}
+    <div id="spa-modals">
+        {% block modals %}{% endblock %}
+    </div>
 
     <!-- Shared utilities - must load first -->
     <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
