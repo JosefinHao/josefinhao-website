@@ -1825,6 +1825,7 @@
         // Start with 4 random sounds
         melodyGame.pattern = Array.from({ length: 4 }, () => Math.floor(Math.random() * 4));
         melodyGame.playerPattern = [];
+        melodyGame.currentStep = 0;
 
         document.getElementById('melodyRound').textContent = '1';
         document.getElementById('melodyScore').textContent = '0';
