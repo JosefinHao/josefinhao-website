@@ -51,7 +51,9 @@
             width: 800,
             depth: 600,
             height: 400
-        }
+        },
+        initialized: false,
+        animationFrameId: null
     };
 
     // Convert 3D world coordinates to 2D isometric screen coordinates
@@ -75,8 +77,30 @@
         return { x: worldX, y: worldY, z };
     }
 
+    function cleanup() {
+        // Cancel any running animation frame
+        if (game.animationFrameId) {
+            cancelAnimationFrame(game.animationFrameId);
+            game.animationFrameId = null;
+        }
+
+        // Remove resize listener
+        window.removeEventListener('resize', resizeCanvas);
+
+        // Reset initialization flag
+        game.initialized = false;
+
+        console.log('Cat Cafe cleaned up');
+    }
+
     function init() {
         console.log('Cat Cafe 3D game initializing...');
+
+        // Prevent double initialization
+        if (game.initialized) {
+            console.log('Cat Cafe already initialized, cleaning up first...');
+            cleanup();
+        }
 
         const canvas = document.getElementById('cat-cafe-canvas');
         if (!canvas) {
@@ -100,12 +124,18 @@
         game.cat.targetY = game.cat.y;
         game.cat.targetZ = 0;
 
+        game.initialized = true;
+
         gameLoop();
 
         console.log('Cat Cafe 3D game initialized successfully');
     }
 
     function resizeCanvas() {
+        if (!game.canvas || !game.canvas.parentElement) {
+            return;
+        }
+
         const container = game.canvas.parentElement;
         game.canvas.width = container.clientWidth;
         game.canvas.height = Math.max(600, window.innerHeight - 300);
@@ -1135,22 +1165,30 @@
     }
 
     function gameLoop() {
+        if (!game.initialized) {
+            return; // Stop loop if game was cleaned up
+        }
+
         update();
         render();
-        requestAnimationFrame(gameLoop);
+        game.animationFrameId = requestAnimationFrame(gameLoop);
     }
 
+    // Initialize on direct page load
     if (window.location.pathname === '/cat-cafe') {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
-            init();
+            // Small delay to ensure DOM is fully ready
+            setTimeout(init, 50);
         }
     }
 
+    // Initialize on SPA navigation
     document.addEventListener('spa-page-loaded', function(e) {
         if (e.detail.path === '/cat-cafe') {
-            setTimeout(init, 100);
+            // Slightly longer delay for SPA to ensure content is swapped
+            setTimeout(init, 150);
         }
     });
 
