@@ -151,7 +151,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             // Re-initialize page-specific JavaScript
-            initializePageScripts(path);
+            initializePageScripts(path, doc);
 
             // Fade in new content
             await fadeIn(container);
@@ -227,10 +227,55 @@
     /**
      * Initialize page-specific JavaScript after content swap
      */
-    function initializePageScripts(path) {
+    function initializePageScripts(path, newDoc) {
+        // Extract and execute scripts from the new page's extra_js block
+        const newScripts = newDoc.querySelectorAll('script[src]');
+        const scriptsToLoad = [];
+
+        newScripts.forEach(script => {
+            const src = script.getAttribute('src');
+            // Check if this script is already loaded
+            if (!document.querySelector(`script[src="${src}"]`)) {
+                scriptsToLoad.push(src);
+            }
+        });
+
+        // Load all new scripts
+        if (scriptsToLoad.length > 0) {
+            Promise.all(scriptsToLoad.map(src => loadScript(src)))
+                .then(() => {
+                    // After all scripts load, initialize page-specific features
+                    initializePageFeatures(path);
+                })
+                .catch(error => {
+                    console.error('Error loading scripts:', error);
+                    initializePageFeatures(path);
+                });
+        } else {
+            // No new scripts to load, just initialize
+            initializePageFeatures(path);
+        }
+    }
+
+    /**
+     * Load a script dynamically
+     */
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Failed to load: ${src}`));
+            document.body.appendChild(script);
+        });
+    }
+
+    /**
+     * Initialize page-specific features after scripts are loaded
+     */
+    function initializePageFeatures(path) {
         // Re-initialize carousel on homepage
         if (path === '/') {
-            // Carousel script is already loaded, just reinitialize
             if (window.initCarousel && typeof window.initCarousel === 'function') {
                 setTimeout(() => window.initCarousel(), 50);
             }
@@ -245,8 +290,6 @@
                 document.dispatchEvent(event);
             }, 50);
         }
-
-        // No special initialization needed for other pages
     }
 
     // Wait for DOM to be ready before initializing

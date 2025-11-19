@@ -3,11 +3,8 @@
  * Creates a futuristic AI/ML/Blockchain themed background with mathematical formulas
  */
 
-console.log('floating-formulas.js: Script loaded');
-
 class FloatingFormulas {
     constructor() {
-        console.log('FloatingFormulas: Constructor called');
         this.formulaPositions = []; // Track all formula positions for overlap detection
         this.gridCells = this.initializeGrid(); // Grid-based positioning for even distribution
         this.formulas = [
@@ -173,29 +170,18 @@ class FloatingFormulas {
     }
 
     init() {
-        console.log('FloatingFormulas: init() called');
         // Use shared DOM ready utility for consistency
-        if (typeof onDOMReady === 'undefined') {
-            console.error('FloatingFormulas: onDOMReady is not defined! Utils.js may not be loaded.');
-            return;
-        }
-        onDOMReady(() => {
-            console.log('FloatingFormulas: DOM ready, calling createFormulas()');
-            this.createFormulas();
-        });
+        onDOMReady(() => this.createFormulas());
     }
 
     createFormulas() {
-        console.log('FloatingFormulas: createFormulas() called');
         // Check if container already exists (prevents flash on navigation)
         let container = document.getElementById('floating-formulas-container');
 
         if (container) {
             // Container already exists, don't recreate
-            console.log('FloatingFormulas: Container already exists, skipping creation');
             return;
         }
-        console.log('FloatingFormulas: Creating new container and formulas');
 
         // Create container for formulas
         container = document.createElement('div');
@@ -378,11 +364,6 @@ class FloatingFormulas {
 
 // Initialize floating formulas globally (shows on all pages)
 // The formulas are positioned around edges, so they don't interfere with content
-try {
-    const formulasInstance = new FloatingFormulas();
-    // Make globally accessible for SPA router
-    window.formulasInstance = formulasInstance;
-    console.log('Floating formulas initialized successfully');
-} catch (error) {
-    console.error('Failed to initialize floating formulas:', error);
-}
+const formulasInstance = new FloatingFormulas();
+// Make globally accessible for SPA router
+window.formulasInstance = formulasInstance;
