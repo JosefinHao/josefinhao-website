@@ -40,27 +40,31 @@ class CareerAgent:
         """Concise system prompt for first-person responses as Josefin"""
         return """You are Josefin Hao, responding in first person about your background.
 
-CURRENT FOCUS: Multi-agent systems for data analytics, causal inference, and predictive modeling. Building GPT-backed financial advisor app (React + Flask).
+CURRENT FOCUS: Building multi-agent systems to automate data analytics workflows. Also developing GPT-backed financial advisor app (React + Flask).
 
-EDUCATION: MS Financial Mathematics, Uppsala University, Sweden (4.0 GPA). Top 30 European university.
+EDUCATION: MS Financial Mathematics, Uppsala University, Sweden (4.0 GPA) - top university in Sweden, ranked top 30 in Europe. Studied option pricing extensively.
 
-EXPERIENCE:
-• OKX (top crypto exchange) - Data Scientist US Lead (2022-2024): Led R&D for institutional clients, built segmentation models, automated reporting (95% efficiency gain), mentored analysts, trained global teams
-• Handelsbanken Capital Markets - Quant Developer (2017-2019): Built interest rate derivative pricing models (C#, C), supported fixed income traders
-• Independent Trading & Quant Research: Options trading strategies, backtesting
+CAREER JOURNEY:
+• Started as front office quant at Handelsbanken Capital Markets in Stockholm (2017-2019): Worked on fixed income side with interest rate swaps, managed pricing tools for derivatives, collaborated with floor traders. Worked in C and C# daily.
+• Moved to US in 2019: Started day trading options (natural fit given my option pricing background). Used technical analysis, then automated trading strategies.
+• Joined crypto in 2022 as Data Scientist US Lead at OKX (top crypto exchange): First and only data scientist in Global Institutions team. Built everything from scratch - automated data updates, reporting, dashboards for team progress tracking. Did comprehensive analysis on institutional client data to find growth drivers. Extensive ML, statistical modeling, and causal inference work. This solidified my love for data analytics and ML.
 
 AI PROJECTS (10+):
 OpenAI SDK: Career Agent, SDR Bot, Deep Research Agent
 CrewAI: Debate, Financial Researcher, Stock Picker, Coder, Engineering Team, Trading Platform
 LangGraph: Sidekick (autonomous assistant with web automation, Gradio interface)
 
-SKILLS: Python, SQL, C#, R, JavaScript. Expert in statistical modeling, ML, blockchain, agentic AI, multi-agent frameworks.
+SKILLS: Python, SQL, C#, R, JavaScript, C. Expert in statistical modeling, ML, blockchain, agentic AI, multi-agent frameworks, causal inference.
 
 LANGUAGES: Fluent English, Swedish, Chinese
 
+LOCATION & AVAILABILITY: Based in Seattle. Looking for remote opportunities, but open to relocation within US for the right role.
+
+CAREER GOALS: Seeking opportunities at the intersection of ML and AI, ideally in tech or crypto space.
+
 CONTACT: josefin.rui.hao@gmail.com | Use contact form on website
 
-Keep responses concise (2-4 sentences), friendly, professional. Emphasize multi-agent AI expertise. Don't make up info."""
+Keep responses concise (2-4 sentences), friendly, professional. Emphasize multi-agent AI expertise and data analytics automation. Don't make up info."""
 
     def chat(self, user_message: str, reset_history: bool = False) -> str:
         """
@@ -197,30 +201,35 @@ Keep responses concise (2-4 sentences), friendly, professional. Emphasize multi-
 
         # Projects and AI work
         if any(word in message_lower for word in ['project', 'work', 'built', 'create', 'agent']):
-            return ("I've built impressive AI systems including a multi-agent data science platform for "
-                    "causal inference and predictive modeling. I've created 10+ agents using OpenAI SDK, CrewAI, "
-                    "and LangGraph - from SDRs to autonomous AI assistants. Check out the Projects page for full details!")
+            return ("I'm currently building multi-agent systems to automate data analytics workflows. I've created 10+ "
+                    "AI agents using OpenAI SDK, CrewAI, and LangGraph - including Career Agents, SDR bots, and "
+                    "autonomous assistants. Check out the Projects page for full details!")
 
         # Background and experience
         if any(word in message_lower for word in ['experience', 'background', 'education', 'studied', 'university']):
-            return ("I have a Master's in Financial Mathematics from Uppsala University (4.0 GPA). "
-                    "I led data science at OKX (top crypto exchange), built derivative pricing models at "
-                    "Handelsbanken, and now focus on multi-agent AI systems. I'm fluent in English, Swedish, and Chinese!")
+            return ("I have a Master's in Financial Mathematics from Uppsala University (top university in Sweden). "
+                    "I started as a quant at Handelsbanken working with interest rate derivatives, then day traded options, "
+                    "and led data science at OKX crypto exchange. Now I focus on multi-agent AI systems!")
 
         # Skills
         if any(word in message_lower for word in ['skill', 'tech', 'language', 'framework', 'tool']):
-            return ("I specialize in Python, SQL, R, C#, and JavaScript. My expertise includes statistical "
-                    "modeling, ML, blockchain, and agentic AI systems. I'm particularly interested in the "
-                    "intersection of AI, DeFi, and automated decision-making.")
+            return ("I specialize in Python, SQL, C#, R, JavaScript, and C. Expert in statistical modeling, ML, "
+                    "causal inference, blockchain, and agentic AI systems. Particularly interested in automating "
+                    "data analytics workflows!")
+
+        # Location and availability
+        if any(word in message_lower for word in ['location', 'where', 'based', 'remote', 'relocate', 'available']):
+            return ("I'm based in Seattle and looking for remote opportunities at the intersection of ML and AI, "
+                    "ideally in tech or crypto. Open to relocation within the US for the right role!")
 
         # Contact
-        if any(word in message_lower for word in ['contact', 'email', 'reach', 'hire', 'collaborate']):
+        if any(word in message_lower for word in ['contact', 'email', 'reach', 'hire', 'collaborate', 'opportunity']):
             return ("You can reach me at josefin.rui.hao@gmail.com or use the contact form on this website. "
-                    "I'm always interested in new opportunities and collaborations!")
+                    "I'm based in Seattle and looking for opportunities in ML/AI, particularly in tech or crypto!")
 
         # Default
-        return ("I can share about my background in data science and AI, my work at OKX, "
-                "my 10+ multi-agent projects, technical skills, or how to contact me. What would you like to know?")
+        return ("I can share about my background (quant → trader → crypto data scientist → AI engineer), "
+                "my 10+ multi-agent AI projects, technical skills, or how to contact me. What would you like to know?")
 
     def reset_conversation(self):
         """Clear conversation history"""
