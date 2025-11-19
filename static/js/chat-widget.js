@@ -93,11 +93,11 @@ class ChatWidget {
             // Remove typing indicator
             this.removeTypingIndicator();
 
-            // Add bot response
+            // Add bot response with typing animation
             if (data.response) {
-                this.addBotMessage(data.response);
+                this.addBotMessageWithTyping(data.response);
             } else {
-                this.addBotMessage("I'm sorry, I couldn't process that request. Please try again.");
+                this.addBotMessageWithTyping("I'm sorry, I couldn't process that request. Please try again.");
             }
         } catch (error) {
             console.error('Chat error:', error);
@@ -128,6 +128,32 @@ class ChatWidget {
         `;
         this.chatMessages.appendChild(messageDiv);
         this.scrollToBottom();
+    }
+
+    addBotMessageWithTyping(text, speed = 15) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chat-message bot';
+        const messageBubble = document.createElement('div');
+        messageBubble.className = 'message-bubble';
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'message-time';
+        timeDiv.textContent = this.getCurrentTime();
+
+        messageDiv.appendChild(messageBubble);
+        messageDiv.appendChild(timeDiv);
+        this.chatMessages.appendChild(messageDiv);
+
+        let index = 0;
+        const typeCharacter = () => {
+            if (index < text.length) {
+                messageBubble.textContent += text.charAt(index);
+                index++;
+                this.scrollToBottom();
+                setTimeout(typeCharacter, speed);
+            }
+        };
+
+        typeCharacter();
     }
 
     showTypingIndicator() {
