@@ -364,7 +364,11 @@ class FloatingFormulas {
 
 // Initialize floating formulas globally (shows on all pages)
 // The formulas are positioned around edges, so they don't interfere with content
-const formulasInstance = new FloatingFormulas();
-
-// Make globally accessible for SPA router
-window.formulasInstance = formulasInstance;
+try {
+    const formulasInstance = new FloatingFormulas();
+    // Make globally accessible for SPA router
+    window.formulasInstance = formulasInstance;
+    console.log('Floating formulas initialized successfully');
+} catch (error) {
+    console.error('Failed to initialize floating formulas:', error);
+}
