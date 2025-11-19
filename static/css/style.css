@@ -1034,45 +1034,45 @@ p {
 
 /* Current Projects - Steel Mist */
 .flip-card-current .flip-card-front {
-    background: linear-gradient(135deg, rgba(226, 232, 240, 0.7) 0%, rgba(226, 232, 240, 0.5) 50%, rgba(226, 232, 240, 0.7) 100%);
+    background: linear-gradient(135deg, #e8f0f6 0%, #dae4ef 50%, #e8f0f6 100%);
     border: 2px solid rgba(95, 124, 138, 0.2);
 }
 
 .flip-card-current .flip-card-back {
-    background: linear-gradient(135deg, rgba(226, 232, 240, 0.8) 0%, rgba(226, 232, 240, 0.6) 50%, rgba(226, 232, 240, 0.8) 100%);
+    background: linear-gradient(135deg, #dae4ef 0%, #cdd9e5 50%, #e0ebf5 100%);
     border: 2px solid rgba(95, 124, 138, 0.25);
 }
 
 /* OpenAI Agents SDK - Light Forest Green */
 .flip-card-openai .flip-card-front {
-    background: linear-gradient(135deg, rgba(220, 237, 228, 0.7) 0%, rgba(220, 237, 228, 0.5) 50%, rgba(220, 237, 228, 0.7) 100%);
+    background: linear-gradient(135deg, #e5f3ec 0%, #d4e9de 50%, #e5f3ec 100%);
     border: 2px solid rgba(76, 140, 105, 0.2);
 }
 
 .flip-card-openai .flip-card-back {
-    background: linear-gradient(135deg, rgba(220, 237, 228, 0.8) 0%, rgba(220, 237, 228, 0.6) 50%, rgba(220, 237, 228, 0.8) 100%);
+    background: linear-gradient(135deg, #d4e9de 0%, #c5dfd0 50%, #ddefe4 100%);
     border: 2px solid rgba(76, 140, 105, 0.25);
 }
 
 /* CrewAI - Light Sand */
 .flip-card-crewai .flip-card-front {
-    background: linear-gradient(135deg, rgba(242, 235, 223, 0.7) 0%, rgba(242, 235, 223, 0.5) 50%, rgba(242, 235, 223, 0.7) 100%);
+    background: linear-gradient(135deg, #f5f0e8 0%, #ebe3d5 50%, #f5f0e8 100%);
     border: 2px solid rgba(180, 160, 130, 0.2);
 }
 
 .flip-card-crewai .flip-card-back {
-    background: linear-gradient(135deg, rgba(242, 235, 223, 0.8) 0%, rgba(242, 235, 223, 0.6) 50%, rgba(242, 235, 223, 0.8) 100%);
+    background: linear-gradient(135deg, #ebe3d5 0%, #e0d6c5 50%, #f0e8dc 100%);
     border: 2px solid rgba(180, 160, 130, 0.25);
 }
 
 /* LangGraph - Lavender Sky */
 .flip-card-langgraph .flip-card-front {
-    background: linear-gradient(135deg, rgba(224, 231, 255, 0.7) 0%, rgba(224, 231, 255, 0.5) 50%, rgba(224, 231, 255, 0.7) 100%);
+    background: linear-gradient(135deg, #eceeff 0%, #dfe4f8 50%, #eceeff 100%);
     border: 2px solid rgba(102, 126, 234, 0.2);
 }
 
 .flip-card-langgraph .flip-card-back {
-    background: linear-gradient(135deg, rgba(224, 231, 255, 0.8) 0%, rgba(224, 231, 255, 0.6) 50%, rgba(224, 231, 255, 0.8) 100%);
+    background: linear-gradient(135deg, #dfe4f8 0%, #d2d9f0 50%, #e6ebfc 100%);
     border: 2px solid rgba(102, 126, 234, 0.25);
 }
 
