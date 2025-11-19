@@ -1499,7 +1499,7 @@
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 2500); // Start with slower spawn rate
+        }, 3000); // Start with slower spawn rate (3 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1519,28 +1519,39 @@
         };
 
         // Much slower initial speed with gradual difficulty increase
-        const baseSpeed = 0.3 + Math.random() * 0.3; // Start very slow: 0.3-0.6
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.12; // Gradual 12% increase per level
+        const baseSpeed = 0.15 + Math.random() * 0.15; // Start very slow: 0.15-0.3
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.08; // Gradual 8% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
-        if (spawnType < 0.5) {
-            // Spawn from top (50% chance)
-            ball.x = Math.random() * (canvas.width - 60) + 30;
+        // Spawn from any edge with random angle across the screen
+        if (spawnType < 0.25) {
+            // Spawn from top - roll diagonally down
+            ball.x = Math.random() * canvas.width;
             ball.y = -ball.radius;
-            ball.vy = speed;
-            ball.vx = (Math.random() - 0.5) * 1; // Reduced horizontal movement
+            const angle = (Math.random() * 120 + 30) * Math.PI / 180; // 30-150 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
+        } else if (spawnType < 0.5) {
+            // Spawn from bottom - roll diagonally up
+            ball.x = Math.random() * canvas.width;
+            ball.y = canvas.height + ball.radius;
+            const angle = (Math.random() * 120 + 210) * Math.PI / 180; // 210-330 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
         } else if (spawnType < 0.75) {
-            // Spawn from left (25% chance)
+            // Spawn from left - roll right
             ball.x = -ball.radius;
-            ball.y = Math.random() * (canvas.height * 0.3);
-            ball.vx = speed * 0.8; // Slower horizontal movement
-            ball.vy = speed * 0.4; // Slower downward movement
+            ball.y = Math.random() * canvas.height;
+            const angle = (Math.random() * 120 - 60) * Math.PI / 180; // -60 to 60 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
         } else {
-            // Spawn from right (25% chance)
+            // Spawn from right - roll left
             ball.x = canvas.width + ball.radius;
-            ball.y = Math.random() * (canvas.height * 0.3);
-            ball.vx = -speed * 0.8; // Slower horizontal movement
-            ball.vy = speed * 0.4; // Slower downward movement
+            ball.y = Math.random() * canvas.height;
+            const angle = (Math.random() * 120 + 120) * Math.PI / 180; // 120-240 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
         }
 
         yarnGame.balls.push(ball);
@@ -1571,7 +1582,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(1000, 2500 - yarnGame.difficulty * 120);
+                        const newInterval = Math.max(1200, 3000 - yarnGame.difficulty * 100);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -1600,23 +1611,13 @@
             // Update position
             ball.x += ball.vx;
             ball.y += ball.vy;
-            ball.vy += 0.3; // Gravity
+            // No gravity - balls maintain constant speed
             ball.rotation += ball.rotationSpeed;
 
-            // Bounce off walls
-            if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) {
-                ball.vx *= -0.8;
-                ball.x = Math.max(ball.radius, Math.min(canvas.width - ball.radius, ball.x));
-            }
-
-            // Remove if off-screen top
-            if (ball.y < -ball.radius * 2) {
-                yarnGame.balls.splice(i, 1);
-                continue;
-            }
-
-            // Check if reached bottom
-            if (ball.y > canvas.height - ball.radius && ball.vy > 0) {
+            // Remove if off-screen in any direction (with margin for complete disappearance)
+            const margin = ball.radius * 3;
+            if (ball.x < -margin || ball.x > canvas.width + margin ||
+                ball.y < -margin || ball.y > canvas.height + margin) {
                 yarnGame.balls.splice(i, 1);
                 yarnGame.lives--;
                 document.getElementById('yarnLives').textContent = yarnGame.lives;
