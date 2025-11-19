@@ -1314,12 +1314,12 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn balls periodically
+        // Spawn balls periodically - start slower
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, Math.max(800, 2000 - yarnGame.score * 20));
+        }, 1800); // Start with slower spawn rate
 
         // Start game loop
         yarnGameLoop();
@@ -1327,16 +1327,42 @@
 
     function spawnYarnBall() {
         const colors = ['#e91e63', '#9c27b0', '#3f51b5', '#ff9800', '#4caf50'];
-        const ball = {
-            x: Math.random() * (yarnGame.canvas.width - 60) + 30,
-            y: 0,
+        const canvas = yarnGame.canvas;
+
+        // Choose random spawn direction
+        const spawnType = Math.random();
+        let ball = {
             radius: 20 + Math.random() * 10,
             color: colors[Math.floor(Math.random() * colors.length)],
-            vy: 2 + Math.random() * 2 + yarnGame.difficulty * 0.5,
-            vx: (Math.random() - 0.5) * 3,
             rotation: 0,
             rotationSpeed: (Math.random() - 0.5) * 0.2
         };
+
+        // Slower initial speed with gradual difficulty increase
+        const baseSpeed = 0.8 + Math.random() * 0.7; // Start slow: 0.8-1.5
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
+        const speed = baseSpeed * difficultyMultiplier;
+
+        if (spawnType < 0.5) {
+            // Spawn from top (50% chance)
+            ball.x = Math.random() * (canvas.width - 60) + 30;
+            ball.y = -ball.radius;
+            ball.vy = speed;
+            ball.vx = (Math.random() - 0.5) * 2;
+        } else if (spawnType < 0.75) {
+            // Spawn from left (25% chance)
+            ball.x = -ball.radius;
+            ball.y = Math.random() * (canvas.height * 0.3);
+            ball.vx = speed;
+            ball.vy = speed * 0.5;
+        } else {
+            // Spawn from right (25% chance)
+            ball.x = canvas.width + ball.radius;
+            ball.y = Math.random() * (canvas.height * 0.3);
+            ball.vx = -speed;
+            ball.vy = speed * 0.5;
+        }
+
         yarnGame.balls.push(ball);
     }
 
@@ -1359,9 +1385,19 @@
                 yarnGame.score++;
                 document.getElementById('yarnScore').textContent = yarnGame.score;
 
-                // Increase difficulty every 5 points
-                if (yarnGame.score % 5 === 0) {
+                // Increase difficulty gradually every 3 points
+                if (yarnGame.score % 3 === 0) {
                     yarnGame.difficulty++;
+                    // Update spawn interval for faster spawning as difficulty increases
+                    if (yarnGame.spawnInterval) {
+                        clearInterval(yarnGame.spawnInterval);
+                        const newInterval = Math.max(600, 1800 - yarnGame.difficulty * 100);
+                        yarnGame.spawnInterval = setInterval(() => {
+                            if (yarnGame.isPlaying) {
+                                spawnYarnBall();
+                            }
+                        }, newInterval);
+                    }
                 }
                 break;
             }
@@ -1601,7 +1637,8 @@
         melodyGame.isPlaying = true;
         melodyGame.round = 1;
         melodyGame.score = 0;
-        melodyGame.pattern = [];
+        // Start with 4 random sounds
+        melodyGame.pattern = Array.from({ length: 4 }, () => Math.floor(Math.random() * 4));
         melodyGame.playerPattern = [];
 
         document.getElementById('melodyRound').textContent = '1';
@@ -1612,9 +1649,9 @@
         // Disable toys during pattern display
         setToysEnabled(false);
 
-        // Start first round
+        // Start first round (show initial pattern)
         setTimeout(() => {
-            nextRound();
+            showPattern();
         }, 1000);
     }
 
@@ -1639,7 +1676,7 @@
                 highlightToy(toyIndex);
                 playMeow(toyIndex);
             }, delay);
-            delay += 600;
+            delay += 350; // Faster transition (was 600ms)
         });
 
         // Enable player input after pattern is shown
