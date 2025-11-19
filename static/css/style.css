@@ -1166,13 +1166,44 @@ p {
     perspective: 1000px;
     height: 220px;
     cursor: pointer;
+    /* Staggered entrance animation */
+    opacity: 0;
+    animation: cardEnter 0.6s ease-out forwards;
 }
+
+/* Staggered delays for large cards */
+.flip-card:nth-child(1) { animation-delay: 0.1s; }
+.flip-card:nth-child(2) { animation-delay: 0.2s; }
+.flip-card:nth-child(3) { animation-delay: 0.3s; }
 
 .flip-card-small {
     background-color: transparent;
     perspective: 1000px;
     height: 170px;
     cursor: pointer;
+    /* Staggered entrance animation */
+    opacity: 0;
+    animation: cardEnter 0.6s ease-out forwards;
+}
+
+/* Staggered delays for small cards */
+.flip-card-small:nth-child(1) { animation-delay: 0.1s; }
+.flip-card-small:nth-child(2) { animation-delay: 0.2s; }
+.flip-card-small:nth-child(3) { animation-delay: 0.3s; }
+.flip-card-small:nth-child(4) { animation-delay: 0.4s; }
+.flip-card-small:nth-child(5) { animation-delay: 0.5s; }
+.flip-card-small:nth-child(6) { animation-delay: 0.6s; }
+
+/* Entrance animation keyframes */
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .flip-card-wide {
@@ -1211,6 +1242,34 @@ p {
     background: linear-gradient(135deg, #e8f4f8 0%, #f0f6fa 50%, #e8f1f8 100%);
     border: 2px solid rgba(95, 124, 138, 0.2);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Holographic shimmer effect */
+.flip-card-front::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.1) 75%,
+        transparent 100%
+    );
+    transform: skewX(-25deg);
+    transition: left 0.7s ease;
+    pointer-events: none;
+}
+
+.flip-card:hover .flip-card-front::before,
+.flip-card-small:hover .flip-card-front::before {
+    left: 150%;
 }
 
 .flip-card-front h3,
