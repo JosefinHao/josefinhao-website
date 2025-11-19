@@ -9,21 +9,37 @@
     <!-- Welcome message -->
     <div class="cat-cafe-intro">
         <h1>🐱 Welcome to the Cozy Cat Cafe</h1>
-        <p>Step into a realistic cat cafe! You're a fluffy orange cat exploring this cozy space. Relax on couches, play with toys, and make yourself at home!</p>
+        <p>Step into a realistic cat cafe! You're a fluffy orange cat exploring this cozy space.</p>
     </div>
 
-    <!-- Game Icons Container -->
-    <div class="game-icons-left">
+    <!-- Food Bowl Icon (Left Side) -->
+    <div class="food-bowl-container">
+        <button class="food-bowl-btn" id="foodBowlBtn" title="Feed Cat (10 points)">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Bowl -->
+                <path d="M4 10 C4 10, 5 16, 12 16 C19 16, 20 10, 20 10 L4 10 Z" fill="currentColor" opacity="0.3"/>
+                <path d="M4 10 C4 10, 5 16, 12 16 C19 16, 20 10, 20 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <!-- Food -->
+                <circle cx="12" cy="8" r="1.5" fill="currentColor"/>
+                <circle cx="9" cy="9" r="1" fill="currentColor"/>
+                <circle cx="15" cy="9" r="1" fill="currentColor"/>
+            </svg>
+        </button>
+        <div class="points-display">
+            <span class="points-label">Points:</span>
+            <span class="points-value" id="pointsDisplay">0</span>
+        </div>
+    </div>
+
+    <!-- Game Icons Container (Right Side) -->
+    <div class="game-icons-right">
         <!-- Wand Game Icon -->
         <button class="game-icon-btn wand-game-btn" id="wandGameBtn" title="Play Wand Game">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Stick -->
                 <line x1="2" y1="22" x2="14" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <!-- Feathers -->
                 <ellipse cx="16.5" cy="7.5" rx="3" ry="5" transform="rotate(-45 16.5 7.5)" fill="currentColor" opacity="0.7"/>
                 <ellipse cx="18" cy="6" rx="2.5" ry="4.5" transform="rotate(-30 18 6)" fill="currentColor" opacity="0.5"/>
                 <ellipse cx="15" cy="9" rx="2.5" ry="4.5" transform="rotate(-60 15 9)" fill="currentColor" opacity="0.6"/>
-                <!-- String -->
                 <path d="M14 10 Q16 8 17 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/>
             </svg>
         </button>
@@ -48,33 +64,15 @@
         </button>
     </div>
 
-    <!-- Color Picker Icon -->
-    <div class="color-picker-container">
-        <button class="color-picker-btn" id="colorPickerBtn" title="Change wall color">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Palette shape -->
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 14.5 3 16.75 4.58 18.33C5.5 19.25 6.83 19.5 8 19.5C9.5 19.5 10.5 18.5 10.5 17C10.5 16.5 10.33 16.08 10.17 15.75C10 15.42 10 15 10 14.75C10 13.78 10.78 13 11.75 13H14C17.31 13 20 10.31 20 7C20 3.69 16.42 2 12 2Z" fill="currentColor" opacity="0.2"/>
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 14.5 3 16.75 4.58 18.33C5.5 19.25 6.83 19.5 8 19.5C9.5 19.5 10.5 18.5 10.5 17C10.5 16.5 10.33 16.08 10.17 15.75C10 15.42 10 15 10 14.75C10 13.78 10.78 13 11.75 13H14C17.31 13 20 10.31 20 7C20 3.69 16.42 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
-                <!-- Paint colors -->
-                <circle cx="7.5" cy="10" r="1.5" fill="currentColor"/>
-                <circle cx="10.5" cy="7" r="1.5" fill="currentColor"/>
-                <circle cx="14.5" cy="7" r="1.5" fill="currentColor"/>
-                <circle cx="17" cy="10" r="1.5" fill="currentColor"/>
-            </svg>
-        </button>
-        <input type="color" id="wallColorPicker" class="color-input" value="#f5e6d3">
-    </div>
+    <!-- Message Display -->
+    <div class="cafe-message" id="cafeMessage"></div>
 
     <!-- Main Canvas -->
     <canvas id="cat-cafe-canvas"></canvas>
 
     <!-- Instructions -->
     <div class="cafe-instructions">
-        <div class="instruction-item">🖱️ Click to move around</div>
-        <div class="instruction-item">✨ Drag on walls to scratch</div>
-        <div class="instruction-item">📦 Click boxes to interact</div>
-        <div class="instruction-item">🌲 Explore cat trees and walkways</div>
-        <div class="instruction-item">🎮 Play 3 mini-games!</div>
+        <p>Play games to exercise the cat and earn points. Use points to feed the cat.</p>
     </div>
 
     <!-- Wand Mini-Game Overlay -->

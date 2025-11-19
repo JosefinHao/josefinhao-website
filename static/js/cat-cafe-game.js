@@ -12,11 +12,9 @@
         ctx: null,
         width: 0,
         height: 0,
-        wallColor: '#f5e6d3',
-        scratches: [],
-        isScratching: false,
-        lastScratchPoint: null,
-        scratchTarget: null,
+        points: 0,
+        catHunger: 100,
+        catEnergy: 100,
         isDragging: false,
         draggedObject: null,
         dragOffset: { x: 0, y: 0 },
@@ -33,20 +31,16 @@
             animationFrame: 0,
             jumpHeight: 0,
             jumpProgress: 0,
-            state: 'standing',
-            scratchAnimFrame: 0
+            state: 'standing'
         },
-        boxes: [],
         catTrees: [],
         couches: [],
         toys: [],
         images: {
             cat: null,
             catTree: null,
-            box: null,
             couch: null,
             toy: null,
-            background: null,
             loaded: false
         },
         initialized: false,
@@ -65,7 +59,7 @@
 
     function loadImages(callback) {
         let loadedCount = 0;
-        const totalImages = 5;
+        const totalImages = 4;
 
         function imageLoaded() {
             loadedCount++;
@@ -97,17 +91,6 @@
         };
         // Placeholder - will use illustrated fallback
         game.images.catTree.src = 'data:image/png;base64,invalid';
-
-        // Load cardboard box image - transparent PNG
-        game.images.box = new Image();
-        game.images.box.crossOrigin = 'anonymous';
-        game.images.box.onload = imageLoaded;
-        game.images.box.onerror = () => {
-            console.log('Box image failed to load, using fallback');
-            imageLoaded();
-        };
-        // Using pngimg.com transparent PNG box
-        game.images.box.src = 'https://pngimg.com/uploads/box/box_PNG49.png';
 
         // Load couch image - transparent PNG
         game.images.couch = new Image();
@@ -180,29 +163,15 @@
         game.width = game.canvas.width;
         game.height = game.canvas.height;
 
-        if (game.boxes.length === 0) {
+        if (game.catTrees.length === 0) {
             createCafeElements();
         }
     }
 
     function createCafeElements() {
-        game.boxes = [];
         game.catTrees = [];
         game.couches = [];
         game.toys = [];
-
-        // Create random boxes (3-5 boxes)
-        const numBoxes = 3 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < numBoxes; i++) {
-            const size = 60 + Math.random() * 40;
-            game.boxes.push({
-                x: 80 + Math.random() * (game.width - 180),
-                y: 80 + Math.random() * (game.height - 180),
-                width: size,
-                height: size * 0.8,
-                type: 'box'
-            });
-        }
 
         // Create 2-3 cat trees
         const numTrees = 2 + Math.floor(Math.random() * 2);
@@ -252,35 +221,49 @@
         game.canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
         game.canvas.addEventListener('touchend', handlePointerUp);
 
-        // Color picker
-        const colorPickerBtn = document.getElementById('colorPickerBtn');
-        const colorInput = document.getElementById('wallColorPicker');
+        // Food bowl click handler
+        const foodBowlBtn = document.getElementById('foodBowlBtn');
+        if (foodBowlBtn) {
+            foodBowlBtn.addEventListener('click', feedCat);
+        }
 
-        if (colorPickerBtn && colorInput) {
-            colorPickerBtn.addEventListener('click', () => {
-                colorInput.click();
-            });
+        // Update points display
+        updatePointsDisplay();
+    }
 
-            colorInput.addEventListener('input', (e) => {
-                game.wallColor = e.target.value;
-                game.scratches = [];
-            });
+    function updatePointsDisplay() {
+        const pointsDisplay = document.getElementById('pointsDisplay');
+        if (pointsDisplay) {
+            pointsDisplay.textContent = game.points;
+        }
+    }
 
-            colorInput.addEventListener('change', (e) => {
-                game.wallColor = e.target.value;
-            });
+    function feedCat() {
+        const FOOD_COST = 10;
+        if (game.points >= FOOD_COST) {
+            game.points -= FOOD_COST;
+            game.catHunger = Math.min(100, game.catHunger + 30);
+            updatePointsDisplay();
+
+            // Show feeding animation or message
+            showMessage(`Fed the cat! Hunger: ${Math.floor(game.catHunger)}%`);
+        } else {
+            showMessage(`Need ${FOOD_COST} points to feed the cat!`);
+        }
+    }
+
+    function showMessage(text) {
+        const messageEl = document.getElementById('cafeMessage');
+        if (messageEl) {
+            messageEl.textContent = text;
+            messageEl.style.opacity = '1';
+            setTimeout(() => {
+                messageEl.style.opacity = '0';
+            }, 2000);
         }
     }
 
     function getObjectAtPosition(x, y) {
-        // Check boxes
-        for (let box of game.boxes) {
-            if (x >= box.x && x <= box.x + box.width &&
-                y >= box.y && y <= box.y + box.height) {
-                return box;
-            }
-        }
-
         // Check cat trees
         for (let tree of game.catTrees) {
             if (x >= tree.x && x <= tree.x + tree.width &&
@@ -313,33 +296,21 @@
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Check if near walls for scratching
-        const wallThreshold = 50;
-        const isNearWall = x < wallThreshold || x > game.width - wallThreshold ||
-                          y < wallThreshold || y > game.height - wallThreshold;
+        const obj = getObjectAtPosition(x, y);
 
-        if (isNearWall) {
-            game.isScratching = true;
-            game.lastScratchPoint = { x, y };
-            game.scratchTarget = { x, y };
-            moveCatToScratch(x, y);
+        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
+            game.isDragging = true;
+            game.draggedObject = obj;
+            game.dragOffset = {
+                x: x - obj.x,
+                y: y - obj.y
+            };
         } else {
-            const obj = getObjectAtPosition(x, y);
-
-            if (obj && (obj.type === 'box' || obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-                game.isDragging = true;
-                game.draggedObject = obj;
-                game.dragOffset = {
-                    x: x - obj.x,
-                    y: y - obj.y
-                };
+            const clickedCouch = getObjectAtPosition(x, y);
+            if (clickedCouch && clickedCouch.type === 'couch') {
+                handleCouchClick(clickedCouch, x, y);
             } else {
-                const clickedBox = getObjectAtPosition(x, y);
-                if (clickedBox && (clickedBox.type === 'box' || clickedBox.type === 'couch')) {
-                    handleBoxClick(clickedBox, x, y);
-                } else {
-                    moveCatTo(x, y);
-                }
+                moveCatTo(x, y);
             }
         }
     }
@@ -353,20 +324,9 @@
             game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
             game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
             game.canvas.style.cursor = 'grabbing';
-        } else if (game.isScratching) {
-            if (game.lastScratchPoint) {
-                game.scratches.push({
-                    x1: game.lastScratchPoint.x,
-                    y1: game.lastScratchPoint.y,
-                    x2: x,
-                    y2: y
-                });
-                game.lastScratchPoint = { x, y };
-                game.scratchTarget = { x, y };
-            }
         } else {
             const obj = getObjectAtPosition(x, y);
-            if (obj && (obj.type === 'box' || obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
+            if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
                 game.canvas.style.cursor = 'grab';
             } else {
                 game.canvas.style.cursor = 'pointer';
@@ -380,11 +340,6 @@
             game.draggedObject = null;
             game.canvas.style.cursor = 'pointer';
         }
-
-        if (game.isScratching) {
-            game.isScratching = false;
-            game.lastScratchPoint = null;
-        }
     }
 
     function handleTouchStart(e) {
@@ -394,32 +349,21 @@
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
 
-        const wallThreshold = 50;
-        const isNearWall = x < wallThreshold || x > game.width - wallThreshold ||
-                          y < wallThreshold || y > game.height - wallThreshold;
+        const obj = getObjectAtPosition(x, y);
 
-        if (isNearWall) {
-            game.isScratching = true;
-            game.lastScratchPoint = { x, y };
-            game.scratchTarget = { x, y };
-            moveCatToScratch(x, y);
+        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
+            game.isDragging = true;
+            game.draggedObject = obj;
+            game.dragOffset = {
+                x: x - obj.x,
+                y: y - obj.y
+            };
         } else {
-            const obj = getObjectAtPosition(x, y);
-
-            if (obj && (obj.type === 'box' || obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-                game.isDragging = true;
-                game.draggedObject = obj;
-                game.dragOffset = {
-                    x: x - obj.x,
-                    y: y - obj.y
-                };
+            const clickedCouch = getObjectAtPosition(x, y);
+            if (clickedCouch && clickedCouch.type === 'couch') {
+                handleCouchClick(clickedCouch, x, y);
             } else {
-                const clickedBox = getObjectAtPosition(x, y);
-                if (clickedBox && (clickedBox.type === 'box' || clickedBox.type === 'couch')) {
-                    handleBoxClick(clickedBox, x, y);
-                } else {
-                    moveCatTo(x, y);
-                }
+                moveCatTo(x, y);
             }
         }
     }
@@ -434,30 +378,13 @@
         if (game.isDragging && game.draggedObject) {
             game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
             game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
-        } else if (game.isScratching) {
-            if (game.lastScratchPoint) {
-                game.scratches.push({
-                    x1: game.lastScratchPoint.x,
-                    y1: game.lastScratchPoint.y,
-                    x2: x,
-                    y2: y
-                });
-                game.lastScratchPoint = { x, y };
-                game.scratchTarget = { x, y };
-            }
         }
     }
 
-    function handleBoxClick(box, clickX, clickY) {
-        const boxCenterX = box.x + box.width / 2;
-        const boxCenterY = box.y + box.height / 2;
-        const relativeY = clickY - box.y;
-
-        if (relativeY < box.height * 0.3) {
-            moveCatToLie(boxCenterX, boxCenterY - box.height / 3, 'ontop');
-        } else {
-            moveCatToLie(boxCenterX, boxCenterY, 'inside');
-        }
+    function handleCouchClick(couch, clickX, clickY) {
+        const couchCenterX = couch.x + couch.width / 2;
+        const couchCenterY = couch.y + couch.height / 2;
+        moveCatToLie(couchCenterX, couchCenterY, 'ontop');
     }
 
     function moveCatTo(x, y) {
@@ -502,22 +429,6 @@
         game.cat.speed = 2;
     }
 
-    function moveCatToScratch(x, y) {
-        game.cat.targetX = x;
-        game.cat.targetY = y;
-        game.cat.isMoving = true;
-        game.cat.state = 'moving-to-scratch';
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        game.cat.moveType = 'run';
-        game.cat.speed = 4;
-    }
-
     function update() {
         if (game.cat.isMoving) {
             const dx = game.cat.targetX - game.cat.x;
@@ -530,12 +441,11 @@
                 game.cat.isMoving = false;
                 game.cat.jumpHeight = 0;
 
-                if (game.cat.state === 'moving-to-scratch') {
-                    game.cat.state = 'scratching';
-                    game.cat.scratchAnimFrame = 0;
-                } else if (game.cat.lieType) {
+                if (game.cat.lieType) {
                     game.cat.state = 'lying';
                     game.cat.lieType = null;
+                } else {
+                    game.cat.state = 'standing';
                 }
             } else {
                 const angle = Math.atan2(dy, dx);
@@ -549,20 +459,6 @@
             }
 
             game.cat.animationFrame += 0.2;
-        } else if (game.cat.state === 'scratching') {
-            game.cat.scratchAnimFrame += 0.3;
-
-            if (!game.scratchTarget && game.cat.scratchAnimFrame > 20) {
-                game.cat.state = 'standing';
-                game.cat.scratchAnimFrame = 0;
-            }
-
-            if (game.scratchTarget && !game.isScratching) {
-                setTimeout(() => {
-                    game.scratchTarget = null;
-                    game.cat.state = 'standing';
-                }, 1000);
-            }
         }
     }
 
@@ -578,20 +474,8 @@
         // Draw wooden floor
         drawWoodenFloor(ctx);
 
-        // Draw scratches on walls
-        ctx.strokeStyle = 'rgba(139, 115, 85, 0.3)';
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        game.scratches.forEach(scratch => {
-            ctx.beginPath();
-            ctx.moveTo(scratch.x1, scratch.y1);
-            ctx.lineTo(scratch.x2, scratch.y2);
-            ctx.stroke();
-        });
-
         // Draw cafe elements (order matters for layering)
         drawCouches();
-        drawBoxes();
         drawCatTrees();
         drawToys();
 
@@ -668,73 +552,6 @@
         ctx.moveTo(0, floorY);
         ctx.lineTo(game.width, floorY);
         ctx.stroke();
-    }
-
-    function drawBoxes() {
-        const ctx = game.ctx;
-        game.boxes.forEach(box => {
-            // Realistic shadow
-            ctx.save();
-            ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
-            ctx.beginPath();
-            ctx.ellipse(
-                box.x + box.width / 2,
-                box.y + box.height + 3,
-                box.width / 2.2,
-                box.width / 10,
-                0, 0, Math.PI * 2
-            );
-            ctx.fill();
-            ctx.restore();
-
-            // Draw box image
-            if (game.images.box && game.images.box.complete && game.images.box.naturalWidth > 0) {
-                ctx.save();
-                // Adjust rendering for transparent PNG
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(game.images.box, box.x, box.y, box.width, box.height);
-                ctx.restore();
-            } else {
-                // Improved fallback: draw realistic box
-                drawRealisticBox(ctx, box.x, box.y, box.width, box.height);
-            }
-        });
-    }
-
-    function drawRealisticBox(ctx, x, y, width, height) {
-        // Box body
-        ctx.fillStyle = '#c4a57b';
-        ctx.fillRect(x, y, width, height);
-
-        // Box shading for depth
-        ctx.fillStyle = 'rgba(139, 115, 85, 0.3)';
-        ctx.fillRect(x, y, width * 0.15, height);
-        ctx.fillRect(x + width * 0.85, y, width * 0.15, height);
-
-        // Box top flaps
-        ctx.strokeStyle = '#8b7355';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(x + 5, y + 5);
-        ctx.lineTo(x + width / 2, y + height * 0.15);
-        ctx.lineTo(x + width - 5, y + 5);
-        ctx.stroke();
-
-        // Box outline
-        ctx.strokeStyle = '#8b7355';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, width, height);
-
-        // Cardboard texture lines
-        ctx.strokeStyle = 'rgba(139, 115, 85, 0.2)';
-        ctx.lineWidth = 1;
-        for (let i = 1; i < 4; i++) {
-            ctx.beginPath();
-            ctx.moveTo(x, y + (height * i / 4));
-            ctx.lineTo(x + width, y + (height * i / 4));
-            ctx.stroke();
-        }
     }
 
     function drawCatTrees() {
@@ -1005,8 +822,6 @@
     function drawCat() {
         if (game.cat.state === 'lying') {
             drawCatLying();
-        } else if (game.cat.state === 'scratching') {
-            drawCatScratching();
         } else {
             drawCatStanding();
         }
@@ -1159,40 +974,6 @@
             ctx.beginPath();
             ctx.arc(x - size / 4, headY, size / 5, 0, Math.PI * 2);
             ctx.fill();
-        }
-    }
-
-    function drawCatScratching() {
-        const ctx = game.ctx;
-        const x = game.cat.x;
-        const y = game.cat.y;
-        const size = game.cat.size;
-
-        // Realistic shadow
-        ctx.save();
-        ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
-        ctx.beginPath();
-        ctx.ellipse(x, y + 8, size / 2.2, size / 10, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        // Draw cat image scratching
-        if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
-            ctx.save();
-
-            const catWidth = size * 1.2;
-            const catHeight = size * 1.2;
-
-            // Add scratching animation - subtle movement
-            const scratchOffset = Math.sin(game.cat.scratchAnimFrame) * 2;
-
-            ctx.translate(x - catWidth / 2 + scratchOffset, y - catHeight / 2);
-            ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
-
-            ctx.restore();
-        } else {
-            // Fallback: draw scratching cat
-            drawFallbackCat(ctx, x, y, size, game.cat.direction);
         }
     }
 
@@ -1558,6 +1339,11 @@
         loadLeaderboard();
         updateBestScore();
 
+        // Award points to main game
+        game.points += wandGame.score;
+        updatePointsDisplay();
+        showMessage(`Earned ${wandGame.score} points from Wand Game!`);
+
         // Show game over message
         setTimeout(() => {
             alert(`Game Over! Your score: ${wandGame.score}`);
@@ -1879,6 +1665,11 @@
         loadYarnLeaderboard();
         updateYarnBestScore();
 
+        // Award points to main game
+        game.points += yarnGame.score;
+        updatePointsDisplay();
+        showMessage(`Earned ${yarnGame.score} points from Yarn Ball Bounce!`);
+
         setTimeout(() => {
             alert(`Game Over! Your score: ${yarnGame.score}`);
         }, 100);
@@ -2143,6 +1934,11 @@
         saveMelodyScore(melodyGame.score);
         loadMelodyLeaderboard();
         updateMelodyBestScore();
+
+        // Award points to main game
+        game.points += melodyGame.score;
+        updatePointsDisplay();
+        showMessage(`Earned ${melodyGame.score} points from Meow Melody!`);
 
         setTimeout(() => {
             const message = completed ?
