@@ -1598,6 +1598,7 @@ p {
     );
     transform: rotate(45deg);
     transition: all 0.6s ease;
+    pointer-events: none; /* Allow clicks to pass through */
 }
 
 .game-card:hover::before {
@@ -1716,6 +1717,7 @@ p {
     background: rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
+    pointer-events: none; /* Allow clicks to pass through */
 }
 
 .game-launch-btn:hover::before {
