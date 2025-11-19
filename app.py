@@ -192,21 +192,30 @@ def send_contact_notification(name, email, subject, message):
 @app.route('/')
 def home():
     """Main homepage"""
+    if is_spa_request():
+        # For SPA requests, return only the content without base template
+        return render_template('index.html', spa_mode=True)
     return render_template('index.html')
 
 @app.route('/about')
 def about():
     """About page"""
+    if is_spa_request():
+        return render_template('about.html', spa_mode=True)
     return render_template('about.html')
 
 @app.route('/projects')
 def projects():
     """Projects page"""
+    if is_spa_request():
+        return render_template('projects.html', spa_mode=True)
     return render_template('projects.html')
 
 @app.route('/games')
 def games():
     """Games page with interactive mini-games"""
+    if is_spa_request():
+        return render_template('games.html', spa_mode=True)
     return render_template('games.html')
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -248,6 +257,9 @@ def contact():
             db.session.rollback()
             flash('Sorry, there was an error submitting your message. Please try again.', 'error')
 
+    # Check if SPA request
+    if is_spa_request():
+        return render_template('contact.html', form=form, spa_mode=True)
     return render_template('contact.html', form=form)
 
 # ============================================

@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% if not spa_mode %}{% extends "base.html" %}
 
 {% block title %}Projects - Josefin Hao{% endblock %}
 
 {% block body_attrs %} data-page="projects"{% endblock %}
 
-{% block content %}
+{% block content %}{% endif %}
 <!-- Current Projects -->
 <section style="margin-bottom: 2rem;">
     <h2 style="color: #2c3e50; margin-bottom: 1rem;">Current Projects</h2>
@@ -199,4 +199,4 @@
     </p>
 </div>
 
-{% endblock %}
+{% if not spa_mode %}{% endblock %}{% endif %}
