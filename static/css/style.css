@@ -1041,6 +1041,15 @@ p {
         0 4px 16px rgba(125, 140, 153, 0.2),
         0 2px 8px rgba(125, 140, 153, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s ease;
+}
+
+.flip-card-current:hover .flip-card-back {
+    box-shadow:
+        0 12px 32px rgba(125, 140, 153, 0.25),
+        0 6px 16px rgba(125, 140, 153, 0.2),
+        0 0 20px rgba(125, 140, 153, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 /* OpenAI Agents SDK - Fresh Green with Subtle Glow */
@@ -1072,6 +1081,15 @@ p {
         0 4px 16px rgba(16, 185, 129, 0.22),
         0 2px 8px rgba(16, 185, 129, 0.16),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s ease;
+}
+
+.flip-card-openai:hover .flip-card-back {
+    box-shadow:
+        0 12px 32px rgba(16, 185, 129, 0.28),
+        0 6px 16px rgba(16, 185, 129, 0.22),
+        0 0 20px rgba(16, 185, 129, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 /* CrewAI - Warm Sunset with Subtle Glow */
@@ -1103,6 +1121,15 @@ p {
         0 4px 16px rgba(255, 140, 66, 0.22),
         0 2px 8px rgba(255, 140, 66, 0.16),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s ease;
+}
+
+.flip-card-crewai:hover .flip-card-back {
+    box-shadow:
+        0 12px 32px rgba(255, 140, 66, 0.28),
+        0 6px 16px rgba(255, 140, 66, 0.22),
+        0 0 20px rgba(255, 140, 66, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 /* LangGraph - Bright Purple with Subtle Glow */
@@ -1134,6 +1161,15 @@ p {
         0 4px 16px rgba(167, 139, 250, 0.22),
         0 2px 8px rgba(167, 139, 250, 0.16),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s ease;
+}
+
+.flip-card-langgraph:hover .flip-card-back {
+    box-shadow:
+        0 12px 32px rgba(167, 139, 250, 0.28),
+        0 6px 16px rgba(167, 139, 250, 0.22),
+        0 0 20px rgba(167, 139, 250, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 /* ============================================ */
