@@ -1,8 +1,8 @@
-{% if not spa_mode %}{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Games - Josefin Hao{% endblock %}
 
-{% block content %}{% endif %}
+{% block content %}
 <div class="games-intro">
     <h1>Developer Mini-Games</h1>
 </div>
@@ -428,12 +428,12 @@ document.addEventListener('keydown', function(event) {
     }
 });
 </script>
-{% if not spa_mode %}{% endblock %}
+{% endblock %}
 
-{% block extra_js %}{% endif %}
+{% block extra_js %}
 <script src="{{ url_for('static', filename='js/typing-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/guess-output-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bigo-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/neural-network-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/blockchain-game.js') }}"></script>
-{% if not spa_mode %}{% endblock %}{% endif %}
+{% endblock %}
