@@ -1928,10 +1928,8 @@
         melodyGame.isPlaying = true;
         melodyGame.round = 1;
         melodyGame.score = 0;
-        // Start with 4 random sounds
-        melodyGame.pattern = Array.from({ length: 4 }, () => Math.floor(Math.random() * 4));
+        melodyGame.pattern = [];
         melodyGame.playerPattern = [];
-        melodyGame.currentStep = 0;
 
         document.getElementById('melodyRound').textContent = '1';
         document.getElementById('melodyScore').textContent = '0';
@@ -1941,9 +1939,9 @@
         // Disable toys during pattern display
         setToysEnabled(false);
 
-        // Start first round (show initial pattern)
+        // Start first round
         setTimeout(() => {
-            showPattern();
+            nextRound();
         }, 1000);
     }
 
@@ -1951,8 +1949,8 @@
         melodyGame.playerPattern = [];
         melodyGame.currentStep = 0;
 
-        // Generate completely new random pattern (length increases with round)
-        melodyGame.pattern = Array.from({ length: 3 + melodyGame.round }, () => Math.floor(Math.random() * 4));
+        // Add new random toy to pattern
+        melodyGame.pattern.push(Math.floor(Math.random() * 4));
 
         // Show pattern
         showPattern();
@@ -1968,7 +1966,7 @@
                 highlightToy(toyIndex);
                 playMeow(toyIndex);
             }, delay);
-            delay += 350; // Faster transition (was 600ms)
+            delay += 600;
         });
 
         // Enable player input after pattern is shown
