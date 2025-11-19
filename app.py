@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, Response
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 from wtforms import StringField, TextAreaField, SubmitField
@@ -355,7 +355,7 @@ def api_status():
 @app.route('/api/chat', methods=['POST'])
 def chat_api():
     """
-    AI Chat endpoint - powered by OpenAI Career Agent
+    AI Chat endpoint with streaming - powered by OpenAI Career Agent
     Provides intelligent responses about Josefin's background, skills, and projects
     """
     try:
@@ -370,15 +370,25 @@ def chat_api():
         # Log the chat interaction
         logger.info(f"💬 Chat query: {user_message[:100]}...")
 
-        # Get Career Agent and generate response
+        # Get Career Agent and stream response
         agent = get_career_agent()
-        response = agent.chat(user_message)
 
-        logger.info(f"✅ Career Agent response generated")
+        def generate():
+            """Generator function for Server-Sent Events streaming"""
+            try:
+                for chunk in agent.chat_stream(user_message):
+                    # Send each chunk as a data event
+                    yield f"data: {chunk}\n\n"
+                # Send done signal
+                yield "data: [DONE]\n\n"
+            except Exception as e:
+                logger.error(f"❌ Error during streaming: {str(e)}", exc_info=True)
+                yield f"data: I'm sorry, I encountered an error. Please try again.\n\n"
+                yield "data: [DONE]\n\n"
 
-        return jsonify({
-            "response": response
-        }), 200
+        logger.info(f"✅ Starting Career Agent stream")
+
+        return Response(generate(), mimetype='text/event-stream')
 
     except Exception as e:
         logger.error(f"❌ Error in chat API: {str(e)}", exc_info=True)

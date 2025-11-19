@@ -79,7 +79,7 @@ class ChatWidget {
         this.showTypingIndicator();
 
         try {
-            // Call backend API
+            // Call backend API with streaming
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {
@@ -88,17 +88,58 @@ class ChatWidget {
                 body: JSON.stringify({ message: message })
             });
 
-            const data = await response.json();
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
             // Remove typing indicator
             this.removeTypingIndicator();
 
-            // Add bot response with typing animation
-            if (data.response) {
-                this.addBotMessageWithTyping(data.response);
-            } else {
-                this.addBotMessageWithTyping("I'm sorry, I couldn't process that request. Please try again.");
+            // Create a message div for streaming
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message bot';
+            const messageBubble = document.createElement('div');
+            messageBubble.className = 'message-bubble';
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = this.getCurrentTime();
+
+            messageDiv.appendChild(messageBubble);
+            messageDiv.appendChild(timeDiv);
+            this.chatMessages.appendChild(messageDiv);
+
+            // Read the stream
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                // Decode the chunk
+                const chunk = decoder.decode(value, { stream: true });
+
+                // Process each line (SSE format)
+                const lines = chunk.split('\n');
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const data = line.substring(6);
+                        if (data === '[DONE]') {
+                            break;
+                        }
+                        fullText += data;
+                        messageBubble.textContent = fullText;
+                        this.scrollToBottom();
+                    }
+                }
             }
+
+            // If no content was received, show error
+            if (!fullText) {
+                messageBubble.textContent = "I'm sorry, I couldn't process that request. Please try again.";
+            }
+
         } catch (error) {
             console.error('Chat error:', error);
             this.removeTypingIndicator();
