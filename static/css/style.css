@@ -3358,6 +3358,45 @@ body.dark-theme .floating-formula {
     font-size: 1.1rem;
 }
 
+/* Wand Game Icon */
+.wand-game-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.wand-game-btn {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    color: #ff9e80;
+}
+
+.wand-game-btn:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 1);
+}
+
+.wand-game-btn:active {
+    transform: scale(0.95) rotate(10deg);
+}
+
+.wand-game-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
 /* Color Picker Icon */
 .color-picker-container {
     position: absolute;
@@ -3403,6 +3442,330 @@ body.dark-theme .floating-formula {
     width: 0;
     height: 0;
     pointer-events: none;
+}
+
+/* Wand Mini-Game Overlay */
+.wand-game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.wand-game-modal {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 250, 0.95) 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.wand-game-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.wand-game-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+.wand-game-modal h2 {
+    text-align: center;
+    color: #ff9e80;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.wand-game-instructions {
+    text-align: center;
+    color: #5f7c8a;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.wand-game-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #5f7c8a;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.wand-game-area {
+    position: relative;
+    height: 250px;
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.wand-position {
+    position: absolute;
+    top: 20px;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.wand-position.left {
+    left: 10%;
+}
+
+.wand-position.middle {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wand-position.right {
+    right: 10%;
+}
+
+.wand {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    animation: wandAppear 0.2s ease;
+    transition: all 0.1s ease;
+}
+
+@keyframes wandAppear {
+    from {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.wand:hover {
+    transform: scale(1.1);
+}
+
+.wand:active {
+    transform: scale(0.9);
+}
+
+.wand-stick {
+    position: absolute;
+    width: 4px;
+    height: 50px;
+    background: linear-gradient(to bottom, #8b7355, #6d5d4b);
+    border-radius: 2px;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-45deg);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.wand-feather {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, #ff6b9d 0%, #c44569 100%);
+    border-radius: 50% 0% 50% 50%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.4);
+    animation: featherFloat 1s ease-in-out infinite;
+}
+
+@keyframes featherFloat {
+    0%, 100% {
+        transform: translateX(-50%) rotate(45deg) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) rotate(45deg) translateY(-3px);
+    }
+}
+
+.cat-paw {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+}
+
+.paw-pad {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #ff9e80;
+    border-radius: 50% 50% 40% 40%;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.paw-toe {
+    position: absolute;
+    width: 12px;
+    height: 16px;
+    background: #ff9e80;
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.paw-toe:nth-child(2) {
+    top: -5px;
+    left: 5px;
+}
+
+.paw-toe:nth-child(3) {
+    top: -8px;
+    left: 24px;
+}
+
+.paw-toe:nth-child(4) {
+    top: -5px;
+    right: 5px;
+}
+
+.wand-game-start {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+.wand-game-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.wand-game-start:active {
+    transform: translateY(0);
+}
+
+.wand-game-start:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wand-leaderboard {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.wand-leaderboard h3 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+#wandLeaderboardList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#wandLeaderboardList li {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #5f7c8a;
+}
+
+#wandLeaderboardList li:first-child {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #8b6914;
+    font-weight: bold;
+}
+
+#wandLeaderboardList li:nth-child(2) {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    color: #666;
+}
+
+#wandLeaderboardList li:nth-child(3) {
+    background: linear-gradient(135deg, #cd7f32 0%, #e6a35c 100%);
+    color: #6d4a1f;
 }
 
 /* Main Canvas */
@@ -3457,6 +3820,21 @@ body.dark-theme .floating-formula {
         font-size: 1rem;
     }
 
+    .wand-game-container {
+        top: 10px;
+        left: 10px;
+    }
+
+    .wand-game-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .wand-game-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
     .color-picker-container {
         top: 10px;
         right: 10px;
@@ -3483,5 +3861,21 @@ body.dark-theme .floating-formula {
 
     #cat-cafe-canvas {
         border-width: 2px;
+    }
+
+    .wand-game-modal {
+        padding: 1.5rem;
+    }
+
+    .wand-game-modal h2 {
+        font-size: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+    }
+
+    .wand-game-area {
+        height: 200px;
     }
 }
