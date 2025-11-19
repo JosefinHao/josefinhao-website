@@ -1,16 +1,10 @@
 /**
- * Cat Cafe Interactive Game - 3D Isometric Edition
- * A cozy interactive experience where you play as a cat in a cafe with 3D perspective
+ * Cat Cafe Interactive Game - 2D Edition
+ * A cozy interactive experience where you play as a cat in a cafe
  */
 
 (function() {
     'use strict';
-
-    // Isometric projection settings
-    const ISO = {
-        angle: Math.PI / 6, // 30 degrees
-        scale: 0.866 // cos(30)
-    };
 
     // Game state
     const game = {
@@ -22,17 +16,15 @@
         scratches: [],
         isScratching: false,
         lastScratchPoint: null,
-        scratchTarget: null, // Where cat should go to scratch
+        scratchTarget: null,
         isDragging: false,
         draggedObject: null,
         dragOffset: { x: 0, y: 0 },
         cat: {
             x: 0,
             y: 0,
-            z: 0,
             targetX: 0,
             targetY: 0,
-            targetZ: 0,
             size: 50,
             speed: 2,
             isMoving: false,
@@ -41,62 +33,28 @@
             animationFrame: 0,
             jumpHeight: 0,
             jumpProgress: 0,
-            state: 'standing', // 'standing', 'lying', 'scratching'
+            state: 'standing',
             scratchAnimFrame: 0
         },
         boxes: [],
         catTrees: [],
-        walkways: [],
-        room: {
-            width: 800,
-            depth: 600,
-            height: 400
-        },
         initialized: false,
         animationFrameId: null
     };
 
-    // Convert 3D world coordinates to 2D isometric screen coordinates
-    function toIso(x, y, z = 0) {
-        const isoX = (x - y) * Math.cos(ISO.angle);
-        const isoY = (x + y) * Math.sin(ISO.angle) - z;
-        return {
-            x: game.width / 2 + isoX,
-            y: game.height * 0.7 + isoY
-        };
-    }
-
-    // Convert 2D screen coordinates to 3D world coordinates
-    function fromIso(screenX, screenY, z = 0) {
-        const x = screenX - game.width / 2;
-        const y = screenY - game.height * 0.7 + z;
-
-        const worldY = (y / Math.sin(ISO.angle) - x / Math.cos(ISO.angle)) / 2;
-        const worldX = y / Math.sin(ISO.angle) - worldY;
-
-        return { x: worldX, y: worldY, z };
-    }
-
     function cleanup() {
-        // Cancel any running animation frame
         if (game.animationFrameId) {
             cancelAnimationFrame(game.animationFrameId);
             game.animationFrameId = null;
         }
-
-        // Remove resize listener
         window.removeEventListener('resize', resizeCanvas);
-
-        // Reset initialization flag
         game.initialized = false;
-
         console.log('Cat Cafe cleaned up');
     }
 
     function init() {
-        console.log('Cat Cafe 3D game initializing...');
+        console.log('Cat Cafe 2D game initializing...');
 
-        // Prevent double initialization
         if (game.initialized) {
             console.log('Cat Cafe already initialized, cleaning up first...');
             cleanup();
@@ -117,18 +75,15 @@
         setupEventListeners();
         createCafeElements();
 
-        game.cat.x = game.room.width / 2;
-        game.cat.y = game.room.depth / 2;
-        game.cat.z = 0;
+        game.cat.x = game.width / 2;
+        game.cat.y = game.height / 2;
         game.cat.targetX = game.cat.x;
         game.cat.targetY = game.cat.y;
-        game.cat.targetZ = 0;
 
         game.initialized = true;
-
         gameLoop();
 
-        console.log('Cat Cafe 3D game initialized successfully');
+        console.log('Cat Cafe 2D game initialized successfully');
     }
 
     function resizeCanvas() {
@@ -138,7 +93,7 @@
 
         const container = game.canvas.parentElement;
         game.canvas.width = container.clientWidth;
-        game.canvas.height = Math.max(600, window.innerHeight - 300);
+        game.canvas.height = Math.max(500, Math.min(700, window.innerHeight - 250));
         game.width = game.canvas.width;
         game.height = game.canvas.height;
 
@@ -150,57 +105,36 @@
     function createCafeElements() {
         game.boxes = [];
         game.catTrees = [];
-        game.walkways = [];
 
+        // Create random boxes (5-8 boxes)
         const numBoxes = 5 + Math.floor(Math.random() * 4);
         for (let i = 0; i < numBoxes; i++) {
-            const size = 40 + Math.random() * 50;
+            const size = 40 + Math.random() * 40;
             game.boxes.push({
-                x: 100 + Math.random() * (game.room.width - 200),
-                y: 100 + Math.random() * (game.room.depth - 200),
-                z: 0,
-                width: size,
-                depth: size,
-                height: size,
+                x: 80 + Math.random() * (game.width - 160),
+                y: 80 + Math.random() * (game.height - 160),
+                size: size,
                 color: '#c4a57b',
                 type: 'box'
             });
         }
 
+        // Create 3 cat trees
         const treePositions = [
-            { x: game.room.width * 0.2, y: game.room.depth * 0.3 },
-            { x: game.room.width * 0.5, y: game.room.depth * 0.6 },
-            { x: game.room.width * 0.8, y: game.room.depth * 0.4 }
+            { x: game.width * 0.2, y: game.height * 0.3 },
+            { x: game.width * 0.5, y: game.height * 0.7 },
+            { x: game.width * 0.8, y: game.height * 0.5 }
         ];
 
         treePositions.forEach(pos => {
-            const height = 140 + Math.random() * 60;
             game.catTrees.push({
                 x: pos.x,
                 y: pos.y,
-                z: 0,
-                height: height,
-                radius: 12,
-                platforms: [
-                    { z: height * 0.3, radius: 35 },
-                    { z: height * 0.6, radius: 28 },
-                    { z: height * 0.85, radius: 22 }
-                ],
+                radius: 15,
+                height: 100 + Math.random() * 40,
                 type: 'tree'
             });
         });
-
-        game.walkways = [
-            {
-                x1: 50,
-                y1: 80,
-                x2: game.room.width - 50,
-                y2: 80,
-                z: 150,
-                width: 20,
-                thickness: 8
-            }
-        ];
     }
 
     function setupEventListeners() {
@@ -213,47 +147,39 @@
         game.canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
         game.canvas.addEventListener('touchend', handlePointerUp);
 
-        // Color picker functionality
+        // Color picker
         const colorPickerBtn = document.getElementById('colorPickerBtn');
         const colorInput = document.getElementById('wallColorPicker');
 
         if (colorPickerBtn && colorInput) {
-            // When button is clicked, open the color picker
             colorPickerBtn.addEventListener('click', () => {
                 colorInput.click();
             });
 
-            // When color is selected, update wall color
             colorInput.addEventListener('input', (e) => {
                 game.wallColor = e.target.value;
-                game.scratches = []; // Clear scratches when color changes
+                game.scratches = [];
             });
 
-            // Also handle change event for better compatibility
             colorInput.addEventListener('change', (e) => {
                 game.wallColor = e.target.value;
             });
         }
     }
 
-    function getObjectAtPosition(screenX, screenY) {
-        const world = fromIso(screenX, screenY, 0);
-
+    function getObjectAtPosition(x, y) {
         // Check boxes
         for (let box of game.boxes) {
-            if (world.x >= box.x && world.x <= box.x + box.width &&
-                world.y >= box.y && world.y <= box.y + box.depth) {
+            if (x >= box.x && x <= box.x + box.size &&
+                y >= box.y && y <= box.y + box.size) {
                 return box;
             }
         }
 
-        // Check cat trees (wider hitbox for easier dragging)
+        // Check cat trees
         for (let tree of game.catTrees) {
-            const dist = Math.sqrt(
-                Math.pow(world.x - tree.x, 2) +
-                Math.pow(world.y - tree.y, 2)
-            );
-            if (dist < 50) {
+            const dist = Math.sqrt(Math.pow(x - tree.x, 2) + Math.pow(y - tree.y, 2));
+            if (dist < tree.radius + 20) {
                 return tree;
             }
         }
@@ -263,49 +189,35 @@
 
     function handlePointerDown(e) {
         const rect = game.canvas.getBoundingClientRect();
-        const screenX = e.clientX - rect.left;
-        const screenY = e.clientY - rect.top;
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
         // Check if near walls for scratching
-        const wallThreshold = 100;
-        const isNearWall = screenX < wallThreshold || screenX > game.width - wallThreshold ||
-                          screenY < wallThreshold || screenY > game.height - wallThreshold;
+        const wallThreshold = 50;
+        const isNearWall = x < wallThreshold || x > game.width - wallThreshold ||
+                          y < wallThreshold || y > game.height - wallThreshold;
 
         if (isNearWall) {
             game.isScratching = true;
-            game.lastScratchPoint = { x: screenX, y: screenY };
-
-            // Convert wall position to 3D world coordinate for cat to move to
-            const wallWorld = fromIso(screenX, screenY, 50); // Height where cat will scratch
-            game.scratchTarget = {
-                x: Math.max(50, Math.min(game.room.width - 50, wallWorld.x)),
-                y: Math.max(50, Math.min(game.room.depth - 50, wallWorld.y)),
-                screenX: screenX,
-                screenY: screenY
-            };
-
-            // Move cat to scratch location
-            moveCatToScratch(game.scratchTarget.x, game.scratchTarget.y);
+            game.lastScratchPoint = { x, y };
+            game.scratchTarget = { x, y };
+            moveCatToScratch(x, y);
         } else {
-            // Check for object dragging
-            const obj = getObjectAtPosition(screenX, screenY);
+            const obj = getObjectAtPosition(x, y);
 
             if (obj && (obj.type === 'box' || obj.type === 'tree')) {
                 game.isDragging = true;
                 game.draggedObject = obj;
-                const world = fromIso(screenX, screenY, 0);
                 game.dragOffset = {
-                    x: world.x - obj.x,
-                    y: world.y - obj.y
+                    x: x - obj.x,
+                    y: y - obj.y
                 };
             } else {
-                // Check for box interaction
-                const clickedBox = getObjectAtPosition(screenX, screenY);
+                const clickedBox = getObjectAtPosition(x, y);
                 if (clickedBox && clickedBox.type === 'box') {
-                    handleBoxClick(clickedBox, screenX, screenY);
+                    handleBoxClick(clickedBox, x, y);
                 } else {
-                    const world = fromIso(screenX, screenY, 0);
-                    moveCatTo(world.x, world.y, 0);
+                    moveCatTo(x, y);
                 }
             }
         }
@@ -313,40 +225,26 @@
 
     function handlePointerMove(e) {
         const rect = game.canvas.getBoundingClientRect();
-        const screenX = e.clientX - rect.left;
-        const screenY = e.clientY - rect.top;
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
         if (game.isDragging && game.draggedObject) {
-            // Drag object
-            const world = fromIso(screenX, screenY, 0);
-            game.draggedObject.x = Math.max(50, Math.min(game.room.width - 50, world.x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.room.depth - 50, world.y - game.dragOffset.y));
-
-            // Update cursor
+            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
+            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
             game.canvas.style.cursor = 'grabbing';
         } else if (game.isScratching) {
-            // Add scratch marks
             if (game.lastScratchPoint) {
                 game.scratches.push({
                     x1: game.lastScratchPoint.x,
                     y1: game.lastScratchPoint.y,
-                    x2: screenX,
-                    y2: screenY
+                    x2: x,
+                    y2: y
                 });
-                game.lastScratchPoint = { x: screenX, y: screenY };
-
-                // Update scratch target for cat
-                const wallWorld = fromIso(screenX, screenY, 50);
-                game.scratchTarget = {
-                    x: Math.max(50, Math.min(game.room.width - 50, wallWorld.x)),
-                    y: Math.max(50, Math.min(game.room.depth - 50, wallWorld.y)),
-                    screenX: screenX,
-                    screenY: screenY
-                };
+                game.lastScratchPoint = { x, y };
+                game.scratchTarget = { x, y };
             }
         } else {
-            // Update cursor based on hover
-            const obj = getObjectAtPosition(screenX, screenY);
+            const obj = getObjectAtPosition(x, y);
             if (obj && (obj.type === 'box' || obj.type === 'tree')) {
                 game.canvas.style.cursor = 'grab';
             } else {
@@ -365,7 +263,6 @@
         if (game.isScratching) {
             game.isScratching = false;
             game.lastScratchPoint = null;
-            // Keep scratchTarget so cat can finish scratching
         }
     }
 
@@ -373,43 +270,34 @@
         e.preventDefault();
         const touch = e.touches[0];
         const rect = game.canvas.getBoundingClientRect();
-        const screenX = touch.clientX - rect.left;
-        const screenY = touch.clientY - rect.top;
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
 
-        const wallThreshold = 100;
-        const isNearWall = screenX < wallThreshold || screenX > game.width - wallThreshold ||
-                          screenY < wallThreshold || screenY > game.height - wallThreshold;
+        const wallThreshold = 50;
+        const isNearWall = x < wallThreshold || x > game.width - wallThreshold ||
+                          y < wallThreshold || y > game.height - wallThreshold;
 
         if (isNearWall) {
             game.isScratching = true;
-            game.lastScratchPoint = { x: screenX, y: screenY };
-
-            const wallWorld = fromIso(screenX, screenY, 50);
-            game.scratchTarget = {
-                x: Math.max(50, Math.min(game.room.width - 50, wallWorld.x)),
-                y: Math.max(50, Math.min(game.room.depth - 50, wallWorld.y)),
-                screenX: screenX,
-                screenY: screenY
-            };
-            moveCatToScratch(game.scratchTarget.x, game.scratchTarget.y);
+            game.lastScratchPoint = { x, y };
+            game.scratchTarget = { x, y };
+            moveCatToScratch(x, y);
         } else {
-            const obj = getObjectAtPosition(screenX, screenY);
+            const obj = getObjectAtPosition(x, y);
 
             if (obj && (obj.type === 'box' || obj.type === 'tree')) {
                 game.isDragging = true;
                 game.draggedObject = obj;
-                const world = fromIso(screenX, screenY, 0);
                 game.dragOffset = {
-                    x: world.x - obj.x,
-                    y: world.y - obj.y
+                    x: x - obj.x,
+                    y: y - obj.y
                 };
             } else {
-                const clickedBox = getObjectAtPosition(screenX, screenY);
+                const clickedBox = getObjectAtPosition(x, y);
                 if (clickedBox && clickedBox.type === 'box') {
-                    handleBoxClick(clickedBox, screenX, screenY);
+                    handleBoxClick(clickedBox, x, y);
                 } else {
-                    const world = fromIso(screenX, screenY, 0);
-                    moveCatTo(world.x, world.y, 0);
+                    moveCatTo(x, y);
                 }
             }
         }
@@ -419,60 +307,41 @@
         e.preventDefault();
         const touch = e.touches[0];
         const rect = game.canvas.getBoundingClientRect();
-        const screenX = touch.clientX - rect.left;
-        const screenY = touch.clientY - rect.top;
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
 
         if (game.isDragging && game.draggedObject) {
-            const world = fromIso(screenX, screenY, 0);
-            game.draggedObject.x = Math.max(50, Math.min(game.room.width - 50, world.x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.room.depth - 50, world.y - game.dragOffset.y));
+            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
+            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
         } else if (game.isScratching) {
             if (game.lastScratchPoint) {
                 game.scratches.push({
                     x1: game.lastScratchPoint.x,
                     y1: game.lastScratchPoint.y,
-                    x2: screenX,
-                    y2: screenY
+                    x2: x,
+                    y2: y
                 });
-                game.lastScratchPoint = { x: screenX, y: screenY };
-
-                const wallWorld = fromIso(screenX, screenY, 50);
-                game.scratchTarget = {
-                    x: Math.max(50, Math.min(game.room.width - 50, wallWorld.x)),
-                    y: Math.max(50, Math.min(game.room.depth - 50, wallWorld.y)),
-                    screenX: screenX,
-                    screenY: screenY
-                };
+                game.lastScratchPoint = { x, y };
+                game.scratchTarget = { x, y };
             }
         }
     }
 
-    function getBoxAtPosition(x, y) {
-        for (let box of game.boxes) {
-            if (x >= box.x && x <= box.x + box.width &&
-                y >= box.y && y <= box.y + box.depth) {
-                return box;
-            }
-        }
-        return null;
-    }
+    function handleBoxClick(box, clickX, clickY) {
+        const boxCenterX = box.x + box.size / 2;
+        const boxCenterY = box.y + box.size / 2;
+        const relativeY = clickY - box.y;
 
-    function handleBoxClick(box, screenX, screenY) {
-        const relativeY = screenY - game.height * 0.7;
-
-        if (relativeY < -box.height * 0.7) {
-            // Clicked on top - lie on box
-            moveCatToLie(box.x + box.width / 2, box.y + box.depth / 2, box.height, 'ontop');
+        if (relativeY < box.size * 0.3) {
+            moveCatToLie(boxCenterX, boxCenterY - box.size / 3, 'ontop');
         } else {
-            // Clicked inside - lie inside box
-            moveCatToLie(box.x + box.width / 2, box.y + box.depth / 2, 0, 'inside');
+            moveCatToLie(boxCenterX, boxCenterY, 'inside');
         }
     }
 
-    function moveCatTo(x, y, z) {
-        game.cat.targetX = Math.max(50, Math.min(game.room.width - 50, x));
-        game.cat.targetY = Math.max(50, Math.min(game.room.depth - 50, y));
-        game.cat.targetZ = z;
+    function moveCatTo(x, y) {
+        game.cat.targetX = Math.max(30, Math.min(game.width - 30, x));
+        game.cat.targetY = Math.max(30, Math.min(game.height - 30, y));
         game.cat.isMoving = true;
         game.cat.state = 'standing';
 
@@ -485,21 +354,20 @@
         const rand = Math.random();
         if (rand < 0.33) {
             game.cat.moveType = 'walk';
-            game.cat.speed = 2.5;
+            game.cat.speed = 2;
         } else if (rand < 0.66) {
             game.cat.moveType = 'run';
-            game.cat.speed = 5;
+            game.cat.speed = 4;
         } else {
             game.cat.moveType = 'jump';
-            game.cat.speed = 3.5;
+            game.cat.speed = 3;
             game.cat.jumpProgress = 0;
         }
     }
 
-    function moveCatToLie(x, y, z, lieType) {
-        game.cat.targetX = Math.max(50, Math.min(game.room.width - 50, x));
-        game.cat.targetY = Math.max(50, Math.min(game.room.depth - 50, y));
-        game.cat.targetZ = z;
+    function moveCatToLie(x, y, lieType) {
+        game.cat.targetX = x;
+        game.cat.targetY = y;
         game.cat.isMoving = true;
         game.cat.lieType = lieType;
 
@@ -510,13 +378,12 @@
         }
 
         game.cat.moveType = 'walk';
-        game.cat.speed = 2.5;
+        game.cat.speed = 2;
     }
 
     function moveCatToScratch(x, y) {
         game.cat.targetX = x;
         game.cat.targetY = y;
-        game.cat.targetZ = 0;
         game.cat.isMoving = true;
         game.cat.state = 'moving-to-scratch';
 
@@ -534,17 +401,14 @@
         if (game.cat.isMoving) {
             const dx = game.cat.targetX - game.cat.x;
             const dy = game.cat.targetY - game.cat.y;
-            const dz = game.cat.targetZ - game.cat.z;
-            const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < game.cat.speed) {
                 game.cat.x = game.cat.targetX;
                 game.cat.y = game.cat.targetY;
-                game.cat.z = game.cat.targetZ;
                 game.cat.isMoving = false;
                 game.cat.jumpHeight = 0;
 
-                // Set state after reaching destination
                 if (game.cat.state === 'moving-to-scratch') {
                     game.cat.state = 'scratching';
                     game.cat.scratchAnimFrame = 0;
@@ -557,11 +421,9 @@
                 game.cat.x += Math.cos(angle) * game.cat.speed;
                 game.cat.y += Math.sin(angle) * game.cat.speed;
 
-                game.cat.z += dz * 0.05;
-
                 if (game.cat.moveType === 'jump') {
                     game.cat.jumpProgress += 0.05;
-                    game.cat.jumpHeight = Math.sin(game.cat.jumpProgress * Math.PI) * 40;
+                    game.cat.jumpHeight = Math.sin(game.cat.jumpProgress * Math.PI) * 20;
                 }
             }
 
@@ -569,13 +431,11 @@
         } else if (game.cat.state === 'scratching') {
             game.cat.scratchAnimFrame += 0.3;
 
-            // Stop scratching after a while if not actively scratching
             if (!game.scratchTarget && game.cat.scratchAnimFrame > 20) {
                 game.cat.state = 'standing';
                 game.cat.scratchAnimFrame = 0;
             }
 
-            // Clear scratch target after reaching it
             if (game.scratchTarget && !game.isScratching) {
                 setTimeout(() => {
                     game.scratchTarget = null;
@@ -587,474 +447,266 @@
 
     function render() {
         const ctx = game.ctx;
+
+        // Clear canvas
         ctx.clearRect(0, 0, game.width, game.height);
 
-        drawRoom();
-        drawScratches();
-
-        const objects = [];
-
-        game.boxes.forEach(box => {
-            objects.push({ type: 'box', data: box, depth: box.y + box.depth });
-        });
-
-        game.catTrees.forEach(tree => {
-            objects.push({ type: 'tree', data: tree, depth: tree.y });
-        });
-
-        objects.push({ type: 'cat', data: game.cat, depth: game.cat.y });
-
-        objects.sort((a, b) => a.depth - b.depth);
-
-        objects.forEach(obj => {
-            if (obj.type === 'box') drawBox3D(obj.data);
-            else if (obj.type === 'tree') drawCatTree3D(obj.data);
-            else if (obj.type === 'cat') drawCat3D(obj.data);
-        });
-
-        game.walkways.forEach(walkway => drawWalkway3D(walkway));
-    }
-
-    function drawRoom() {
-        const ctx = game.ctx;
-        const room = game.room;
-
-        const gradient = ctx.createLinearGradient(0, 0, 0, game.height);
-        gradient.addColorStop(0, game.wallColor);
-        gradient.addColorStop(1, shadeColor(game.wallColor, -10));
-        ctx.fillStyle = gradient;
+        // Draw background
+        ctx.fillStyle = game.wallColor;
         ctx.fillRect(0, 0, game.width, game.height);
 
-        drawFloor3D();
-        drawWalls3D();
-    }
+        // Draw floor
+        ctx.fillStyle = '#8b7355';
+        ctx.fillRect(0, game.height - 40, game.width, 40);
 
-    function drawFloor3D() {
-        const ctx = game.ctx;
-        const tileSize = 60;
-
-        for (let x = 0; x < game.room.width; x += tileSize) {
-            for (let y = 0; y < game.room.depth; y += tileSize) {
-                const p1 = toIso(x, y, 0);
-                const p2 = toIso(x + tileSize, y, 0);
-                const p3 = toIso(x + tileSize, y + tileSize, 0);
-                const p4 = toIso(x, y + tileSize, 0);
-
-                const isLight = ((x / tileSize) + (y / tileSize)) % 2 === 0;
-                ctx.fillStyle = isLight ? '#8b7355' : '#7a6349';
-
-                ctx.beginPath();
-                ctx.moveTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.lineTo(p3.x, p3.y);
-                ctx.lineTo(p4.x, p4.y);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
+        // Draw wall pattern
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < game.width; x += 50) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, game.height);
+            ctx.stroke();
         }
-    }
+        for (let y = 0; y < game.height; y += 50) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(game.width, y);
+            ctx.stroke();
+        }
 
-    function drawWalls3D() {
-        const ctx = game.ctx;
-        const room = game.room;
-
-        const backWall = [
-            toIso(0, 0, 0),
-            toIso(room.width, 0, 0),
-            toIso(room.width, 0, room.height),
-            toIso(0, 0, room.height)
-        ];
-
-        ctx.fillStyle = shadeColor(game.wallColor, -15);
-        ctx.beginPath();
-        ctx.moveTo(backWall[0].x, backWall[0].y);
-        backWall.forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.closePath();
-        ctx.fill();
-
-        const leftWall = [
-            toIso(0, 0, 0),
-            toIso(0, room.depth, 0),
-            toIso(0, room.depth, room.height),
-            toIso(0, 0, room.height)
-        ];
-
-        ctx.fillStyle = shadeColor(game.wallColor, -8);
-        ctx.beginPath();
-        ctx.moveTo(leftWall[0].x, leftWall[0].y);
-        leftWall.forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.closePath();
-        ctx.fill();
-
-        const rightWall = [
-            toIso(room.width, 0, 0),
-            toIso(room.width, room.depth, 0),
-            toIso(room.width, room.depth, room.height),
-            toIso(room.width, 0, room.height)
-        ];
-
-        ctx.fillStyle = shadeColor(game.wallColor, -5);
-        ctx.beginPath();
-        ctx.moveTo(rightWall[0].x, rightWall[0].y);
-        rightWall.forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.closePath();
-        ctx.fill();
-    }
-
-    function drawScratches() {
-        const ctx = game.ctx;
+        // Draw scratches
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
-
         game.scratches.forEach(scratch => {
             ctx.beginPath();
             ctx.moveTo(scratch.x1, scratch.y1);
             ctx.lineTo(scratch.x2, scratch.y2);
             ctx.stroke();
         });
+
+        // Draw boxes
+        drawBoxes();
+
+        // Draw cat trees
+        drawCatTrees();
+
+        // Draw cat
+        drawCat();
     }
 
-    function drawBox3D(box) {
+    function drawBoxes() {
         const ctx = game.ctx;
-
-        const p1 = toIso(box.x, box.y, box.z);
-        const p2 = toIso(box.x + box.width, box.y, box.z);
-        const p3 = toIso(box.x + box.width, box.y + box.depth, box.z);
-        const p4 = toIso(box.x, box.y + box.depth, box.z);
-        const p5 = toIso(box.x, box.y, box.z + box.height);
-        const p6 = toIso(box.x + box.width, box.y, box.z + box.height);
-        const p7 = toIso(box.x + box.width, box.y + box.depth, box.z + box.height);
-        const p8 = toIso(box.x, box.y + box.depth, box.z + box.height);
-
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.lineTo(p3.x, p3.y);
-        ctx.lineTo(p4.x, p4.y);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = shadeColor(box.color, 10);
-        ctx.beginPath();
-        ctx.moveTo(p5.x, p5.y);
-        ctx.lineTo(p6.x, p6.y);
-        ctx.lineTo(p7.x, p7.y);
-        ctx.lineTo(p8.x, p8.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.strokeStyle = '#8b7355';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.fillStyle = shadeColor(box.color, -10);
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p4.x, p4.y);
-        ctx.lineTo(p8.x, p8.y);
-        ctx.lineTo(p5.x, p5.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = box.color;
-        ctx.beginPath();
-        ctx.moveTo(p2.x, p2.y);
-        ctx.lineTo(p3.x, p3.y);
-        ctx.lineTo(p7.x, p7.y);
-        ctx.lineTo(p6.x, p6.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.strokeStyle = '#a0826d';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(p5.x + (p6.x - p5.x) * 0.2, p5.y + (p6.y - p5.y) * 0.2);
-        ctx.lineTo(p5.x + (p6.x - p5.x) * 0.8, p5.y + (p6.y - p5.y) * 0.8);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(p8.x + (p7.x - p8.x) * 0.2, p8.y + (p7.y - p8.y) * 0.2);
-        ctx.lineTo(p8.x + (p7.x - p8.x) * 0.8, p8.y + (p7.y - p8.y) * 0.8);
-        ctx.stroke();
-    }
-
-    function drawCatTree3D(tree) {
-        const ctx = game.ctx;
-
-        const trunkBottom = toIso(tree.x, tree.y, tree.z);
-        const trunkTop = toIso(tree.x, tree.y, tree.z + tree.height);
-
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-        ctx.beginPath();
-        ctx.ellipse(trunkBottom.x, trunkBottom.y, tree.radius * 1.2, tree.radius * 0.6, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        const leftGradient = ctx.createLinearGradient(
-            trunkBottom.x - tree.radius, trunkBottom.y,
-            trunkBottom.x, trunkBottom.y
-        );
-        leftGradient.addColorStop(0, '#6d5d4b');
-        leftGradient.addColorStop(1, '#8b7355');
-
-        ctx.fillStyle = leftGradient;
-        ctx.beginPath();
-        ctx.ellipse(trunkBottom.x - tree.radius / 2, trunkBottom.y, tree.radius * 0.7, tree.radius * 0.5, -Math.PI / 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#8b7355';
-        ctx.fillRect(
-            trunkBottom.x - tree.radius,
-            trunkTop.y,
-            tree.radius * 2,
-            trunkBottom.y - trunkTop.y
-        );
-
-        ctx.fillStyle = '#a0826d';
-        ctx.fillRect(
-            trunkBottom.x,
-            trunkTop.y,
-            tree.radius,
-            trunkBottom.y - trunkTop.y
-        );
-
-        ctx.fillStyle = '#a0826d';
-        ctx.beginPath();
-        ctx.ellipse(trunkTop.x, trunkTop.y, tree.radius, tree.radius * 0.5, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        tree.platforms.forEach(platform => {
-            const platformPos = toIso(tree.x, tree.y, tree.z + platform.z);
-
+        game.boxes.forEach(box => {
+            // Shadow
             ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-            ctx.beginPath();
-            ctx.ellipse(platformPos.x, platformPos.y + 2, platform.radius + 2, platform.radius * 0.5 + 1, 0, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.fillRect(box.x + 3, box.y + 3, box.size, box.size);
 
-            ctx.fillStyle = '#a0826d';
-            ctx.beginPath();
-            ctx.ellipse(platformPos.x, platformPos.y, platform.radius, platform.radius * 0.5, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Box body
+            ctx.fillStyle = box.color;
+            ctx.fillRect(box.x, box.y, box.size, box.size);
 
-            ctx.fillStyle = '#8b7355';
-            ctx.beginPath();
-            ctx.ellipse(platformPos.x, platformPos.y, platform.radius - 5, platform.radius * 0.5 - 3, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.strokeStyle = '#6d5d4b';
+            // Box outline
+            ctx.strokeStyle = '#8b7355';
             ctx.lineWidth = 2;
+            ctx.strokeRect(box.x, box.y, box.size, box.size);
+
+            // Box flaps
+            ctx.strokeStyle = '#a0826d';
+            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.ellipse(platformPos.x, platformPos.y, platform.radius, platform.radius * 0.5, 0, 0, Math.PI * 2);
+            ctx.moveTo(box.x + 5, box.y + 5);
+            ctx.lineTo(box.x + box.size - 5, box.y + 5);
             ctx.stroke();
         });
-
-        const basePos = toIso(tree.x, tree.y, tree.z);
-        ctx.fillStyle = '#6d5d4b';
-        ctx.beginPath();
-        ctx.ellipse(basePos.x, basePos.y, tree.radius * 1.5, tree.radius * 0.8, 0, 0, Math.PI * 2);
-        ctx.fill();
     }
 
-    function drawWalkway3D(walkway) {
+    function drawCatTrees() {
         const ctx = game.ctx;
-
-        const p1 = toIso(walkway.x1, walkway.y1 - walkway.width / 2, walkway.z);
-        const p2 = toIso(walkway.x2, walkway.y2 - walkway.width / 2, walkway.z);
-        const p3 = toIso(walkway.x2, walkway.y2 + walkway.width / 2, walkway.z);
-        const p4 = toIso(walkway.x1, walkway.y1 + walkway.width / 2, walkway.z);
-
-        const p5 = toIso(walkway.x1, walkway.y1 - walkway.width / 2, walkway.z + walkway.thickness);
-        const p6 = toIso(walkway.x2, walkway.y2 - walkway.width / 2, walkway.z + walkway.thickness);
-        const p7 = toIso(walkway.x2, walkway.y2 + walkway.width / 2, walkway.z + walkway.thickness);
-        const p8 = toIso(walkway.x1, walkway.y1 + walkway.width / 2, walkway.z + walkway.thickness);
-
-        ctx.fillStyle = '#7a6349';
-        ctx.beginPath();
-        ctx.moveTo(p5.x, p5.y);
-        ctx.lineTo(p6.x, p6.y);
-        ctx.lineTo(p7.x, p7.y);
-        ctx.lineTo(p8.x, p8.y);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#6d5d4b';
-        ctx.beginPath();
-        ctx.moveTo(p2.x, p2.y);
-        ctx.lineTo(p3.x, p3.y);
-        ctx.lineTo(p7.x, p7.y);
-        ctx.lineTo(p6.x, p6.y);
-        ctx.closePath();
-        ctx.fill();
-
-        for (let x = walkway.x1; x < walkway.x2; x += 100) {
-            const bracketTop = toIso(x, walkway.y1, walkway.z);
-            const bracketBottom = toIso(x, walkway.y1, 0);
-
-            ctx.strokeStyle = '#8b7355';
-            ctx.lineWidth = 3;
+        game.catTrees.forEach(tree => {
+            // Shadow
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
             ctx.beginPath();
-            ctx.moveTo(bracketTop.x, bracketTop.y);
-            ctx.lineTo(bracketBottom.x, bracketBottom.y);
-            ctx.stroke();
-        }
+            ctx.ellipse(tree.x, tree.y + tree.radius, tree.radius * 1.2, tree.radius * 0.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Trunk
+            ctx.fillStyle = '#8b7355';
+            ctx.fillRect(tree.x - tree.radius / 2, tree.y - tree.height, tree.radius, tree.height);
+
+            // Platforms
+            const platforms = [
+                { offset: -tree.height * 0.7, size: 25 },
+                { offset: -tree.height * 0.45, size: 20 },
+                { offset: -tree.height * 0.2, size: 15 }
+            ];
+
+            platforms.forEach(platform => {
+                ctx.fillStyle = '#a0826d';
+                ctx.beginPath();
+                ctx.arc(tree.x, tree.y + platform.offset, platform.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#8b7355';
+                ctx.beginPath();
+                ctx.arc(tree.x, tree.y + platform.offset, platform.size - 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Base
+            ctx.fillStyle = '#6d5d4b';
+            ctx.beginPath();
+            ctx.arc(tree.x, tree.y, tree.radius, 0, Math.PI * 2);
+            ctx.fill();
+        });
     }
 
-    function drawCat3D(cat) {
-        const ctx = game.ctx;
-
-        if (cat.state === 'lying') {
-            drawCatLying(cat);
-        } else if (cat.state === 'scratching') {
-            drawCatScratching(cat);
+    function drawCat() {
+        if (game.cat.state === 'lying') {
+            drawCatLying();
+        } else if (game.cat.state === 'scratching') {
+            drawCatScratching();
         } else {
-            drawCatStanding(cat);
+            drawCatStanding();
         }
     }
 
-    function drawCatStanding(cat) {
+    function drawCatStanding() {
         const ctx = game.ctx;
-        const pos = toIso(cat.x, cat.y, cat.z + cat.jumpHeight);
-        const size = cat.size;
+        const x = game.cat.x;
+        const y = game.cat.y - game.cat.jumpHeight;
+        const size = game.cat.size;
 
-        const shadowPos = toIso(cat.x, cat.y, 0);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
         ctx.beginPath();
-        ctx.ellipse(shadowPos.x, shadowPos.y, size / 2.5, size / 5, 0, 0, Math.PI * 2);
+        ctx.ellipse(game.cat.x, game.cat.y + size / 2 + 3, size / 2.5, size / 6, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        const bodyGradient = ctx.createRadialGradient(pos.x - 5, pos.y - 5, 0, pos.x, pos.y, size / 2);
-        bodyGradient.addColorStop(0, '#ffb399');
-        bodyGradient.addColorStop(1, '#ff8c66');
-
-        ctx.fillStyle = bodyGradient;
+        // Body
+        ctx.fillStyle = '#ff9e80';
         ctx.beginPath();
-        ctx.ellipse(pos.x, pos.y, size / 2, size / 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y, size / 2, size / 2.5, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        const headY = pos.y - size / 3;
+        // Head
+        const headY = y - size / 3;
         ctx.beginPath();
-        ctx.arc(pos.x, headY, size / 3, 0, Math.PI * 2);
+        ctx.arc(x, headY, size / 3, 0, Math.PI * 2);
         ctx.fill();
 
-        drawCatFace(ctx, pos.x, headY, size, cat.direction, cat.animationFrame);
+        drawCatFace(ctx, x, headY, size);
 
+        // Tail
         ctx.strokeStyle = '#ff9e80';
         ctx.lineWidth = size / 10;
         ctx.lineCap = 'round';
-        const tailX = pos.x - (size / 2) * cat.direction;
-        const tailWave = Math.sin(cat.animationFrame) * 5;
+        const tailX = x - (size / 2) * game.cat.direction;
+        const tailWave = Math.sin(game.cat.animationFrame) * 5;
         ctx.beginPath();
-        ctx.moveTo(tailX, pos.y);
+        ctx.moveTo(tailX, y);
         ctx.quadraticCurveTo(
-            tailX - 15 * cat.direction,
-            pos.y - 15 + tailWave,
-            tailX - 20 * cat.direction,
-            pos.y - 25 + tailWave
+            tailX - 15 * game.cat.direction,
+            y - 15 + tailWave,
+            tailX - 20 * game.cat.direction,
+            y - 25 + tailWave
         );
         ctx.stroke();
 
-        if (cat.jumpHeight < 5) {
+        // Paws
+        if (game.cat.jumpHeight === 0) {
             ctx.fillStyle = '#ff9e80';
             const pawSize = size / 12;
-            const pawY = pos.y + size / 3;
-            const pawBounce = cat.isMoving ? Math.sin(cat.animationFrame * 2) * 2 : 0;
+            const pawY = y + size / 2.5;
+            const pawBounce = game.cat.isMoving ? Math.sin(game.cat.animationFrame * 2) * 2 : 0;
 
             ctx.beginPath();
-            ctx.ellipse(pos.x - size / 6, pawY + pawBounce, pawSize, pawSize * 1.5, 0, 0, Math.PI * 2);
+            ctx.ellipse(x - size / 6, pawY + pawBounce, pawSize, pawSize * 1.5, 0, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.ellipse(pos.x + size / 6, pawY - pawBounce, pawSize, pawSize * 1.5, 0, 0, Math.PI * 2);
+            ctx.ellipse(x + size / 6, pawY - pawBounce, pawSize, pawSize * 1.5, 0, 0, Math.PI * 2);
             ctx.fill();
         }
     }
 
-    function drawCatLying(cat) {
+    function drawCatLying() {
         const ctx = game.ctx;
-        const pos = toIso(cat.x, cat.y, cat.z);
-        const size = cat.size;
+        const x = game.cat.x;
+        const y = game.cat.y;
+        const size = game.cat.size;
 
-        const shadowPos = toIso(cat.x, cat.y, 0);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
         ctx.beginPath();
-        ctx.ellipse(shadowPos.x, shadowPos.y, size / 1.8, size / 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y + 8, size / 1.8, size / 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        const bodyGradient = ctx.createRadialGradient(pos.x - 5, pos.y, 0, pos.x, pos.y, size / 1.5);
-        bodyGradient.addColorStop(0, '#ffb399');
-        bodyGradient.addColorStop(1, '#ff8c66');
-
-        ctx.fillStyle = bodyGradient;
+        // Body (lying down - elongated)
+        ctx.fillStyle = '#ff9e80';
         ctx.beginPath();
-        ctx.ellipse(pos.x, pos.y + 5, size / 1.5, size / 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y + 3, size / 1.5, size / 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        const headY = pos.y - size / 6;
+        // Head (to the side)
+        const headY = y - size / 6;
         ctx.beginPath();
-        ctx.arc(pos.x - size / 4, headY, size / 4, 0, Math.PI * 2);
+        ctx.arc(x - size / 4, headY, size / 4, 0, Math.PI * 2);
         ctx.fill();
 
-        drawCatFace(ctx, pos.x - size / 4, headY, size * 0.8, cat.direction, cat.animationFrame);
+        drawCatFace(ctx, x - size / 4, headY, size * 0.8);
 
+        // Tail
         ctx.strokeStyle = '#ff9e80';
         ctx.lineWidth = size / 12;
         ctx.lineCap = 'round';
-        const tailX = pos.x + size / 2;
-        const tailWave = Math.sin(cat.animationFrame * 0.5) * 3;
+        const tailWave = Math.sin(game.cat.animationFrame * 0.5) * 3;
         ctx.beginPath();
-        ctx.moveTo(tailX, pos.y);
-        ctx.quadraticCurveTo(
-            tailX + 15,
-            pos.y + tailWave,
-            tailX + 25,
-            pos.y - 5 + tailWave
-        );
+        ctx.moveTo(x + size / 2, y);
+        ctx.quadraticCurveTo(x + size / 2 + 15, y + tailWave, x + size / 2 + 25, y - 5 + tailWave);
         ctx.stroke();
     }
 
-    function drawCatScratching(cat) {
+    function drawCatScratching() {
         const ctx = game.ctx;
-        const pos = toIso(cat.x, cat.y, cat.z);
-        const size = cat.size;
+        const x = game.cat.x;
+        const y = game.cat.y;
+        const size = game.cat.size;
 
-        const shadowPos = toIso(cat.x, cat.y, 0);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
         ctx.beginPath();
-        ctx.ellipse(shadowPos.x, shadowPos.y, size / 2.5, size / 5, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y + size / 2 + 3, size / 2.5, size / 6, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        const bodyGradient = ctx.createRadialGradient(pos.x - 5, pos.y - 5, 0, pos.x, pos.y, size / 2);
-        bodyGradient.addColorStop(0, '#ffb399');
-        bodyGradient.addColorStop(1, '#ff8c66');
-
-        ctx.fillStyle = bodyGradient;
+        // Body
+        ctx.fillStyle = '#ff9e80';
         ctx.beginPath();
-        ctx.ellipse(pos.x, pos.y, size / 2, size / 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y, size / 2, size / 3, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        const headY = pos.y - size / 3;
+        // Head
+        const headY = y - size / 3;
         ctx.beginPath();
-        ctx.arc(pos.x, headY, size / 3, 0, Math.PI * 2);
+        ctx.arc(x, headY, size / 3, 0, Math.PI * 2);
         ctx.fill();
 
-        drawCatFace(ctx, pos.x, headY, size, cat.direction, cat.animationFrame);
+        drawCatFace(ctx, x, headY, size);
+
+        // Scratching paws
+        const pawSize = size / 10;
+        const scratchOffset = Math.sin(game.cat.scratchAnimFrame) * 8;
+        const pawY = y - size / 4;
 
         ctx.fillStyle = '#ff9e80';
-        const pawSize = size / 10;
-        const scratchOffset = Math.sin(cat.scratchAnimFrame) * 8;
-        const pawY = pos.y - size / 4;
-
         ctx.save();
-        ctx.translate(pos.x - size / 3, pawY);
-        ctx.rotate(-Math.PI / 4 + Math.sin(cat.scratchAnimFrame) * 0.3);
+        ctx.translate(x - size / 3, pawY);
+        ctx.rotate(-Math.PI / 4 + Math.sin(game.cat.scratchAnimFrame) * 0.3);
         ctx.beginPath();
         ctx.ellipse(0, scratchOffset, pawSize, pawSize * 2, 0, 0, Math.PI * 2);
         ctx.fill();
 
+        // Claws
         ctx.strokeStyle = '#2c3e50';
         ctx.lineWidth = 1;
         for (let i = 0; i < 3; i++) {
@@ -1066,13 +718,14 @@
         ctx.restore();
 
         ctx.save();
-        ctx.translate(pos.x + size / 3, pawY);
-        ctx.rotate(Math.PI / 4 - Math.sin(cat.scratchAnimFrame) * 0.3);
+        ctx.translate(x + size / 3, pawY);
+        ctx.rotate(Math.PI / 4 - Math.sin(game.cat.scratchAnimFrame) * 0.3);
         ctx.fillStyle = '#ff9e80';
         ctx.beginPath();
         ctx.ellipse(0, -scratchOffset, pawSize, pawSize * 2, 0, 0, Math.PI * 2);
         ctx.fill();
 
+        // Claws
         ctx.strokeStyle = '#2c3e50';
         ctx.lineWidth = 1;
         for (let i = 0; i < 3; i++) {
@@ -1084,10 +737,11 @@
         ctx.restore();
     }
 
-    function drawCatFace(ctx, x, y, size, direction, animFrame) {
+    function drawCatFace(ctx, x, y, size) {
         const earSize = size / 6;
         const earOffset = size / 4;
 
+        // Ears
         ctx.fillStyle = '#ff9e80';
         ctx.beginPath();
         ctx.moveTo(x - earOffset, y - size / 4);
@@ -1103,6 +757,7 @@
         ctx.closePath();
         ctx.fill();
 
+        // Inner ears
         ctx.fillStyle = '#ffb3ba';
         ctx.beginPath();
         ctx.arc(x - earOffset, y - size / 3.5, earSize / 3, 0, Math.PI * 2);
@@ -1111,11 +766,13 @@
         ctx.arc(x + earOffset, y - size / 3.5, earSize / 3, 0, Math.PI * 2);
         ctx.fill();
 
+        // Muzzle
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.ellipse(x, y + size / 12, size / 6, size / 8, 0, 0, Math.PI * 2);
         ctx.fill();
 
+        // Eyes
         ctx.fillStyle = '#2c3e50';
         const eyeY = y - size / 12;
         const eyeOffset = size / 8;
@@ -1126,6 +783,7 @@
         ctx.arc(x + eyeOffset, eyeY, size / 20, 0, Math.PI * 2);
         ctx.fill();
 
+        // Nose
         ctx.fillStyle = '#ffb3ba';
         ctx.beginPath();
         ctx.moveTo(x, y + size / 10);
@@ -1134,6 +792,7 @@
         ctx.closePath();
         ctx.fill();
 
+        // Whiskers
         ctx.strokeStyle = '#2c3e50';
         ctx.lineWidth = 1;
         const whiskerLength = size / 2.5;
@@ -1152,21 +811,9 @@
         }
     }
 
-    function shadeColor(color, percent) {
-        const num = parseInt(color.replace('#', ''), 16);
-        const amt = Math.round(2.55 * percent);
-        const R = (num >> 16) + amt;
-        const G = (num >> 8 & 0x00FF) + amt;
-        const B = (num & 0x0000FF) + amt;
-        return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
-            (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
-            (B < 255 ? B < 1 ? 0 : B : 255))
-            .toString(16).slice(1);
-    }
-
     function gameLoop() {
         if (!game.initialized) {
-            return; // Stop loop if game was cleaned up
+            return;
         }
 
         update();
@@ -1179,7 +826,6 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
-            // Small delay to ensure DOM is fully ready
             setTimeout(init, 50);
         }
     }
@@ -1187,7 +833,6 @@
     // Initialize on SPA navigation
     document.addEventListener('spa-page-loaded', function(e) {
         if (e.detail.path === '/cat-cafe') {
-            // Slightly longer delay for SPA to ensure content is swapped
             setTimeout(init, 150);
         }
     });
