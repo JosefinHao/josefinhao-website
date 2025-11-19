@@ -3700,35 +3700,26 @@ body.dark-theme .floating-formula {
 
 .wand {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    /* Fixed at top center - base of wand stays here */
+    left: 50%;
+    top: 0;
+    width: 200px;
+    height: 200px;
+    /* Transform origin at the base/handle (top center of SVG) */
+    transform-origin: 50% 7.5%; /* 7.5% is where the base circle is in the 200px viewBox (15/200) */
     cursor: pointer;
-    animation: wandFadeIn 0.15s ease, wandFloat 1.5s ease-in-out infinite;
+    animation: wandFadeIn 0.3s ease;
+    transition: transform 0.15s ease-out;
 }
 
 @keyframes wandFadeIn {
     from {
         opacity: 0;
-        transform: scale(0.8);
+        transform: translate(-50%, 0) rotate(0deg) scale(0.8);
     }
     to {
         opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes wandFloat {
-    0%, 100% {
-        transform: translateY(0) rotate(-15deg);
-    }
-    25% {
-        transform: translateY(-3px) rotate(-10deg);
-    }
-    50% {
-        transform: translateY(-5px) rotate(-12deg);
-    }
-    75% {
-        transform: translateY(-3px) rotate(-14deg);
+        transform: translate(-50%, 0) rotate(0deg) scale(1);
     }
 }
 
@@ -3738,7 +3729,6 @@ body.dark-theme .floating-formula {
 
 .wand:active {
     filter: brightness(0.9);
-    transform: scale(0.95);
 }
 
 .wand-image {
@@ -3760,7 +3750,7 @@ body.dark-theme .floating-formula {
 
 .cat-paw {
     position: absolute;
-    bottom: -20px;
+    bottom: 20px;
     left: 50%;
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;

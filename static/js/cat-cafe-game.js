@@ -1221,32 +1221,17 @@
         wandGame.wandTimeout = setTimeout(() => {
             if (!wandGame.isPlaying) return;
 
-            // Get game area dimensions
-            const gameRect = gameArea.getBoundingClientRect();
-            const wandWidth = 80;
-            const wandHeight = 80;
+            // Wand base is fixed at top center (via CSS)
+            // We only rotate the wand to make feathers appear at different positions
 
-            // Generate random position anywhere in the upper area of the game
-            // Leave bottom 150px for the cat paw area
-            const minX = wandWidth / 2;
-            const maxX = gameRect.width - wandWidth / 2;
-            const minY = 40;
-            const maxY = gameRect.height - 150;
+            // Generate random rotation angle (degrees)
+            // Negative = swing left, Positive = swing right
+            // Range: -70 to +70 degrees for good coverage of game area
+            const randomAngle = -70 + Math.random() * 140;
 
-            const randomX = minX + Math.random() * (maxX - minX);
-            const randomY = minY + Math.random() * (maxY - minY);
-
-            // Clear all positioning styles first to prevent conflicts
-            wand.style.left = '';
-            wand.style.right = '';
-            wand.style.top = '';
-            wand.style.transform = '';
-            wand.style.bottom = '';
-
-            // Set new position using left/top for consistency
-            wand.style.left = randomX + 'px';
-            wand.style.top = randomY + 'px';
-            wand.style.transform = 'translate(-50%, -50%)'; // Center the wand on the position
+            // Apply rotation transform while keeping the wand centered
+            // The transform-origin is set to the base in CSS, so rotation pivots from top
+            wand.style.transform = `translate(-50%, 0) rotate(${randomAngle}deg)`;
             wand.style.display = 'block';
             wandGame.wandVisible = true;
 
