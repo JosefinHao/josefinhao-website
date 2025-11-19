@@ -65,57 +65,71 @@
 
     function loadImages(callback) {
         let loadedCount = 0;
-        const totalImages = 6;
+        const totalImages = 5;
 
         function imageLoaded() {
             loadedCount++;
+            console.log(`Loaded ${loadedCount}/${totalImages} images`);
             if (loadedCount === totalImages) {
                 game.images.loaded = true;
                 callback();
             }
         }
 
-        // Load cat image - cute orange fluffy cat
+        // Load cat image - transparent PNG orange cat
         game.images.cat = new Image();
         game.images.cat.crossOrigin = 'anonymous';
         game.images.cat.onload = imageLoaded;
-        game.images.cat.onerror = imageLoaded;
-        game.images.cat.src = 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=300&h=300&fit=crop&q=80';
+        game.images.cat.onerror = () => {
+            console.log('Cat image failed to load, using fallback');
+            imageLoaded();
+        };
+        // Using pngimg.com transparent PNG
+        game.images.cat.src = 'https://pngimg.com/uploads/cat/cat_PNG50434.png';
 
-        // Load cat tree image
+        // Load cat tree image - transparent PNG
         game.images.catTree = new Image();
         game.images.catTree.crossOrigin = 'anonymous';
         game.images.catTree.onload = imageLoaded;
-        game.images.catTree.onerror = imageLoaded;
-        game.images.catTree.src = 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=200&h=300&fit=crop&q=80';
+        game.images.catTree.onerror = () => {
+            console.log('Cat tree image failed to load, using fallback');
+            imageLoaded();
+        };
+        // Placeholder - will use illustrated fallback
+        game.images.catTree.src = 'data:image/png;base64,invalid';
 
-        // Load cardboard box image
+        // Load cardboard box image - transparent PNG
         game.images.box = new Image();
         game.images.box.crossOrigin = 'anonymous';
         game.images.box.onload = imageLoaded;
-        game.images.box.onerror = imageLoaded;
-        game.images.box.src = 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=200&h=200&fit=crop&q=80';
+        game.images.box.onerror = () => {
+            console.log('Box image failed to load, using fallback');
+            imageLoaded();
+        };
+        // Using pngimg.com transparent PNG box
+        game.images.box.src = 'https://pngimg.com/uploads/box/box_PNG49.png';
 
-        // Load couch image
+        // Load couch image - transparent PNG
         game.images.couch = new Image();
         game.images.couch.crossOrigin = 'anonymous';
         game.images.couch.onload = imageLoaded;
-        game.images.couch.onerror = imageLoaded;
-        game.images.couch.src = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&h=200&fit=crop&q=80';
+        game.images.couch.onerror = () => {
+            console.log('Couch image failed to load, using fallback');
+            imageLoaded();
+        };
+        // Placeholder - will use illustrated fallback
+        game.images.couch.src = 'data:image/png;base64,invalid';
 
-        // Load cat toy image
+        // Load cat toy image - transparent PNG
         game.images.toy = new Image();
         game.images.toy.crossOrigin = 'anonymous';
         game.images.toy.onload = imageLoaded;
-        game.images.toy.onerror = imageLoaded;
-        game.images.toy.src = 'https://images.unsplash.com/photo-1591856378301-5c3b77e9da6b?w=150&h=150&fit=crop&q=80';
-
-        // Load cafe background
-        game.images.background = new Image();
-        game.images.background.crossOrigin = 'anonymous';
-        game.images.background.onload = imageLoaded;
-        game.images.background.onerror = imageLoaded;
-        game.images.background.src = 'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=1200&h=800&fit=crop&q=80';
+        game.images.toy.onerror = () => {
+            console.log('Toy image failed to load, using fallback');
+            imageLoaded();
+        };
+        // Placeholder - will use illustrated fallback
+        game.images.toy.src = 'data:image/png;base64,invalid';
     }
 
     function init() {
@@ -558,32 +572,15 @@
         // Clear canvas
         ctx.clearRect(0, 0, game.width, game.height);
 
-        // Draw cozy cafe background
-        if (game.images.background && game.images.background.complete) {
-            ctx.save();
-            ctx.globalAlpha = 0.6;
-            ctx.drawImage(game.images.background, 0, 0, game.width, game.height);
-            ctx.restore();
+        // Draw subtle, cozy cafe background
+        drawCozyBackground(ctx);
 
-            // Add a warm overlay for coziness
-            ctx.fillStyle = 'rgba(255, 248, 240, 0.4)';
-            ctx.fillRect(0, 0, game.width, game.height);
-        } else {
-            // Fallback warm background
-            ctx.fillStyle = '#f5e6d3';
-            ctx.fillRect(0, 0, game.width, game.height);
-        }
+        // Draw wooden floor
+        drawWoodenFloor(ctx);
 
-        // Draw floor (wooden floor look)
-        const gradient = ctx.createLinearGradient(0, game.height - 60, 0, game.height);
-        gradient.addColorStop(0, '#8b7355');
-        gradient.addColorStop(1, '#6d5d4b');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, game.height - 60, game.width, 60);
-
-        // Draw scratches
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-        ctx.lineWidth = 3;
+        // Draw scratches on walls
+        ctx.strokeStyle = 'rgba(139, 115, 85, 0.3)';
+        ctx.lineWidth = 2;
         ctx.lineCap = 'round';
         game.scratches.forEach(scratch => {
             ctx.beginPath();
@@ -602,124 +599,406 @@
         drawCat();
     }
 
+    function drawCozyBackground(ctx) {
+        // Warm gradient background
+        const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
+        bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
+        bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
+        bgGradient.addColorStop(1, '#e8d5c4');   // Darker tan
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, game.width, game.height);
+
+        // Add subtle texture with very light dots
+        ctx.fillStyle = 'rgba(139, 115, 85, 0.02)';
+        for (let i = 0; i < 200; i++) {
+            const x = Math.random() * game.width;
+            const y = Math.random() * game.height;
+            ctx.beginPath();
+            ctx.arc(x, y, Math.random() * 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Soft vignette effect
+        const vignette = ctx.createRadialGradient(
+            game.width / 2, game.height / 2, game.height * 0.3,
+            game.width / 2, game.height / 2, game.height * 0.8
+        );
+        vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        vignette.addColorStop(1, 'rgba(101, 67, 33, 0.1)');
+        ctx.fillStyle = vignette;
+        ctx.fillRect(0, 0, game.width, game.height);
+    }
+
+    function drawWoodenFloor(ctx) {
+        const floorHeight = 80;
+        const floorY = game.height - floorHeight;
+
+        // Base floor color
+        const floorGradient = ctx.createLinearGradient(0, floorY, 0, game.height);
+        floorGradient.addColorStop(0, '#a88860');
+        floorGradient.addColorStop(0.5, '#8b7355');
+        floorGradient.addColorStop(1, '#6d5d4b');
+        ctx.fillStyle = floorGradient;
+        ctx.fillRect(0, floorY, game.width, floorHeight);
+
+        // Wood grain effect with planks
+        ctx.strokeStyle = 'rgba(101, 67, 33, 0.2)';
+        ctx.lineWidth = 2;
+        for (let x = 0; x < game.width; x += 120) {
+            ctx.beginPath();
+            ctx.moveTo(x, floorY);
+            ctx.lineTo(x, game.height);
+            ctx.stroke();
+        }
+
+        // Horizontal grain lines
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(101, 67, 33, 0.1)';
+        for (let y = floorY; y < game.height; y += 8) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(game.width, y);
+            ctx.stroke();
+        }
+
+        // Floor edge highlight
+        ctx.strokeStyle = 'rgba(168, 136, 96, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, floorY);
+        ctx.lineTo(game.width, floorY);
+        ctx.stroke();
+    }
+
     function drawBoxes() {
         const ctx = game.ctx;
         game.boxes.forEach(box => {
-            // Shadow
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            // Realistic shadow
+            ctx.save();
+            ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
             ctx.beginPath();
-            ctx.ellipse(box.x + box.width / 2, box.y + box.height + 5, box.width / 2, box.height / 6, 0, 0, Math.PI * 2);
+            ctx.ellipse(
+                box.x + box.width / 2,
+                box.y + box.height + 3,
+                box.width / 2.2,
+                box.width / 10,
+                0, 0, Math.PI * 2
+            );
             ctx.fill();
+            ctx.restore();
 
             // Draw box image
-            if (game.images.box && game.images.box.complete) {
+            if (game.images.box && game.images.box.complete && game.images.box.naturalWidth > 0) {
                 ctx.save();
+                // Adjust rendering for transparent PNG
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
                 ctx.drawImage(game.images.box, box.x, box.y, box.width, box.height);
                 ctx.restore();
             } else {
-                // Fallback: draw simple box
-                ctx.fillStyle = '#c4a57b';
-                ctx.fillRect(box.x, box.y, box.width, box.height);
-                ctx.strokeStyle = '#8b7355';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(box.x, box.y, box.width, box.height);
+                // Improved fallback: draw realistic box
+                drawRealisticBox(ctx, box.x, box.y, box.width, box.height);
             }
         });
+    }
+
+    function drawRealisticBox(ctx, x, y, width, height) {
+        // Box body
+        ctx.fillStyle = '#c4a57b';
+        ctx.fillRect(x, y, width, height);
+
+        // Box shading for depth
+        ctx.fillStyle = 'rgba(139, 115, 85, 0.3)';
+        ctx.fillRect(x, y, width * 0.15, height);
+        ctx.fillRect(x + width * 0.85, y, width * 0.15, height);
+
+        // Box top flaps
+        ctx.strokeStyle = '#8b7355';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x + 5, y + 5);
+        ctx.lineTo(x + width / 2, y + height * 0.15);
+        ctx.lineTo(x + width - 5, y + 5);
+        ctx.stroke();
+
+        // Box outline
+        ctx.strokeStyle = '#8b7355';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, width, height);
+
+        // Cardboard texture lines
+        ctx.strokeStyle = 'rgba(139, 115, 85, 0.2)';
+        ctx.lineWidth = 1;
+        for (let i = 1; i < 4; i++) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + (height * i / 4));
+            ctx.lineTo(x + width, y + (height * i / 4));
+            ctx.stroke();
+        }
     }
 
     function drawCatTrees() {
         const ctx = game.ctx;
         game.catTrees.forEach(tree => {
-            // Shadow
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            // Realistic shadow
+            ctx.save();
+            ctx.fillStyle = 'rgba(101, 67, 33, 0.3)';
             ctx.beginPath();
-            ctx.ellipse(tree.x + tree.width / 2, tree.y + tree.height + 5, tree.width / 2, tree.height / 6, 0, 0, Math.PI * 2);
+            ctx.ellipse(
+                tree.x + tree.width / 2,
+                tree.y + tree.height + 3,
+                tree.width / 2.5,
+                tree.width / 12,
+                0, 0, Math.PI * 2
+            );
+            ctx.fill();
+            ctx.restore();
+
+            // Draw improved cat tree (always use fallback for now)
+            drawRealisticCatTree(ctx, tree.x, tree.y, tree.width, tree.height);
+        });
+    }
+
+    function drawRealisticCatTree(ctx, x, y, width, height) {
+        const centerX = x + width / 2;
+        const baseY = y + height;
+        const poleWidth = width * 0.25;
+
+        // Base platform
+        ctx.fillStyle = '#6d5d4b';
+        ctx.fillRect(x, baseY - 10, width, 10);
+        ctx.strokeStyle = '#5a4a3a';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, baseY - 10, width, 10);
+
+        // Pole with texture
+        ctx.fillStyle = '#8b7355';
+        ctx.fillRect(centerX - poleWidth / 2, y + height * 0.2, poleWidth, height * 0.8);
+
+        // Sisal rope texture on pole
+        ctx.strokeStyle = '#a0826d';
+        ctx.lineWidth = 2;
+        for (let ty = y + height * 0.2; ty < baseY; ty += 4) {
+            ctx.beginPath();
+            ctx.moveTo(centerX - poleWidth / 2, ty);
+            ctx.lineTo(centerX + poleWidth / 2, ty);
+            ctx.stroke();
+        }
+
+        // Platforms at different heights
+        const platforms = [
+            { yOffset: 0.2, size: width * 0.7 },
+            { yOffset: 0.5, size: width * 0.55 },
+            { yOffset: 0.75, size: width * 0.45 }
+        ];
+
+        platforms.forEach(platform => {
+            const py = y + height * platform.yOffset;
+            const psize = platform.size;
+
+            // Platform shadow
+            ctx.fillStyle = 'rgba(109, 93, 75, 0.4)';
+            ctx.beginPath();
+            ctx.ellipse(centerX, py + 3, psize / 2, psize / 8, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw cat tree image
-            if (game.images.catTree && game.images.catTree.complete) {
-                ctx.save();
-                ctx.drawImage(game.images.catTree, tree.x, tree.y, tree.width, tree.height);
-                ctx.restore();
-            } else {
-                // Fallback: draw simple cat tree
-                const treeX = tree.x + tree.width / 2;
-                const treeY = tree.y + tree.height;
-                const radius = tree.width / 5;
+            // Platform
+            ctx.fillStyle = '#a0826d';
+            ctx.beginPath();
+            ctx.ellipse(centerX, py, psize / 2, psize / 6, 0, 0, Math.PI * 2);
+            ctx.fill();
 
-                ctx.fillStyle = '#8b7355';
-                ctx.fillRect(treeX - radius / 2, treeY - tree.height, radius, tree.height);
+            // Platform edge
+            ctx.strokeStyle = '#8b7355';
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
-                const platforms = [
-                    { offset: -tree.height * 0.7, size: 20 },
-                    { offset: -tree.height * 0.45, size: 16 },
-                    { offset: -tree.height * 0.2, size: 12 }
-                ];
-
-                platforms.forEach(platform => {
-                    ctx.fillStyle = '#a0826d';
-                    ctx.beginPath();
-                    ctx.arc(treeX, treeY + platform.offset, platform.size, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-
-                ctx.fillStyle = '#6d5d4b';
-                ctx.beginPath();
-                ctx.arc(treeX, treeY, radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            // Carpet texture on platform
+            ctx.fillStyle = '#8b6f47';
+            ctx.beginPath();
+            ctx.ellipse(centerX, py, psize / 2.5, psize / 8, 0, 0, Math.PI * 2);
+            ctx.fill();
         });
     }
 
     function drawCouches() {
         const ctx = game.ctx;
         game.couches.forEach(couch => {
-            // Shadow
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            // Realistic shadow
+            ctx.save();
+            ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
             ctx.beginPath();
-            ctx.ellipse(couch.x + couch.width / 2, couch.y + couch.height + 5, couch.width / 2, couch.height / 6, 0, 0, Math.PI * 2);
+            ctx.ellipse(
+                couch.x + couch.width / 2,
+                couch.y + couch.height + 5,
+                couch.width / 2.2,
+                couch.width / 10,
+                0, 0, Math.PI * 2
+            );
             ctx.fill();
+            ctx.restore();
 
-            // Draw couch image
-            if (game.images.couch && game.images.couch.complete) {
-                ctx.save();
-                ctx.drawImage(game.images.couch, couch.x, couch.y, couch.width, couch.height);
-                ctx.restore();
-            } else {
-                // Fallback: draw simple couch
-                ctx.fillStyle = '#8b6f47';
-                ctx.fillRect(couch.x, couch.y + couch.height * 0.3, couch.width, couch.height * 0.7);
-                ctx.fillStyle = '#a0826d';
-                ctx.fillRect(couch.x, couch.y, couch.width * 0.15, couch.height * 0.6);
-                ctx.fillRect(couch.x + couch.width * 0.85, couch.y, couch.width * 0.15, couch.height * 0.6);
-            }
+            // Draw improved couch
+            drawRealisticCouch(ctx, couch.x, couch.y, couch.width, couch.height);
         });
+    }
+
+    function drawRealisticCouch(ctx, x, y, width, height) {
+        // Couch seat
+        const seatY = y + height * 0.4;
+        const seatHeight = height * 0.6;
+
+        // Seat base
+        ctx.fillStyle = '#8b6f47';
+        ctx.fillRect(x, seatY, width, seatHeight);
+
+        // Seat cushion detail
+        ctx.fillStyle = '#a0826d';
+        ctx.fillRect(x + 5, seatY + 5, width - 10, seatHeight * 0.7);
+
+        // Cushion segments
+        const cushionCount = 3;
+        ctx.strokeStyle = '#8b6f47';
+        ctx.lineWidth = 3;
+        for (let i = 1; i < cushionCount; i++) {
+            const cx = x + (width * i / cushionCount);
+            ctx.beginPath();
+            ctx.moveTo(cx, seatY + 5);
+            ctx.lineTo(cx, seatY + seatHeight * 0.7);
+            ctx.stroke();
+        }
+
+        // Left armrest
+        ctx.fillStyle = '#8b6f47';
+        ctx.fillRect(x, y, width * 0.15, height * 0.8);
+        ctx.fillStyle = '#a0826d';
+        ctx.fillRect(x, y, width * 0.15, width * 0.1);
+
+        // Right armrest
+        ctx.fillStyle = '#8b6f47';
+        ctx.fillRect(x + width * 0.85, y, width * 0.15, height * 0.8);
+        ctx.fillStyle = '#a0826d';
+        ctx.fillRect(x + width * 0.85, y, width * 0.15, width * 0.1);
+
+        // Backrest
+        ctx.fillStyle = '#8b6f47';
+        ctx.fillRect(x + width * 0.15, y, width * 0.7, height * 0.5);
+        ctx.fillStyle = '#a0826d';
+        ctx.fillRect(x + width * 0.2, y + 5, width * 0.6, height * 0.35);
+
+        // Couch legs
+        ctx.fillStyle = '#6d5d4b';
+        const legWidth = 8;
+        ctx.fillRect(x + 15, y + height - 15, legWidth, 15);
+        ctx.fillRect(x + width - 15 - legWidth, y + height - 15, legWidth, 15);
     }
 
     function drawToys() {
         const ctx = game.ctx;
         game.toys.forEach(toy => {
-            // Shadow
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            // Realistic shadow
+            ctx.save();
+            ctx.fillStyle = 'rgba(101, 67, 33, 0.2)';
             ctx.beginPath();
-            ctx.ellipse(toy.x + toy.width / 2, toy.y + toy.height + 3, toy.width / 2, toy.height / 6, 0, 0, Math.PI * 2);
+            ctx.ellipse(
+                toy.x + toy.width / 2,
+                toy.y + toy.height + 2,
+                toy.width / 2.5,
+                toy.width / 10,
+                0, 0, Math.PI * 2
+            );
             ctx.fill();
+            ctx.restore();
 
-            // Draw toy image
-            if (game.images.toy && game.images.toy.complete) {
-                ctx.save();
-                ctx.drawImage(game.images.toy, toy.x, toy.y, toy.width, toy.height);
-                ctx.restore();
-            } else {
-                // Fallback: draw simple toy (ball)
-                ctx.fillStyle = '#ff6b6b';
-                ctx.beginPath();
-                ctx.arc(toy.x + toy.width / 2, toy.y + toy.height / 2, toy.width / 2, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = '#c92a2a';
-                ctx.lineWidth = 2;
-                ctx.stroke();
+            // Draw toy (various types)
+            const toyType = Math.floor((toy.x + toy.y) % 3);
+            switch (toyType) {
+                case 0:
+                    drawToyBall(ctx, toy.x, toy.y, toy.width);
+                    break;
+                case 1:
+                    drawToyMouse(ctx, toy.x, toy.y, toy.width);
+                    break;
+                case 2:
+                    drawToyFeather(ctx, toy.x, toy.y, toy.width);
+                    break;
             }
+        });
+    }
+
+    function drawToyBall(ctx, x, y, size) {
+        const centerX = x + size / 2;
+        const centerY = y + size / 2;
+        const radius = size / 2;
+
+        // Ball gradient
+        const ballGradient = ctx.createRadialGradient(
+            centerX - radius * 0.3, centerY - radius * 0.3, 0,
+            centerX, centerY, radius
+        );
+        ballGradient.addColorStop(0, '#ff8a65');
+        ballGradient.addColorStop(1, '#e64a19');
+
+        ctx.fillStyle = ballGradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Ball detail stripes
+        ctx.strokeStyle = '#d84315';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.7, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+
+    function drawToyMouse(ctx, x, y, size) {
+        // Mouse body
+        ctx.fillStyle = '#9e9e9e';
+        ctx.beginPath();
+        ctx.ellipse(x + size * 0.6, y + size * 0.6, size * 0.35, size * 0.25, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Mouse head
+        ctx.beginPath();
+        ctx.arc(x + size * 0.3, y + size * 0.4, size * 0.25, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Ear
+        ctx.fillStyle = '#757575';
+        ctx.beginPath();
+        ctx.arc(x + size * 0.2, y + size * 0.25, size * 0.12, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tail
+        ctx.strokeStyle = '#9e9e9e';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x + size * 0.85, y + size * 0.65);
+        ctx.quadraticCurveTo(x + size, y + size * 0.5, x + size * 0.95, y + size * 0.3);
+        ctx.stroke();
+    }
+
+    function drawToyFeather(ctx, x, y, size) {
+        // Feather stick
+        ctx.strokeStyle = '#8b7355';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x + size * 0.5, y + size * 0.8);
+        ctx.lineTo(x + size * 0.5, y + size * 0.3);
+        ctx.stroke();
+
+        // Feathers
+        const featherColors = ['#9c27b0', '#e91e63', '#ff5722'];
+        featherColors.forEach((color, i) => {
+            ctx.fillStyle = color;
+            ctx.save();
+            ctx.translate(x + size * 0.5, y + size * 0.3);
+            ctx.rotate((i - 1) * 0.4);
+            ctx.beginPath();
+            ctx.ellipse(0, -size * 0.15, size * 0.12, size * 0.25, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
         });
     }
 
@@ -739,51 +1018,106 @@
         const y = game.cat.y - game.cat.jumpHeight;
         const size = game.cat.size;
 
-        // Shadow
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        // Realistic shadow
+        ctx.save();
+        ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
         ctx.beginPath();
-        ctx.ellipse(game.cat.x, game.cat.y + size / 2 + 5, size / 2, size / 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(game.cat.x, game.cat.y + 8, size / 2.2, size / 10, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
 
         // Draw cat image
-        if (game.images.cat && game.images.cat.complete) {
+        if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position and scale cat
-            const catWidth = size;
-            const catHeight = size;
-
-            // Flip cat based on direction
-            if (game.cat.direction === -1) {
-                ctx.translate(x + catWidth / 2, y);
-                ctx.scale(-1, 1);
-                ctx.translate(-catWidth / 2, 0);
-            } else {
-                ctx.translate(x - catWidth / 2, y);
-            }
+            // Position and scale cat properly for transparent PNG
+            const catWidth = size * 1.2;  // Slightly larger for visibility
+            const catHeight = size * 1.2;
 
             // Add subtle bounce animation when moving
             const bounce = game.cat.isMoving ? Math.sin(game.cat.animationFrame * 2) * 2 : 0;
-            ctx.translate(0, -catHeight + bounce);
 
-            // Draw the cat image
-            ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
+            // Flip cat based on direction
+            if (game.cat.direction === -1) {
+                ctx.translate(x, y - catHeight / 2 + bounce);
+                ctx.scale(-1, 1);
+                ctx.drawImage(game.images.cat, -catWidth / 2, 0, catWidth, catHeight);
+            } else {
+                ctx.translate(x - catWidth / 2, y - catHeight / 2 + bounce);
+                ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
+            }
 
             ctx.restore();
         } else {
-            // Fallback: draw simple orange cat
-            ctx.fillStyle = '#ff9e80';
-            ctx.beginPath();
-            ctx.ellipse(x, y, size / 2, size / 2.5, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            const headY = y - size / 3;
-            ctx.beginPath();
-            ctx.arc(x, headY, size / 3, 0, Math.PI * 2);
-            ctx.fill();
-
-            drawCatFace(ctx, x, headY, size);
+            // Improved fallback: draw cute orange cat
+            drawFallbackCat(ctx, x, y, size, game.cat.direction);
         }
+    }
+
+    function drawFallbackCat(ctx, x, y, size, direction) {
+        // Body
+        ctx.fillStyle = '#ff9e80';
+        ctx.beginPath();
+        ctx.ellipse(x, y, size / 2, size / 2.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Head
+        const headY = y - size / 3;
+        ctx.beginPath();
+        ctx.arc(x, headY, size / 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Ears
+        const earSize = size / 8;
+        const earOffset = size / 5;
+        ctx.beginPath();
+        ctx.moveTo(x - earOffset, headY - size / 6);
+        ctx.lineTo(x - earOffset - earSize, headY - size / 3 - earSize);
+        ctx.lineTo(x - earOffset + earSize, headY - size / 3);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(x + earOffset, headY - size / 6);
+        ctx.lineTo(x + earOffset - earSize, headY - size / 3);
+        ctx.lineTo(x + earOffset + earSize, headY - size / 3 - earSize);
+        ctx.closePath();
+        ctx.fill();
+
+        // Face details
+        ctx.fillStyle = '#2c3e50';
+        const eyeY = headY - size / 12;
+        const eyeOffset = size / 10;
+        ctx.beginPath();
+        ctx.arc(x - eyeOffset, eyeY, size / 25, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + eyeOffset, eyeY, size / 25, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Nose
+        ctx.fillStyle = '#ffb3ba';
+        ctx.beginPath();
+        ctx.moveTo(x, headY + size / 15);
+        ctx.lineTo(x - size / 40, headY + size / 20);
+        ctx.lineTo(x + size / 40, headY + size / 20);
+        ctx.closePath();
+        ctx.fill();
+
+        // Tail
+        ctx.strokeStyle = '#ff9e80';
+        ctx.lineWidth = size / 12;
+        ctx.lineCap = 'round';
+        const tailX = x - (size / 2) * direction;
+        ctx.beginPath();
+        ctx.moveTo(tailX, y);
+        ctx.quadraticCurveTo(
+            tailX - 15 * direction,
+            y - 20,
+            tailX - 20 * direction,
+            y - 30
+        );
+        ctx.stroke();
     }
 
     function drawCatLying() {
@@ -792,44 +1126,39 @@
         const y = game.cat.y;
         const size = game.cat.size;
 
-        // Shadow
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        // Realistic shadow (wider for lying position)
+        ctx.save();
+        ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
         ctx.beginPath();
-        ctx.ellipse(x, y + 10, size / 1.5, size / 6, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y + 12, size / 1.3, size / 10, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
 
         // Draw cat image lying down
-        if (game.images.cat && game.images.cat.complete) {
+        if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
             // Position for lying cat (wider, flatter)
-            const catWidth = size * 1.3;
-            const catHeight = size * 0.7;
+            const catWidth = size * 1.5;
+            const catHeight = size * 0.8;
 
-            ctx.translate(x - catWidth / 2, y - catHeight / 2);
-
-            // Rotate slightly to show lying position
-            ctx.translate(catWidth / 2, catHeight / 2);
-            ctx.rotate(Math.PI / 12);
-            ctx.translate(-catWidth / 2, -catHeight / 2);
-
-            // Draw the cat image
-            ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
+            ctx.translate(x, y);
+            ctx.rotate(Math.PI / 16); // Slight tilt
+            ctx.scale(1, 0.7); // Squash for lying effect
+            ctx.drawImage(game.images.cat, -catWidth / 2, -catHeight / 2, catWidth, catHeight);
 
             ctx.restore();
         } else {
-            // Fallback: draw simple lying cat
+            // Fallback: draw lying cat
             ctx.fillStyle = '#ff9e80';
             ctx.beginPath();
-            ctx.ellipse(x, y + 3, size / 1.5, size / 4, 0, 0, Math.PI * 2);
+            ctx.ellipse(x, y, size / 1.3, size / 4, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            const headY = y - size / 6;
+            const headY = y - size / 8;
             ctx.beginPath();
-            ctx.arc(x - size / 4, headY, size / 4, 0, Math.PI * 2);
+            ctx.arc(x - size / 4, headY, size / 5, 0, Math.PI * 2);
             ctx.fill();
-
-            drawCatFace(ctx, x - size / 4, headY, size * 0.8);
         }
     }
 
@@ -839,65 +1168,31 @@
         const y = game.cat.y;
         const size = game.cat.size;
 
-        // Shadow
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        // Realistic shadow
+        ctx.save();
+        ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
         ctx.beginPath();
-        ctx.ellipse(x, y + size / 2 + 5, size / 2.5, size / 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y + 8, size / 2.2, size / 10, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
 
         // Draw cat image scratching
-        if (game.images.cat && game.images.cat.complete) {
+        if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position and scale cat
-            const catWidth = size;
-            const catHeight = size;
+            const catWidth = size * 1.2;
+            const catHeight = size * 1.2;
 
             // Add scratching animation - subtle movement
-            const scratchOffset = Math.sin(game.cat.scratchAnimFrame) * 3;
+            const scratchOffset = Math.sin(game.cat.scratchAnimFrame) * 2;
 
-            ctx.translate(x - catWidth / 2 + scratchOffset, y - catHeight + 10);
-
-            // Draw the cat image
+            ctx.translate(x - catWidth / 2 + scratchOffset, y - catHeight / 2);
             ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
 
             ctx.restore();
         } else {
-            // Fallback: draw simple scratching cat
-            ctx.fillStyle = '#ff9e80';
-            ctx.beginPath();
-            ctx.ellipse(x, y, size / 2, size / 3, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            const headY = y - size / 3;
-            ctx.beginPath();
-            ctx.arc(x, headY, size / 3, 0, Math.PI * 2);
-            ctx.fill();
-
-            drawCatFace(ctx, x, headY, size);
-
-            // Draw simple paws
-            const pawSize = size / 10;
-            const scratchOffset = Math.sin(game.cat.scratchAnimFrame) * 8;
-            const pawY = y - size / 4;
-
-            ctx.fillStyle = '#ff9e80';
-            ctx.save();
-            ctx.translate(x - size / 3, pawY);
-            ctx.rotate(-Math.PI / 4 + Math.sin(game.cat.scratchAnimFrame) * 0.3);
-            ctx.beginPath();
-            ctx.ellipse(0, scratchOffset, pawSize, pawSize * 2, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-
-            ctx.save();
-            ctx.translate(x + size / 3, pawY);
-            ctx.rotate(Math.PI / 4 - Math.sin(game.cat.scratchAnimFrame) * 0.3);
-            ctx.fillStyle = '#ff9e80';
-            ctx.beginPath();
-            ctx.ellipse(0, -scratchOffset, pawSize, pawSize * 2, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
+            // Fallback: draw scratching cat
+            drawFallbackCat(ctx, x, y, size, game.cat.direction);
         }
     }
 
