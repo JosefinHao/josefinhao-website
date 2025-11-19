@@ -8,7 +8,6 @@
 
     // Configuration
     const CONTENT_CONTAINER_ID = 'spa-content';
-    const TRANSITION_DURATION = 300; // milliseconds
 
     // Track current page to avoid redundant loads
     let currentPath = window.location.pathname;
@@ -87,16 +86,13 @@
      */
     async function loadPage(path, pushState = true) {
         try {
-            // Show loading state
+            // Get content container
             const container = document.getElementById(CONTENT_CONTAINER_ID);
             if (!container) {
                 console.error('Content container not found, falling back to normal navigation');
                 window.location.href = path;
                 return;
             }
-
-            // Add loading class
-            container.classList.add('spa-loading');
 
             // Fetch the page content
             const response = await fetch(path, {
@@ -131,10 +127,7 @@
             // Extract page-specific data attribute
             const newBodyPage = doc.body.getAttribute('data-page');
 
-            // Fade out old content
-            await fadeOut(container);
-
-            // Update the content
+            // Update the content instantly
             container.innerHTML = newContent.innerHTML;
 
             // Update body data-page attribute
@@ -147,14 +140,11 @@
             // Update navigation active state
             updateNavigation(path);
 
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Scroll to top instantly
+            window.scrollTo({ top: 0, behavior: 'instant' });
 
             // Re-initialize page-specific JavaScript
             initializePageScripts(path, doc);
-
-            // Fade in new content
-            await fadeIn(container);
 
             // Update browser history
             if (pushState) {
@@ -171,39 +161,6 @@
             // Fall back to normal navigation on error
             window.location.href = path;
         }
-    }
-
-    /**
-     * Fade out animation
-     */
-    function fadeOut(element) {
-        return new Promise(resolve => {
-            element.style.opacity = '1';
-            element.style.transition = `opacity ${TRANSITION_DURATION}ms ease-out`;
-
-            requestAnimationFrame(() => {
-                element.style.opacity = '0';
-                setTimeout(resolve, TRANSITION_DURATION);
-            });
-        });
-    }
-
-    /**
-     * Fade in animation
-     */
-    function fadeIn(element) {
-        return new Promise(resolve => {
-            element.style.opacity = '0';
-            element.style.transition = `opacity ${TRANSITION_DURATION}ms ease-in`;
-
-            // Remove loading class
-            element.classList.remove('spa-loading');
-
-            requestAnimationFrame(() => {
-                element.style.opacity = '1';
-                setTimeout(resolve, TRANSITION_DURATION);
-            });
-        });
     }
 
     /**
@@ -277,18 +234,16 @@
         // Re-initialize carousel on homepage
         if (path === '/') {
             if (window.initCarousel && typeof window.initCarousel === 'function') {
-                setTimeout(() => window.initCarousel(), 50);
+                window.initCarousel();
             }
         }
 
         // Dispatch event for games to initialize
         if (path === '/games') {
-            setTimeout(() => {
-                const event = new CustomEvent('spa-page-loaded', {
-                    detail: { path: path }
-                });
-                document.dispatchEvent(event);
-            }, 50);
+            const event = new CustomEvent('spa-page-loaded', {
+                detail: { path: path }
+            });
+            document.dispatchEvent(event);
         }
     }
 
