@@ -3725,35 +3725,68 @@ body.dark-theme .floating-formula {
 
 .wand-stick {
     position: absolute;
-    width: 4px;
-    height: 50px;
-    background: linear-gradient(to bottom, #8b7355, #6d5d4b);
+    width: 3px;
+    height: 45px;
+    background: linear-gradient(to bottom, #a68a6e 0%, #8b7355 50%, #6d5d4b 100%);
     border-radius: 2px;
-    top: 20px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%) rotate(-45deg);
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .wand-feather {
     position: absolute;
-    width: 30px;
-    height: 30px;
-    background: radial-gradient(circle, #ff6b9d 0%, #c44569 100%);
-    border-radius: 50% 0% 50% 50%;
-    top: 10px;
+    top: 5px;
     left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.4);
-    animation: featherFloat 1s ease-in-out infinite;
+    width: 45px;
+    height: 45px;
+    animation: featherFloat 1.5s ease-in-out infinite;
+}
+
+/* Create realistic feather cluster */
+.wand-feather::before,
+.wand-feather::after {
+    content: '';
+    position: absolute;
+    border-radius: 50% 0% 50% 50%;
+}
+
+/* Main feather - bright pink */
+.wand-feather::before {
+    width: 28px;
+    height: 32px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff8fb3 50%, #c44569 100%);
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0) rotate(45deg);
+    box-shadow: 0 2px 6px rgba(255, 107, 157, 0.5);
+}
+
+/* Secondary feather - purple */
+.wand-feather::after {
+    width: 24px;
+    height: 28px;
+    background: linear-gradient(135deg, #b565d8 0%, #8e44ad 50%, #6c3483 100%);
+    top: 2px;
+    left: 55%;
+    transform: translate(-50%, 0) rotate(25deg);
+    box-shadow: 0 2px 6px rgba(142, 68, 173, 0.4);
+    opacity: 0.9;
 }
 
 @keyframes featherFloat {
     0%, 100% {
-        transform: translateX(-50%) rotate(45deg) translateY(0);
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-2px) rotate(3deg);
     }
     50% {
-        transform: translateX(-50%) rotate(45deg) translateY(-3px);
+        transform: translateY(-4px) rotate(-2deg);
+    }
+    75% {
+        transform: translateY(-2px) rotate(2deg);
     }
 }
 
@@ -3764,7 +3797,7 @@ body.dark-theme .floating-formula {
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;
     height: 180px;
-    background-image: url('../images/cat_paw_transparent.png');
+    background-image: url('../images/cat_paw_no_background.png');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
