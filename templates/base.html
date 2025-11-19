@@ -175,14 +175,6 @@
     <script src="{{ url_for('static', filename='js/chat-widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
 
-    <!-- Page-specific scripts needed for SPA router -->
-    <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/typing-game.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/guess-output-game.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bigo-game.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/neural-network-game.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/blockchain-game.js') }}"></script>
-
     <!-- Page-specific scripts loaded only where needed -->
     {% block extra_js %}{% endblock %}
 
