@@ -3353,15 +3353,18 @@ body.dark-theme .floating-formula {
     font-size: 1.1rem;
 }
 
-/* Wand Game Icon */
-.wand-game-container {
+/* Game Icons */
+.game-icons-left {
     position: absolute;
     top: 20px;
     left: 20px;
     z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.wand-game-btn {
+.game-icon-btn {
     width: 48px;
     height: 48px;
     background: rgba(255, 255, 255, 0.9);
@@ -3374,22 +3377,37 @@ body.dark-theme .floating-formula {
     justify-content: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
+}
+
+.game-icon-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 1);
+}
+
+.game-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.game-icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.wand-game-btn {
     color: #ff9e80;
 }
 
 .wand-game-btn:hover {
     transform: scale(1.1) rotate(10deg);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    background: rgba(255, 255, 255, 1);
 }
 
-.wand-game-btn:active {
-    transform: scale(0.95) rotate(10deg);
+.yarn-game-btn {
+    color: #e91e63;
 }
 
-.wand-game-btn svg {
-    width: 24px;
-    height: 24px;
+.melody-game-btn {
+    color: #9c27b0;
 }
 
 /* Color Picker Icon */
@@ -3763,6 +3781,411 @@ body.dark-theme .floating-formula {
     color: #6d4a1f;
 }
 
+/* ============================================ */
+/* YARN BALL BOUNCE GAME */
+/* ============================================ */
+
+.yarn-game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.yarn-game-modal {
+    background: linear-gradient(135deg, rgba(255, 240, 245, 0.95) 0%, rgba(252, 228, 236, 0.95) 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+.yarn-game-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.yarn-game-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+.yarn-game-modal h2 {
+    text-align: center;
+    color: #e91e63;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.yarn-game-instructions {
+    text-align: center;
+    color: #5f7c8a;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.yarn-game-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+#yarnCanvas {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: 400px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 12px;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.yarn-game-start {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+.yarn-game-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
+}
+
+.yarn-game-start:active {
+    transform: translateY(0);
+}
+
+.yarn-game-start:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.yarn-leaderboard {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.yarn-leaderboard h3 {
+    text-align: center;
+    color: #e91e63;
+    margin-bottom: 1rem;
+}
+
+#yarnLeaderboardList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#yarnLeaderboardList li {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #5f7c8a;
+}
+
+#yarnLeaderboardList li:first-child {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #8b6914;
+    font-weight: bold;
+}
+
+#yarnLeaderboardList li:nth-child(2) {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    color: #666;
+}
+
+#yarnLeaderboardList li:nth-child(3) {
+    background: linear-gradient(135deg, #cd7f32 0%, #e6a35c 100%);
+    color: #6d4a1f;
+}
+
+/* ============================================ */
+/* MEOW MELODY GAME */
+/* ============================================ */
+
+.melody-game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.melody-game-modal {
+    background: linear-gradient(135deg, rgba(243, 229, 245, 0.95) 0%, rgba(225, 190, 231, 0.95) 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+.melody-game-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.melody-game-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+.melody-game-modal h2 {
+    text-align: center;
+    color: #9c27b0;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.melody-game-instructions {
+    text-align: center;
+    color: #5f7c8a;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.melody-game-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.melody-game-area {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    border-radius: 12px;
+    padding: 2rem 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.melody-toys {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.melody-toy {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    user-select: none;
+}
+
+.melody-toy:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.melody-toy:active {
+    transform: translateY(-2px) scale(0.95);
+}
+
+.melody-toy.active {
+    animation: toyPulse 0.3s ease;
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(156, 39, 176, 0.4);
+}
+
+@keyframes toyPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.melody-toy.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.toy-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.toy-label {
+    font-size: 0.9rem;
+    color: #5f7c8a;
+    font-weight: 500;
+}
+
+.melody-toy.ball {
+    border: 3px solid #f44336;
+}
+
+.melody-toy.mouse {
+    border: 3px solid #9e9e9e;
+}
+
+.melody-toy.feather {
+    border: 3px solid #00bcd4;
+}
+
+.melody-toy.fish {
+    border: 3px solid #ff9800;
+}
+
+.melody-game-start {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+.melody-game-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(156, 39, 176, 0.4);
+}
+
+.melody-game-start:active {
+    transform: translateY(0);
+}
+
+.melody-game-start:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.melody-leaderboard {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.melody-leaderboard h3 {
+    text-align: center;
+    color: #9c27b0;
+    margin-bottom: 1rem;
+}
+
+#melodyLeaderboardList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#melodyLeaderboardList li {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #5f7c8a;
+}
+
+#melodyLeaderboardList li:first-child {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #8b6914;
+    font-weight: bold;
+}
+
+#melodyLeaderboardList li:nth-child(2) {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    color: #666;
+}
+
+#melodyLeaderboardList li:nth-child(3) {
+    background: linear-gradient(135deg, #cd7f32 0%, #e6a35c 100%);
+    color: #6d4a1f;
+}
+
 /* Main Canvas */
 #cat-cafe-canvas {
     width: 100%;
@@ -3815,17 +4238,18 @@ body.dark-theme .floating-formula {
         font-size: 1rem;
     }
 
-    .wand-game-container {
+    .game-icons-left {
         top: 10px;
         left: 10px;
+        gap: 8px;
     }
 
-    .wand-game-btn {
+    .game-icon-btn {
         width: 42px;
         height: 42px;
     }
 
-    .wand-game-btn svg {
+    .game-icon-btn svg {
         width: 20px;
         height: 20px;
     }
@@ -3858,11 +4282,11 @@ body.dark-theme .floating-formula {
         border-width: 2px;
     }
 
-    .wand-game-modal {
+    .wand-game-modal, .yarn-game-modal, .melody-game-modal {
         padding: 1.5rem;
     }
 
-    .wand-game-modal h2 {
+    .wand-game-modal h2, .yarn-game-modal h2, .melody-game-modal h2 {
         font-size: 1.5rem;
     }
 
@@ -3872,5 +4296,21 @@ body.dark-theme .floating-formula {
 
     .wand-game-area {
         height: 200px;
+    }
+
+    #yarnCanvas {
+        height: 300px;
+    }
+
+    .melody-toys {
+        gap: 0.75rem;
+    }
+
+    .melody-toy {
+        padding: 1rem;
+    }
+
+    .toy-icon {
+        font-size: 2.5rem;
     }
 }
