@@ -821,19 +821,291 @@
         game.animationFrameId = requestAnimationFrame(gameLoop);
     }
 
+    // ============================================
+    // WAND MINI-GAME
+    // ============================================
+
+    const wandGame = {
+        isPlaying: false,
+        score: 0,
+        timeLeft: 30,
+        wandVisible: false,
+        wandTimeout: null,
+        gameInterval: null,
+        currentPosition: -1,
+        positions: [
+            { left: '10%', top: '60px' },      // left position
+            { left: '50%', top: '60px', transform: 'translateX(-50%)' },  // middle
+            { right: '10%', top: '60px' }      // right position
+        ]
+    };
+
+    function initWandGame() {
+        const wandGameBtn = document.getElementById('wandGameBtn');
+        const wandGameOverlay = document.getElementById('wandGameOverlay');
+        const wandGameClose = document.getElementById('wandGameClose');
+        const wandGameStart = document.getElementById('wandGameStart');
+        const wand = document.getElementById('wand');
+
+        if (!wandGameBtn || !wandGameOverlay) {
+            return; // Elements not ready yet
+        }
+
+        // Open game modal
+        wandGameBtn.addEventListener('click', () => {
+            wandGameOverlay.style.display = 'flex';
+            loadLeaderboard();
+            updateBestScore();
+        });
+
+        // Close game modal
+        wandGameClose.addEventListener('click', () => {
+            stopWandGame();
+            wandGameOverlay.style.display = 'none';
+        });
+
+        // Close on overlay click
+        wandGameOverlay.addEventListener('click', (e) => {
+            if (e.target === wandGameOverlay) {
+                stopWandGame();
+                wandGameOverlay.style.display = 'none';
+            }
+        });
+
+        // Start game
+        wandGameStart.addEventListener('click', startWandGame);
+
+        // Click on wand
+        if (wand) {
+            wand.addEventListener('click', hitWand);
+        }
+    }
+
+    function startWandGame() {
+        // Reset game state
+        wandGame.isPlaying = true;
+        wandGame.score = 0;
+        wandGame.timeLeft = 30;
+        wandGame.wandVisible = false;
+
+        // Update UI
+        document.getElementById('wandScore').textContent = '0';
+        document.getElementById('wandTime').textContent = '30';
+        document.getElementById('wandGameStart').disabled = true;
+        document.getElementById('wandGameStart').textContent = 'Playing...';
+
+        // Start timer
+        wandGame.gameInterval = setInterval(() => {
+            wandGame.timeLeft--;
+            document.getElementById('wandTime').textContent = wandGame.timeLeft;
+
+            if (wandGame.timeLeft <= 0) {
+                endWandGame();
+            }
+        }, 1000);
+
+        // Start spawning wands
+        spawnWand();
+    }
+
+    function spawnWand() {
+        if (!wandGame.isPlaying) return;
+
+        const wand = document.getElementById('wand');
+        if (!wand) return;
+
+        // Hide previous wand
+        wand.style.display = 'none';
+        wandGame.wandVisible = false;
+
+        // Random delay before showing next wand (300ms to 800ms)
+        const delay = 300 + Math.random() * 500;
+
+        wandGame.wandTimeout = setTimeout(() => {
+            if (!wandGame.isPlaying) return;
+
+            // Choose random position (different from previous)
+            let newPosition;
+            do {
+                newPosition = Math.floor(Math.random() * 3);
+            } while (newPosition === wandGame.currentPosition && Math.random() > 0.3);
+
+            wandGame.currentPosition = newPosition;
+            const pos = wandGame.positions[newPosition];
+
+            // Position the wand
+            wand.style.left = pos.left || '';
+            wand.style.right = pos.right || '';
+            wand.style.top = pos.top;
+            wand.style.transform = pos.transform || '';
+            wand.style.display = 'block';
+            wandGame.wandVisible = true;
+
+            // Hide wand after a short time (400ms to 700ms)
+            const visibleTime = 400 + Math.random() * 300;
+            wandGame.wandTimeout = setTimeout(() => {
+                if (wandGame.wandVisible) {
+                    wand.style.display = 'none';
+                    wandGame.wandVisible = false;
+                    spawnWand(); // Spawn next wand
+                }
+            }, visibleTime);
+
+        }, delay);
+    }
+
+    function hitWand(e) {
+        if (!wandGame.isPlaying || !wandGame.wandVisible) return;
+
+        e.stopPropagation();
+
+        // Score!
+        wandGame.score++;
+        document.getElementById('wandScore').textContent = wandGame.score;
+
+        // Hide wand
+        const wand = document.getElementById('wand');
+        wand.style.display = 'none';
+        wandGame.wandVisible = false;
+
+        // Add hit effect
+        wand.style.animation = 'none';
+        setTimeout(() => {
+            wand.style.animation = 'wandAppear 0.2s ease';
+        }, 10);
+
+        // Clear timeout and spawn next wand
+        if (wandGame.wandTimeout) {
+            clearTimeout(wandGame.wandTimeout);
+        }
+        spawnWand();
+    }
+
+    function endWandGame() {
+        wandGame.isPlaying = false;
+
+        // Clear intervals and timeouts
+        if (wandGame.gameInterval) {
+            clearInterval(wandGame.gameInterval);
+        }
+        if (wandGame.wandTimeout) {
+            clearTimeout(wandGame.wandTimeout);
+        }
+
+        // Hide wand
+        const wand = document.getElementById('wand');
+        if (wand) {
+            wand.style.display = 'none';
+        }
+
+        // Update UI
+        document.getElementById('wandGameStart').disabled = false;
+        document.getElementById('wandGameStart').textContent = 'Play Again';
+
+        // Save score to leaderboard
+        saveScore(wandGame.score);
+        loadLeaderboard();
+        updateBestScore();
+
+        // Show game over message
+        setTimeout(() => {
+            alert(`Game Over! Your score: ${wandGame.score}`);
+        }, 100);
+    }
+
+    function stopWandGame() {
+        if (wandGame.isPlaying) {
+            endWandGame();
+        }
+    }
+
+    function saveScore(score) {
+        try {
+            let scores = JSON.parse(localStorage.getItem('catWandScores') || '[]');
+
+            // Add new score with timestamp
+            scores.push({
+                score: score,
+                date: new Date().toISOString()
+            });
+
+            // Sort by score (highest first)
+            scores.sort((a, b) => b.score - a.score);
+
+            // Keep only top 10
+            scores = scores.slice(0, 10);
+
+            localStorage.setItem('catWandScores', JSON.stringify(scores));
+        } catch (e) {
+            console.error('Failed to save score:', e);
+        }
+    }
+
+    function loadLeaderboard() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('catWandScores') || '[]');
+            const leaderboardList = document.getElementById('wandLeaderboardList');
+
+            if (!leaderboardList) return;
+
+            if (scores.length === 0) {
+                leaderboardList.innerHTML = '<li>No scores yet</li>';
+                return;
+            }
+
+            leaderboardList.innerHTML = scores.map((entry, index) => {
+                const date = new Date(entry.date);
+                const dateStr = date.toLocaleDateString();
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                return `<li>
+                    <span>${medal} ${entry.score} points</span>
+                    <span style="font-size: 0.85rem; opacity: 0.7;">${dateStr}</span>
+                </li>`;
+            }).join('');
+        } catch (e) {
+            console.error('Failed to load leaderboard:', e);
+        }
+    }
+
+    function updateBestScore() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('catWandScores') || '[]');
+            const bestScore = scores.length > 0 ? scores[0].score : 0;
+            const bestElement = document.getElementById('wandBest');
+            if (bestElement) {
+                bestElement.textContent = bestScore;
+            }
+        } catch (e) {
+            console.error('Failed to update best score:', e);
+        }
+    }
+
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+
     // Initialize on direct page load
     if (window.location.pathname === '/cat-cafe') {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
+            document.addEventListener('DOMContentLoaded', () => {
+                init();
+                initWandGame();
+            });
         } else {
-            setTimeout(init, 50);
+            setTimeout(() => {
+                init();
+                initWandGame();
+            }, 50);
         }
     }
 
     // Initialize on SPA navigation
     document.addEventListener('spa-page-loaded', function(e) {
         if (e.detail.path === '/cat-cafe') {
-            setTimeout(init, 150);
+            setTimeout(() => {
+                init();
+                initWandGame();
+            }, 150);
         }
     });
 

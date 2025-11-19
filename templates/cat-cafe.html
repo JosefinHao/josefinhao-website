@@ -12,6 +12,17 @@
         <p>You are now a cute cat in a cozy cafe! Click anywhere to move, drag on walls to scratch, and explore the space.</p>
     </div>
 
+    <!-- Wand Game Icon -->
+    <div class="wand-game-container">
+        <button class="wand-game-btn" id="wandGameBtn" title="Play Wand Game">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3L8 8M8 8L21 21M8 8L21 3L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="19" cy="5" r="2" fill="currentColor"/>
+                <path d="M17 7L19 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+
     <!-- Color Picker Icon -->
     <div class="color-picker-container">
         <button class="color-picker-btn" id="colorPickerBtn" title="Change wall color">
@@ -32,6 +43,62 @@
         <div class="instruction-item">✨ Drag on walls to scratch</div>
         <div class="instruction-item">📦 Click boxes to interact</div>
         <div class="instruction-item">🌲 Explore cat trees and walkways</div>
+        <div class="instruction-item">🎮 Play the wand game</div>
+    </div>
+
+    <!-- Wand Mini-Game Overlay -->
+    <div class="wand-game-overlay" id="wandGameOverlay" style="display: none;">
+        <div class="wand-game-modal">
+            <button class="wand-game-close" id="wandGameClose">✕</button>
+
+            <h2>🐾 Cat Wand Game</h2>
+            <p class="wand-game-instructions">Click the wand before it disappears!</p>
+
+            <div class="wand-game-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Score</span>
+                    <span class="stat-value" id="wandScore">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Time</span>
+                    <span class="stat-value" id="wandTime">30</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Best</span>
+                    <span class="stat-value" id="wandBest">0</span>
+                </div>
+            </div>
+
+            <div class="wand-game-area" id="wandGameArea">
+                <!-- Wand positions -->
+                <div class="wand-position left" data-position="0"></div>
+                <div class="wand-position middle" data-position="1"></div>
+                <div class="wand-position right" data-position="2"></div>
+
+                <!-- Wand element -->
+                <div class="wand" id="wand" style="display: none;">
+                    <div class="wand-stick"></div>
+                    <div class="wand-feather"></div>
+                </div>
+
+                <!-- Cat paw -->
+                <div class="cat-paw" id="catPaw">
+                    <div class="paw-pad"></div>
+                    <div class="paw-toe"></div>
+                    <div class="paw-toe"></div>
+                    <div class="paw-toe"></div>
+                </div>
+            </div>
+
+            <button class="wand-game-start" id="wandGameStart">Start Game</button>
+
+            <div class="wand-leaderboard">
+                <h3>🏆 Leaderboard</h3>
+                <ol id="wandLeaderboardList">
+                    <li>No scores yet</li>
+                </ol>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
