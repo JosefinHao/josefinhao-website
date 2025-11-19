@@ -1499,7 +1499,7 @@
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 2500); // Start with slower spawn rate
+        }, 3000); // Start with slower spawn rate (3 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1519,8 +1519,8 @@
         };
 
         // Much slower initial speed with gradual difficulty increase
-        const baseSpeed = 0.3 + Math.random() * 0.3; // Start very slow: 0.3-0.6
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.12; // Gradual 12% increase per level
+        const baseSpeed = 0.15 + Math.random() * 0.15; // Start very slow: 0.15-0.3
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.08; // Gradual 8% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         if (spawnType < 0.5) {
@@ -1571,7 +1571,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(1000, 2500 - yarnGame.difficulty * 120);
+                        const newInterval = Math.max(1200, 3000 - yarnGame.difficulty * 100);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -1600,7 +1600,7 @@
             // Update position
             ball.x += ball.vx;
             ball.y += ball.vy;
-            ball.vy += 0.3; // Gravity
+            ball.vy += 0.12; // Gravity (reduced for playability)
             ball.rotation += ball.rotationSpeed;
 
             // Bounce off walls
