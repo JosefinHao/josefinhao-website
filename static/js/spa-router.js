@@ -252,7 +252,7 @@
         }
 
         // Dispatch event for games to initialize
-        if (path === '/games') {
+        if (path === '/games' || path === '/cat-cafe') {
             const event = new CustomEvent('spa-page-loaded', {
                 detail: { path: path }
             });
