@@ -1,8 +1,8 @@
-{% extends "base.html" %}
+{% if not spa_mode %}{% extends "base.html" %}
 
 {% block title %}Games - Josefin Hao{% endblock %}
 
-{% block content %}
+{% block content %}{% endif %}
 <div class="games-intro">
     <h1>Developer Mini-Games</h1>
 </div>
@@ -79,9 +79,9 @@
         </button>
     </div>
 </div>
-{% endblock %}
+{% if not spa_mode %}{% endblock %}
 
-{% block modals %}
+{% block modals %}{% endif %}
 <!-- Modal 1: Typing Speed Game -->
 <div id="typing-game-modal" class="game-modal">
     <div class="game-modal-content">
@@ -428,12 +428,12 @@ document.addEventListener('keydown', function(event) {
     }
 });
 </script>
-{% endblock %}
+{% if not spa_mode %}{% endblock %}
 
-{% block extra_js %}
+{% block extra_js %}{% endif %}
 <script src="{{ url_for('static', filename='js/typing-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/guess-output-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/bigo-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/neural-network-game.js') }}"></script>
 <script src="{{ url_for('static', filename='js/blockchain-game.js') }}"></script>
-{% endblock %}
+{% if not spa_mode %}{% endblock %}{% endif %}
