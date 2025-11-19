@@ -3581,9 +3581,8 @@ body.dark-theme .floating-formula {
     top: 20px;
     width: 100px;
     height: 100px;
-    border: 2px dashed rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    /* Circles removed - only showing wands now */
+    display: none;
 }
 
 .wand-position.left {
@@ -3665,45 +3664,28 @@ body.dark-theme .floating-formula {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 60px;
+    transform: translate(-50%, 0);
+    width: 120px;
+    height: 150px;
+    background-image: url('https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=300&h=400&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: bottom center;
+    z-index: 100;
 }
 
-.paw-pad {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: #ff9e80;
-    border-radius: 50% 50% 40% 40%;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.cat-paw.reaching {
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* Hide the old paw elements */
+.paw-pad,
 .paw-toe {
-    position: absolute;
-    width: 12px;
-    height: 16px;
-    background: #ff9e80;
-    border-radius: 50% 50% 40% 40%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.paw-toe:nth-child(2) {
-    top: -5px;
-    left: 5px;
-}
-
-.paw-toe:nth-child(3) {
-    top: -8px;
-    left: 24px;
-}
-
-.paw-toe:nth-child(4) {
-    top: -5px;
-    right: 5px;
+    display: none;
 }
 
 .wand-game-start {

@@ -995,6 +995,7 @@
         timeLeft: 30,
         wandVisible: false,
         wandTimeout: null,
+        hideTimeout: null,
         gameInterval: null,
         currentPosition: -1,
         positions: [
@@ -1078,6 +1079,16 @@
         const wand = document.getElementById('wand');
         if (!wand) return;
 
+        // Clear any existing timeouts to prevent overlapping cycles
+        if (wandGame.wandTimeout) {
+            clearTimeout(wandGame.wandTimeout);
+            wandGame.wandTimeout = null;
+        }
+        if (wandGame.hideTimeout) {
+            clearTimeout(wandGame.hideTimeout);
+            wandGame.hideTimeout = null;
+        }
+
         // Hide previous wand
         wand.style.display = 'none';
         wandGame.wandVisible = false;
@@ -1107,8 +1118,8 @@
 
             // Hide wand after a short time (400ms to 700ms)
             const visibleTime = 400 + Math.random() * 300;
-            wandGame.wandTimeout = setTimeout(() => {
-                if (wandGame.wandVisible) {
+            wandGame.hideTimeout = setTimeout(() => {
+                if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
                     wandGame.wandVisible = false;
                     spawnWand(); // Spawn next wand
@@ -1123,14 +1134,28 @@
 
         e.stopPropagation();
 
+        // Get wand position for cat paw animation
+        const wand = document.getElementById('wand');
+        const wandRect = wand.getBoundingClientRect();
+        const gameArea = document.getElementById('wandGameArea');
+        const gameRect = gameArea.getBoundingClientRect();
+
+        // Calculate relative position within game area
+        const wandX = wandRect.left - gameRect.left + wandRect.width / 2;
+        const wandY = wandRect.top - gameRect.top + wandRect.height / 2;
+
+        // Animate cat paw to wand position
+        animateCatPaw(wandX, wandY);
+
         // Score!
         wandGame.score++;
         document.getElementById('wandScore').textContent = wandGame.score;
 
-        // Hide wand
-        const wand = document.getElementById('wand');
-        wand.style.display = 'none';
-        wandGame.wandVisible = false;
+        // Hide wand after paw animation starts
+        setTimeout(() => {
+            wand.style.display = 'none';
+            wandGame.wandVisible = false;
+        }, 200);
 
         // Add hit effect
         wand.style.animation = 'none';
@@ -1138,11 +1163,52 @@
             wand.style.animation = 'wandAppear 0.2s ease';
         }, 10);
 
-        // Clear timeout and spawn next wand
+        // Clear all timeouts and spawn next wand
         if (wandGame.wandTimeout) {
             clearTimeout(wandGame.wandTimeout);
+            wandGame.wandTimeout = null;
         }
-        spawnWand();
+        if (wandGame.hideTimeout) {
+            clearTimeout(wandGame.hideTimeout);
+            wandGame.hideTimeout = null;
+        }
+
+        // Wait for paw animation to complete before spawning next wand
+        setTimeout(() => {
+            spawnWand();
+        }, 400);
+    }
+
+    function animateCatPaw(targetX, targetY) {
+        const catPaw = document.getElementById('catPaw');
+        if (!catPaw) return;
+
+        // Show and position the paw
+        catPaw.style.display = 'block';
+        catPaw.style.opacity = '1';
+
+        // Calculate angle to target
+        const gameArea = document.getElementById('wandGameArea');
+        const gameRect = gameArea.getBoundingClientRect();
+        const pawStartX = gameRect.width / 2;
+        const pawStartY = gameRect.height - 50;
+
+        const dx = targetX - pawStartX;
+        const dy = targetY - pawStartY;
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+        // Apply transform to reach toward target
+        catPaw.style.transform = `translate(${dx * 0.6}px, ${dy * 0.6}px) rotate(${angle - 90}deg)`;
+        catPaw.classList.add('reaching');
+
+        // Reset paw after animation
+        setTimeout(() => {
+            catPaw.style.transform = 'translate(-50%, 0) rotate(0deg)';
+            catPaw.classList.remove('reaching');
+            setTimeout(() => {
+                catPaw.style.opacity = '0';
+            }, 200);
+        }, 300);
     }
 
     function endWandGame() {
@@ -1151,9 +1217,15 @@
         // Clear intervals and timeouts
         if (wandGame.gameInterval) {
             clearInterval(wandGame.gameInterval);
+            wandGame.gameInterval = null;
         }
         if (wandGame.wandTimeout) {
             clearTimeout(wandGame.wandTimeout);
+            wandGame.wandTimeout = null;
+        }
+        if (wandGame.hideTimeout) {
+            clearTimeout(wandGame.hideTimeout);
+            wandGame.hideTimeout = null;
         }
 
         // Hide wand
