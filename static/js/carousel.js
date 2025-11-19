@@ -28,7 +28,7 @@
         let currentSlide = 0;
         const totalSlides = slides.length;
         let autoPlayInterval = null;
-        const autoPlayDelay = 10000; // 10 seconds
+        const autoPlayDelay = 15000; // 15 seconds
 
         /**
          * Update the carousel to show the specified slide
@@ -89,7 +89,10 @@
          * Start auto-play
          */
         function startAutoPlay() {
-            autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+            // Only start if not already running
+            if (!autoPlayInterval) {
+                autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+            }
         }
 
         /**
@@ -145,7 +148,10 @@
         const carouselContainer = document.querySelector('.featured-carousel-container');
         if (carouselContainer) {
             carouselContainer.addEventListener('mouseenter', stopAutoPlay);
-            carouselContainer.addEventListener('mouseleave', startAutoPlay);
+            carouselContainer.addEventListener('mouseleave', () => {
+                // Reset timer to give user full duration after hovering
+                resetAutoPlay();
+            });
         }
 
         // Handle window resize
