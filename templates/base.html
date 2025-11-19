@@ -174,8 +174,8 @@
     <script src="{{ url_for('static', filename='js/floating-formulas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat-widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme-switcher.js') }}"></script>
+    {% block extra_js %}{% endblock %}
     <!-- SPA Router - enables navigation without page reloads -->
     <script src="{{ url_for('static', filename='js/spa-router.js') }}"></script>
-    {% block extra_js %}{% endblock %}
 </body>
 </html>
