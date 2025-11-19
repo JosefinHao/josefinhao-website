@@ -1108,50 +1108,6 @@ p {
     border: 2px solid rgba(102, 126, 234, 0.25);
 }
 
-/* Tech Stack Pills/Tags */
-.tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.75rem;
-}
-
-.tech-tag {
-    display: inline-block;
-    padding: 0.25rem 0.6rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
-}
-
-/* Tech tag colors by category */
-.flip-card-current .tech-tag {
-    background: rgba(95, 124, 138, 0.15);
-    color: #4a6572;
-    border: 1px solid rgba(95, 124, 138, 0.25);
-}
-
-.flip-card-openai .tech-tag {
-    background: rgba(76, 140, 105, 0.15);
-    color: #3d7a5e;
-    border: 1px solid rgba(76, 140, 105, 0.25);
-}
-
-.flip-card-crewai .tech-tag {
-    background: rgba(180, 160, 130, 0.15);
-    color: #8b7655;
-    border: 1px solid rgba(180, 160, 130, 0.25);
-}
-
-.flip-card-langgraph .tech-tag {
-    background: rgba(102, 126, 234, 0.15);
-    color: #5568ba;
-    border: 1px solid rgba(102, 126, 234, 0.25);
-}
-
 /* ============================================ */
 /* FLIP CARDS FOR PROJECTS PAGE */
 /* ============================================ */
