@@ -28,7 +28,7 @@
         let currentSlide = 0;
         const totalSlides = slides.length;
         let autoPlayInterval = null;
-        const autoPlayDelay = 10000; // 10 seconds
+        const autoPlayDelay = 15000; // 15 seconds
 
         /**
          * Update the carousel to show the specified slide
