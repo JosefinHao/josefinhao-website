@@ -3603,27 +3603,24 @@ body.dark-theme .floating-formula {
     width: 80px;
     height: 80px;
     cursor: pointer;
-    animation: wandAppear 0.2s ease;
-    transition: all 0.1s ease;
+    animation: wandFadeIn 0.15s ease;
 }
 
-@keyframes wandAppear {
+@keyframes wandFadeIn {
     from {
-        transform: scale(0) rotate(-45deg);
         opacity: 0;
     }
     to {
-        transform: scale(1) rotate(0deg);
         opacity: 1;
     }
 }
 
 .wand:hover {
-    transform: scale(1.1);
+    filter: brightness(1.1);
 }
 
 .wand:active {
-    transform: scale(0.9);
+    filter: brightness(0.9);
 }
 
 .wand-stick {
@@ -3667,7 +3664,7 @@ body.dark-theme .floating-formula {
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;
     height: 180px;
-    background-image: url('../images/cat_paw.PNG');
+    background-image: url('../images/cat_paw_transparent.png');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
