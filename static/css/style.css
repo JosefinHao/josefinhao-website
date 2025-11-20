@@ -3851,11 +3851,11 @@ body.dark-theme .floating-formula {
     position: absolute;
     /* Fixed at top center - base of wand stays here */
     left: 50%;
-    top: 0;
-    width: 150px;
-    height: 200px;
+    top: -10px;
+    width: 180px;
+    height: 240px;
     /* Transform origin at the base/handle (top center) */
-    transform-origin: 50% 15%; /* Adjusted for the handle position in the rotated SVG */
+    transform-origin: 50% 10%; /* Positioned closer to top for handle at edge */
     cursor: pointer;
     /* No animation - wand appears instantly at rotated position */
     transition: none;
