@@ -939,14 +939,26 @@ class GuessOutputGame {
 }
 
 // Initialize game when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('guess-code-display')) {
-            new GuessOutputGame();
-        }
-    });
-} else {
-    if (document.getElementById('guess-code-display')) {
-        new GuessOutputGame();
+let guessGameInstance = null;
+
+function initGuessGame() {
+    // Only initialize if we're on the games page and haven't initialized yet
+    const gameElement = document.getElementById('guess-code-display');
+    if (gameElement && !guessGameInstance) {
+        guessGameInstance = new GuessOutputGame();
     }
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGuessGame);
+} else {
+    initGuessGame();
+}
+
+// Re-initialize when navigating via SPA
+document.addEventListener('spa-page-loaded', (event) => {
+    if (event.detail.path === '/games') {
+        guessGameInstance = null; // Reset instance
+        initGuessGame();
+    }
+});

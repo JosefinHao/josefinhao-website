@@ -13,24 +13,17 @@
         width: 0,
         height: 0,
         points: 0,
+        catSize: 1, // Logical cat size (starts at 1, increases with feeding, decreases with exercise)
         catHunger: 100,
         catEnergy: 100,
-        isDragging: false,
-        draggedObject: null,
+        isDraggingCat: false,
         dragOffset: { x: 0, y: 0 },
+        userIP: null, // User's IP address for separating game state
         cat: {
             x: 0,
             y: 0,
-            targetX: 0,
-            targetY: 0,
             size: 80,
-            speed: 2,
-            isMoving: false,
-            moveType: 'walk',
             direction: 1,
-            animationFrame: 0,
-            jumpHeight: 0,
-            jumpProgress: 0,
             state: 'standing'
         },
         catTrees: [],
@@ -41,6 +34,7 @@
             catTree: null,
             couch: null,
             toy: null,
+            background: null,
             loaded: false
         },
         initialized: false,
@@ -57,9 +51,76 @@
         console.log('Cat Cafe cleaned up');
     }
 
+    async function getUserIP() {
+        try {
+            const response = await fetch('/api/user-ip');
+            const data = await response.json();
+            game.userIP = data.ip || 'unknown';
+            console.log('User IP:', game.userIP);
+        } catch (e) {
+            console.error('Failed to fetch user IP:', e);
+            game.userIP = 'unknown';
+        }
+    }
+
+    function saveCatSize() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafeSize_${game.userIP}`;
+            localStorage.setItem(key, game.catSize.toString());
+        } catch (e) {
+            console.error('Failed to save cat size:', e);
+        }
+    }
+
+    function loadCatSize() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafeSize_${game.userIP}`;
+            const savedSize = localStorage.getItem(key);
+            if (savedSize) {
+                game.catSize = parseFloat(savedSize);
+                // Ensure cat size is at least 1
+                if (game.catSize < 1) {
+                    game.catSize = 1;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load cat size:', e);
+            game.catSize = 1;
+        }
+    }
+
+    function savePoints() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafePoints_${game.userIP}`;
+            localStorage.setItem(key, game.points.toString());
+        } catch (e) {
+            console.error('Failed to save points:', e);
+        }
+    }
+
+    function loadPoints() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafePoints_${game.userIP}`;
+            const savedPoints = localStorage.getItem(key);
+            if (savedPoints) {
+                game.points = parseInt(savedPoints, 10);
+                if (game.points < 0 || isNaN(game.points)) {
+                    game.points = 0;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load points:', e);
+            game.points = 0;
+        }
+    }
+
     function loadImages(callback) {
         let loadedCount = 0;
-        const totalImages = 4;
+        const totalImages = 5;
 
         function imageLoaded() {
             loadedCount++;
@@ -70,16 +131,27 @@
             }
         }
 
-        // Load cat image - transparent PNG orange cat
+        // Load background image
+        game.images.background = new Image();
+        game.images.background.onload = () => {
+            console.log('Cat cafe background image loaded successfully:', game.images.background.naturalWidth, 'x', game.images.background.naturalHeight);
+            imageLoaded();
+        };
+        game.images.background.onerror = (e) => {
+            console.error('Background image failed to load:', e);
+            imageLoaded();
+        };
+        game.images.background.src = '/static/images/cat_cafe.png';
+        console.log('Loading cat cafe background from:', game.images.background.src);
+
+        // Load cat image - local custom cat PNG
         game.images.cat = new Image();
-        game.images.cat.crossOrigin = 'anonymous';
         game.images.cat.onload = imageLoaded;
         game.images.cat.onerror = () => {
             console.log('Cat image failed to load, using fallback');
             imageLoaded();
         };
-        // Using pngimg.com transparent PNG
-        game.images.cat.src = 'https://pngimg.com/uploads/cat/cat_PNG50434.png';
+        game.images.cat.src = '/static/images/cat.png';
 
         // Load cat tree image - transparent PNG
         game.images.catTree = new Image();
@@ -115,7 +187,7 @@
         game.images.toy.src = 'data:image/png;base64,invalid';
     }
 
-    function init() {
+    async function init() {
         console.log('Cat Cafe 2D game initializing...');
 
         if (game.initialized) {
@@ -132,6 +204,13 @@
         game.canvas = canvas;
         game.ctx = canvas.getContext('2d');
 
+        // Fetch user IP first to enable per-user storage
+        await getUserIP();
+
+        // Load saved cat size and points for this user
+        loadCatSize();
+        loadPoints();
+
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
@@ -142,8 +221,6 @@
 
             game.cat.x = game.width / 2;
             game.cat.y = game.height / 2;
-            game.cat.targetX = game.cat.x;
-            game.cat.targetY = game.cat.y;
 
             game.initialized = true;
             gameLoop();
@@ -169,46 +246,10 @@
     }
 
     function createCafeElements() {
+        // Clear all furniture and toys - keeping cafe simple
         game.catTrees = [];
         game.couches = [];
         game.toys = [];
-
-        // Create 2-3 cat trees
-        const numTrees = 2 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < numTrees; i++) {
-            game.catTrees.push({
-                x: 100 + (i * (game.width - 200) / numTrees),
-                y: 100 + Math.random() * (game.height - 200),
-                width: 80,
-                height: 120,
-                type: 'tree'
-            });
-        }
-
-        // Create 1-2 couches
-        const numCouches = 1 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < numCouches; i++) {
-            game.couches.push({
-                x: 120 + Math.random() * (game.width - 300),
-                y: game.height - 180 - Math.random() * 100,
-                width: 150,
-                height: 100,
-                type: 'couch'
-            });
-        }
-
-        // Create 3-5 cat toys
-        const numToys = 3 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < numToys; i++) {
-            const size = 30 + Math.random() * 20;
-            game.toys.push({
-                x: 80 + Math.random() * (game.width - 160),
-                y: 80 + Math.random() * (game.height - 160),
-                width: size,
-                height: size,
-                type: 'toy'
-            });
-        }
     }
 
     function setupEventListeners() {
@@ -227,8 +268,9 @@
             foodBowlBtn.addEventListener('click', feedCat);
         }
 
-        // Update points display
+        // Update points and cat size display
         updatePointsDisplay();
+        updateCatSizeDisplay();
     }
 
     function updatePointsDisplay() {
@@ -238,15 +280,29 @@
         }
     }
 
+    function updateCatSizeDisplay() {
+        const catSizeDisplay = document.getElementById('catSizeDisplay');
+        if (catSizeDisplay) {
+            catSizeDisplay.textContent = game.catSize.toFixed(1);
+        }
+    }
+
     function feedCat() {
         const FOOD_COST = 10;
         if (game.points >= FOOD_COST) {
             game.points -= FOOD_COST;
             game.catHunger = Math.min(100, game.catHunger + 30);
+
+            // Increase cat size by 1 (10 points × 0.1 per point)
+            game.catSize += 1;
+            saveCatSize();
+            savePoints();
+
             updatePointsDisplay();
+            updateCatSizeDisplay();
 
             // Show feeding animation or message
-            showMessage(`Fed the cat! Hunger: ${Math.floor(game.catHunger)}%`);
+            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)} | Hunger: ${Math.floor(game.catHunger)}%`);
         } else {
             showMessage(`Need ${FOOD_COST} points to feed the cat!`);
         }
@@ -263,32 +319,33 @@
         }
     }
 
-    function getObjectAtPosition(x, y) {
-        // Check cat trees
-        for (let tree of game.catTrees) {
-            if (x >= tree.x && x <= tree.x + tree.width &&
-                y >= tree.y && y <= tree.y + tree.height) {
-                return tree;
-            }
-        }
+    function exerciseCat(points) {
+        // Each point of exercise reduces cat size by 0.1
+        const sizeReduction = points * 0.1;
+        game.catSize = Math.max(1, game.catSize - sizeReduction);
+        saveCatSize();
+        updateCatSizeDisplay();
+    }
 
-        // Check couches
-        for (let couch of game.couches) {
-            if (x >= couch.x && x <= couch.x + couch.width &&
-                y >= couch.y && y <= couch.y + couch.height) {
-                return couch;
-            }
+    function playMeowSound() {
+        try {
+            // Use HTML5 Audio with a cat meow sound
+            // Using a free cat meow sound from freesound.org (Public Domain)
+            const audio = new Audio('https://freesound.org/data/previews/634/634537_12517018-lq.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log('Audio playback failed:', e));
+        } catch (e) {
+            console.log('Audio not supported:', e);
         }
+    }
 
-        // Check toys
-        for (let toy of game.toys) {
-            if (x >= toy.x && x <= toy.x + toy.width &&
-                y >= toy.y && y <= toy.y + toy.height) {
-                return toy;
-            }
-        }
-
-        return null;
+    function isCursorOverCat(x, y) {
+        const catSize = game.cat.size * game.catSize;
+        const catRadius = catSize / 2;
+        const dx = x - game.cat.x;
+        const dy = y - game.cat.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance <= catRadius * 1.2; // Give a bit of extra clickable area
     }
 
     function handlePointerDown(e) {
@@ -296,22 +353,15 @@
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const obj = getObjectAtPosition(x, y);
+        if (isCursorOverCat(x, y)) {
+            // Start dragging the cat
+            game.isDraggingCat = true;
+            game.dragOffset.x = x - game.cat.x;
+            game.dragOffset.y = y - game.cat.y;
+            game.canvas.style.cursor = 'grabbing';
 
-        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-            game.isDragging = true;
-            game.draggedObject = obj;
-            game.dragOffset = {
-                x: x - obj.x,
-                y: y - obj.y
-            };
-        } else {
-            const clickedCouch = getObjectAtPosition(x, y);
-            if (clickedCouch && clickedCouch.type === 'couch') {
-                handleCouchClick(clickedCouch, x, y);
-            } else {
-                moveCatTo(x, y);
-            }
+            // Play meow sound when picking up the cat
+            playMeowSound();
         }
     }
 
@@ -320,25 +370,24 @@
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        if (game.isDragging && game.draggedObject) {
-            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
-            game.canvas.style.cursor = 'grabbing';
+        if (game.isDraggingCat) {
+            // Update cat position while dragging
+            game.cat.x = x - game.dragOffset.x;
+            game.cat.y = y - game.dragOffset.y;
         } else {
-            const obj = getObjectAtPosition(x, y);
-            if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
+            // Change cursor when hovering over cat
+            if (isCursorOverCat(x, y)) {
                 game.canvas.style.cursor = 'grab';
             } else {
-                game.canvas.style.cursor = 'pointer';
+                game.canvas.style.cursor = 'default';
             }
         }
     }
 
     function handlePointerUp() {
-        if (game.isDragging) {
-            game.isDragging = false;
-            game.draggedObject = null;
-            game.canvas.style.cursor = 'pointer';
+        if (game.isDraggingCat) {
+            game.isDraggingCat = false;
+            game.canvas.style.cursor = 'grab';
         }
     }
 
@@ -349,117 +398,35 @@
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
 
-        const obj = getObjectAtPosition(x, y);
+        if (isCursorOverCat(x, y)) {
+            // Start dragging the cat
+            game.isDraggingCat = true;
+            game.dragOffset.x = x - game.cat.x;
+            game.dragOffset.y = y - game.cat.y;
 
-        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-            game.isDragging = true;
-            game.draggedObject = obj;
-            game.dragOffset = {
-                x: x - obj.x,
-                y: y - obj.y
-            };
-        } else {
-            const clickedCouch = getObjectAtPosition(x, y);
-            if (clickedCouch && clickedCouch.type === 'couch') {
-                handleCouchClick(clickedCouch, x, y);
-            } else {
-                moveCatTo(x, y);
-            }
+            // Play meow sound when picking up the cat
+            playMeowSound();
         }
     }
 
     function handleTouchMove(e) {
         e.preventDefault();
-        const touch = e.touches[0];
-        const rect = game.canvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
 
-        if (game.isDragging && game.draggedObject) {
-            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
+        if (game.isDraggingCat && e.touches.length > 0) {
+            const touch = e.touches[0];
+            const rect = game.canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            // Update cat position while dragging
+            game.cat.x = x - game.dragOffset.x;
+            game.cat.y = y - game.dragOffset.y;
         }
-    }
-
-    function handleCouchClick(couch, clickX, clickY) {
-        const couchCenterX = couch.x + couch.width / 2;
-        const couchCenterY = couch.y + couch.height / 2;
-        moveCatToLie(couchCenterX, couchCenterY, 'ontop');
-    }
-
-    function moveCatTo(x, y) {
-        game.cat.targetX = Math.max(30, Math.min(game.width - 30, x));
-        game.cat.targetY = Math.max(30, Math.min(game.height - 30, y));
-        game.cat.isMoving = true;
-        game.cat.state = 'standing';
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        const rand = Math.random();
-        if (rand < 0.33) {
-            game.cat.moveType = 'walk';
-            game.cat.speed = 2;
-        } else if (rand < 0.66) {
-            game.cat.moveType = 'run';
-            game.cat.speed = 4;
-        } else {
-            game.cat.moveType = 'jump';
-            game.cat.speed = 3;
-            game.cat.jumpProgress = 0;
-        }
-    }
-
-    function moveCatToLie(x, y, lieType) {
-        game.cat.targetX = x;
-        game.cat.targetY = y;
-        game.cat.isMoving = true;
-        game.cat.lieType = lieType;
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        game.cat.moveType = 'walk';
-        game.cat.speed = 2;
     }
 
     function update() {
-        if (game.cat.isMoving) {
-            const dx = game.cat.targetX - game.cat.x;
-            const dy = game.cat.targetY - game.cat.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < game.cat.speed) {
-                game.cat.x = game.cat.targetX;
-                game.cat.y = game.cat.targetY;
-                game.cat.isMoving = false;
-                game.cat.jumpHeight = 0;
-
-                if (game.cat.lieType) {
-                    game.cat.state = 'lying';
-                    game.cat.lieType = null;
-                } else {
-                    game.cat.state = 'standing';
-                }
-            } else {
-                const angle = Math.atan2(dy, dx);
-                game.cat.x += Math.cos(angle) * game.cat.speed;
-                game.cat.y += Math.sin(angle) * game.cat.speed;
-
-                if (game.cat.moveType === 'jump') {
-                    game.cat.jumpProgress += 0.05;
-                    game.cat.jumpHeight = Math.sin(game.cat.jumpProgress * Math.PI) * 20;
-                }
-            }
-
-            game.cat.animationFrame += 0.2;
-        }
+        // Cat no longer moves - stays in standing state
+        game.cat.state = 'standing';
     }
 
     function render() {
@@ -468,11 +435,8 @@
         // Clear canvas
         ctx.clearRect(0, 0, game.width, game.height);
 
-        // Draw subtle, cozy cafe background
-        drawCozyBackground(ctx);
-
-        // Draw wooden floor
-        drawWoodenFloor(ctx);
+        // Draw cafe background image
+        drawCafeBackground(ctx);
 
         // Draw cafe elements (order matters for layering)
         drawCouches();
@@ -483,75 +447,9 @@
         drawCat();
     }
 
-    function drawCozyBackground(ctx) {
-        // Warm gradient background
-        const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
-        bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
-        bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
-        bgGradient.addColorStop(1, '#e8d5c4');   // Darker tan
-        ctx.fillStyle = bgGradient;
-        ctx.fillRect(0, 0, game.width, game.height);
-
-        // Add subtle texture with very light dots
-        ctx.fillStyle = 'rgba(139, 115, 85, 0.02)';
-        for (let i = 0; i < 200; i++) {
-            const x = Math.random() * game.width;
-            const y = Math.random() * game.height;
-            ctx.beginPath();
-            ctx.arc(x, y, Math.random() * 2, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        // Soft vignette effect
-        const vignette = ctx.createRadialGradient(
-            game.width / 2, game.height / 2, game.height * 0.3,
-            game.width / 2, game.height / 2, game.height * 0.8
-        );
-        vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        vignette.addColorStop(1, 'rgba(101, 67, 33, 0.1)');
-        ctx.fillStyle = vignette;
-        ctx.fillRect(0, 0, game.width, game.height);
-    }
-
-    function drawWoodenFloor(ctx) {
-        const floorHeight = 80;
-        const floorY = game.height - floorHeight;
-
-        // Base floor color
-        const floorGradient = ctx.createLinearGradient(0, floorY, 0, game.height);
-        floorGradient.addColorStop(0, '#a88860');
-        floorGradient.addColorStop(0.5, '#8b7355');
-        floorGradient.addColorStop(1, '#6d5d4b');
-        ctx.fillStyle = floorGradient;
-        ctx.fillRect(0, floorY, game.width, floorHeight);
-
-        // Wood grain effect with planks
-        ctx.strokeStyle = 'rgba(101, 67, 33, 0.2)';
-        ctx.lineWidth = 2;
-        for (let x = 0; x < game.width; x += 120) {
-            ctx.beginPath();
-            ctx.moveTo(x, floorY);
-            ctx.lineTo(x, game.height);
-            ctx.stroke();
-        }
-
-        // Horizontal grain lines
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(101, 67, 33, 0.1)';
-        for (let y = floorY; y < game.height; y += 8) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(game.width, y);
-            ctx.stroke();
-        }
-
-        // Floor edge highlight
-        ctx.strokeStyle = 'rgba(168, 136, 96, 0.5)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(0, floorY);
-        ctx.lineTo(game.width, floorY);
-        ctx.stroke();
+    function drawCafeBackground(ctx) {
+        // Background is now drawn on the container element (cat_cafe.png)
+        // Canvas is transparent, so no need to draw background here
     }
 
     function drawCatTrees() {
@@ -830,8 +728,8 @@
     function drawCatStanding() {
         const ctx = game.ctx;
         const x = game.cat.x;
-        const y = game.cat.y - game.cat.jumpHeight;
-        const size = game.cat.size;
+        const y = game.cat.y;
+        const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow
         ctx.save();
@@ -845,20 +743,23 @@
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position and scale cat properly for transparent PNG
-            const catWidth = size * 1.2;  // Slightly larger for visibility
-            const catHeight = size * 1.2;
+            // Maintain original aspect ratio - do not resize or distort
+            const imgWidth = game.images.cat.naturalWidth;
+            const imgHeight = game.images.cat.naturalHeight;
+            const aspectRatio = imgWidth / imgHeight;
 
-            // Add subtle bounce animation when moving
-            const bounce = game.cat.isMoving ? Math.sin(game.cat.animationFrame * 2) * 2 : 0;
+            // Scale based on size while maintaining aspect ratio
+            const scaleFactor = size / Math.max(imgWidth, imgHeight);
+            const catWidth = imgWidth * scaleFactor;
+            const catHeight = imgHeight * scaleFactor;
 
             // Flip cat based on direction
             if (game.cat.direction === -1) {
-                ctx.translate(x, y - catHeight / 2 + bounce);
+                ctx.translate(x, y - catHeight / 2);
                 ctx.scale(-1, 1);
                 ctx.drawImage(game.images.cat, -catWidth / 2, 0, catWidth, catHeight);
             } else {
-                ctx.translate(x - catWidth / 2, y - catHeight / 2 + bounce);
+                ctx.translate(x - catWidth / 2, y - catHeight / 2);
                 ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
             }
 
@@ -939,7 +840,7 @@
         const ctx = game.ctx;
         const x = game.cat.x;
         const y = game.cat.y;
-        const size = game.cat.size;
+        const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow (wider for lying position)
         ctx.save();
@@ -953,13 +854,17 @@
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position for lying cat (wider, flatter)
-            const catWidth = size * 1.5;
-            const catHeight = size * 0.8;
+            // Maintain original aspect ratio - do not resize or distort
+            const imgWidth = game.images.cat.naturalWidth;
+            const imgHeight = game.images.cat.naturalHeight;
+
+            // Scale based on size while maintaining aspect ratio
+            const scaleFactor = size / Math.max(imgWidth, imgHeight);
+            const catWidth = imgWidth * scaleFactor;
+            const catHeight = imgHeight * scaleFactor;
 
             ctx.translate(x, y);
-            ctx.rotate(Math.PI / 16); // Slight tilt
-            ctx.scale(1, 0.7); // Squash for lying effect
+            ctx.rotate(Math.PI / 16); // Slight tilt for lying effect
             ctx.drawImage(game.images.cat, -catWidth / 2, -catHeight / 2, catWidth, catHeight);
 
             ctx.restore();
@@ -1338,8 +1243,13 @@
 
         // Award points to main game
         game.points += wandGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(wandGame.score);
+
+        savePoints();
         updatePointsDisplay();
-        showMessage(`Earned ${wandGame.score} points from Wand Game!`);
+        showMessage(`Earned ${wandGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         // Show game over message
         setTimeout(() => {
@@ -1427,7 +1337,9 @@
         balls: [],
         animationId: null,
         spawnInterval: null,
-        difficulty: 1
+        difficulty: 1,
+        yarnImages: [],
+        imagesLoaded: false
     };
 
     function initYarnGame() {
@@ -1443,6 +1355,10 @@
 
         yarnGame.canvas = yarnCanvas;
         yarnGame.ctx = yarnCanvas.getContext('2d');
+
+        // Load yarn ball images immediately when initializing
+        console.log('Initializing Yarn Ball game and preloading images...');
+        loadYarnBallImages();
 
         // Open game modal
         yarnGameBtn.addEventListener('click', () => {
@@ -1465,31 +1381,85 @@
             }
         });
 
-        // Start game
-        yarnGameStart.addEventListener('click', startYarnGame);
+        // Start game - only allow if images are loaded
+        yarnGameStart.addEventListener('click', () => {
+            if (!yarnGame.imagesLoaded) {
+                console.warn('Yarn ball images still loading, please wait...');
+                alert('Loading yarn ball images, please wait a moment and try again!');
+                return;
+            }
+            startYarnGame();
+        });
 
         // Click on canvas
         yarnCanvas.addEventListener('click', handleYarnClick);
     }
 
+    function loadYarnBallImages() {
+        // Use local yarn ball images with different colors
+        const yarnImageURLs = [
+            '/static/images/yarn_ball_pink.png',
+            '/static/images/yarn_ball_blue.png',
+            '/static/images/yarn_ball_purple.png',
+            '/static/images/yarn_ball_orange.png',
+            '/static/images/yarn_ball_green.png',
+            '/static/images/yarn_ball_yellow.png'
+        ];
+
+        console.log('Loading yarn ball images...');
+        let loadedCount = 0;
+        yarnImageURLs.forEach((url, index) => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                console.log(`Yarn ball image ${index} loaded successfully:`, url, img.naturalWidth, 'x', img.naturalHeight);
+                if (loadedCount === yarnImageURLs.length) {
+                    yarnGame.imagesLoaded = true;
+                    console.log('✓ All', yarnImageURLs.length, 'yarn ball images loaded successfully!');
+                    console.log('✓ Yarn ball images ready to use!');
+                }
+            };
+            img.onerror = (e) => {
+                console.error(`Yarn image ${index} failed to load:`, url, e);
+                loadedCount++;
+                if (loadedCount === yarnImageURLs.length) {
+                    yarnGame.imagesLoaded = true;
+                }
+            };
+            console.log('Starting to load yarn image:', url);
+            img.src = url;
+            yarnGame.yarnImages.push(img);
+        });
+    }
+
     function startYarnGame() {
         yarnGame.isPlaying = true;
         yarnGame.score = 0;
-        yarnGame.lives = 3;
+        yarnGame.lives = 5;
         yarnGame.balls = [];
         yarnGame.difficulty = 1;
+        yarnGame._fallbackLogged = false; // Reset debug flag
 
-        document.getElementById('yarnScore').textContent = '0';
-        document.getElementById('yarnLives').textContent = '3';
+        console.log('Starting Yarn Ball game. Images loaded:', yarnGame.imagesLoaded, 'Image count:', yarnGame.yarnImages.length);
+
+        document.getElementById('yarnScore').textContent = '0.0';
+        document.getElementById('yarnLives').textContent = '5';
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn balls periodically - start slower
+        // Spawn 5 balls immediately for instant action at faster intervals
+        spawnYarnBall();
+        setTimeout(() => spawnYarnBall(), 200);
+        setTimeout(() => spawnYarnBall(), 400);
+        setTimeout(() => spawnYarnBall(), 600);
+        setTimeout(() => spawnYarnBall(), 800);
+
+        // Spawn balls periodically - very fast spawn rate to keep many balls on screen
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 2500); // Start with slower spawn rate
+        }, 500); // Very fast spawn rate (0.5 seconds) to maintain lots of balls
 
         // Start game loop
         yarnGameLoop();
@@ -1501,37 +1471,55 @@
 
         // Choose random spawn direction
         const spawnType = Math.random();
+        const imageIndex = Math.floor(Math.random() * yarnGame.yarnImages.length);
         let ball = {
-            radius: 20 + Math.random() * 10,
+            radius: 25 + Math.random() * 10, // Slightly larger for visibility
             color: colors[Math.floor(Math.random() * colors.length)],
-            rotation: 0,
-            rotationSpeed: (Math.random() - 0.5) * 0.2
+            rotation: Math.random() * Math.PI * 2, // Start at random rotation
+            rotationSpeed: 0, // Will be calculated based on movement speed
+            imageIndex: imageIndex
         };
 
-        // Much slower initial speed with gradual difficulty increase
-        const baseSpeed = 0.3 + Math.random() * 0.3; // Start very slow: 0.3-0.6
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.12; // Gradual 12% increase per level
+        // Very fast speed with gradual difficulty increase
+        const baseSpeed = 2.0 + Math.random() * 1.0; // Start at very fast speed: 2.0-3.0
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
-        if (spawnType < 0.5) {
-            // Spawn from top (50% chance)
-            ball.x = Math.random() * (canvas.width - 60) + 30;
+        // Spawn from any edge with random angle across the screen
+        if (spawnType < 0.25) {
+            // Spawn from top - roll diagonally down
+            ball.x = Math.random() * canvas.width;
             ball.y = -ball.radius;
-            ball.vy = speed;
-            ball.vx = (Math.random() - 0.5) * 1; // Reduced horizontal movement
+            const angle = (Math.random() * 120 + 30) * Math.PI / 180; // 30-150 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
+        } else if (spawnType < 0.5) {
+            // Spawn from bottom - roll diagonally up
+            ball.x = Math.random() * canvas.width;
+            ball.y = canvas.height + ball.radius;
+            const angle = (Math.random() * 120 + 210) * Math.PI / 180; // 210-330 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
         } else if (spawnType < 0.75) {
-            // Spawn from left (25% chance)
+            // Spawn from left - roll right
             ball.x = -ball.radius;
-            ball.y = Math.random() * (canvas.height * 0.3);
-            ball.vx = speed * 0.8; // Slower horizontal movement
-            ball.vy = speed * 0.4; // Slower downward movement
+            ball.y = Math.random() * canvas.height;
+            const angle = (Math.random() * 120 - 60) * Math.PI / 180; // -60 to 60 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
         } else {
-            // Spawn from right (25% chance)
+            // Spawn from right - roll left
             ball.x = canvas.width + ball.radius;
-            ball.y = Math.random() * (canvas.height * 0.3);
-            ball.vx = -speed * 0.8; // Slower horizontal movement
-            ball.vy = speed * 0.4; // Slower downward movement
+            ball.y = Math.random() * canvas.height;
+            const angle = (Math.random() * 120 + 120) * Math.PI / 180; // 120-240 degrees
+            ball.vx = Math.cos(angle) * speed;
+            ball.vy = Math.sin(angle) * speed;
         }
+
+        // Calculate rotation speed based on linear velocity
+        // The yarn ball should rotate realistically as it rolls
+        const velocity = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+        ball.rotationSpeed = velocity / ball.radius * 0.8; // Realistic rolling physics
 
         yarnGame.balls.push(ball);
     }
@@ -1540,20 +1528,34 @@
         if (!yarnGame.isPlaying) return;
 
         const rect = yarnGame.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        // Account for canvas scaling
+        const scaleX = yarnGame.canvas.width / rect.width;
+        const scaleY = yarnGame.canvas.height / rect.height;
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+
+        console.log('Click at:', x, y, 'Balls:', yarnGame.balls.length);
 
         // Check if clicked on any ball
         for (let i = yarnGame.balls.length - 1; i >= 0; i--) {
             const ball = yarnGame.balls[i];
             const dist = Math.sqrt(Math.pow(x - ball.x, 2) + Math.pow(y - ball.y, 2));
 
-            if (dist < ball.radius) {
-                // Hit! Bat it away
-                ball.vy = -8 - Math.random() * 4;
-                ball.vx = (x - ball.x) * 0.3;
-                yarnGame.score++;
-                document.getElementById('yarnScore').textContent = yarnGame.score;
+            // Use radius * 1.5 for more forgiving click detection since visual size is radius * 2
+            const clickRadius = ball.radius * 1.5;
+            console.log('Ball', i, 'at', ball.x, ball.y, 'dist:', dist, 'clickRadius:', clickRadius);
+
+            if (dist < clickRadius) {
+                // Hit! Make ball fly away with animation
+                console.log('Ball clicked!');
+                ball.flyingAway = true;
+                ball.flyVelocityX = (x - ball.x) * 0.3;
+                ball.flyVelocityY = -15 - Math.random() * 5; // Strong upward velocity
+                ball.opacity = 1;
+
+                // Add score and round immediately to avoid floating-point precision issues
+                yarnGame.score = Math.round((yarnGame.score + 0.2) * 10) / 10;
+                document.getElementById('yarnScore').textContent = yarnGame.score.toFixed(1);
 
                 // Increase difficulty gradually every 3 points
                 if (yarnGame.score % 3 === 0) {
@@ -1561,7 +1563,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(1000, 2500 - yarnGame.difficulty * 120);
+                        const newInterval = Math.max(300, 500 - yarnGame.difficulty * 30);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -1587,35 +1589,41 @@
         for (let i = yarnGame.balls.length - 1; i >= 0; i--) {
             const ball = yarnGame.balls[i];
 
-            // Update position
-            ball.x += ball.vx;
-            ball.y += ball.vy;
-            ball.vy += 0.3; // Gravity
-            ball.rotation += ball.rotationSpeed;
+            // Update position based on state
+            if (ball.flyingAway) {
+                // Flying away animation
+                ball.x += ball.flyVelocityX;
+                ball.y += ball.flyVelocityY;
+                ball.flyVelocityY += 0.5; // Gravity pulls it down eventually
+                ball.rotation += ball.rotationSpeed * 3; // Spin faster when flying
+                ball.opacity -= 0.02; // Fade out
 
-            // Bounce off walls
-            if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) {
-                ball.vx *= -0.8;
-                ball.x = Math.max(ball.radius, Math.min(canvas.width - ball.radius, ball.x));
-            }
-
-            // Remove if off-screen top
-            if (ball.y < -ball.radius * 2) {
-                yarnGame.balls.splice(i, 1);
-                continue;
-            }
-
-            // Check if reached bottom
-            if (ball.y > canvas.height - ball.radius && ball.vy > 0) {
-                yarnGame.balls.splice(i, 1);
-                yarnGame.lives--;
-                document.getElementById('yarnLives').textContent = yarnGame.lives;
-
-                if (yarnGame.lives <= 0) {
-                    endYarnGame();
-                    return;
+                // Remove when fully faded or far off screen
+                if (ball.opacity <= 0 || ball.y < -200 || ball.y > canvas.height + 200) {
+                    yarnGame.balls.splice(i, 1);
+                    continue;
                 }
-                continue;
+            } else {
+                // Normal rolling
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                // No gravity - balls maintain constant speed
+                ball.rotation += ball.rotationSpeed;
+
+                // Remove if off-screen in any direction (with margin for complete disappearance)
+                const margin = ball.radius * 3;
+                if (ball.x < -margin || ball.x > canvas.width + margin ||
+                    ball.y < -margin || ball.y > canvas.height + margin) {
+                    yarnGame.balls.splice(i, 1);
+                    yarnGame.lives--;
+                    document.getElementById('yarnLives').textContent = yarnGame.lives;
+
+                    if (yarnGame.lives <= 0) {
+                        endYarnGame();
+                        return;
+                    }
+                    continue;
+                }
             }
 
             // Draw yarn ball
@@ -1623,20 +1631,47 @@
             ctx.translate(ball.x, ball.y);
             ctx.rotate(ball.rotation);
 
-            // Draw ball
-            ctx.fillStyle = ball.color;
-            ctx.beginPath();
-            ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
-            ctx.fill();
+            // Apply opacity for flying away animation
+            if (ball.flyingAway && ball.opacity !== undefined) {
+                ctx.globalAlpha = ball.opacity;
+            }
 
-            // Draw yarn texture
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            ctx.lineWidth = 2;
-            for (let j = 0; j < 3; j++) {
-                const angle = j * Math.PI / 3;
+            // Use realistic yarn ball image if loaded, otherwise use fallback
+            const yarnImg = yarnGame.yarnImages[ball.imageIndex];
+            if (yarnGame.imagesLoaded && yarnImg && yarnImg.complete && yarnImg.naturalWidth > 0) {
+                // Draw realistic yarn ball image
+                const size = ball.radius * 2;
+                ctx.drawImage(yarnImg, -size / 2, -size / 2, size, size);
+            } else {
+                // Fallback: Draw simple ball with yarn texture
+                // Debug: log why we're using fallback (only log once per condition)
+                if (!yarnGame._fallbackLogged) {
+                    if (!yarnGame.imagesLoaded) {
+                        console.warn('Using fallback: yarn images not loaded yet. imagesLoaded =', yarnGame.imagesLoaded);
+                    } else if (!yarnImg) {
+                        console.warn('Using fallback: yarnImg is null/undefined for index', ball.imageIndex);
+                    } else if (!yarnImg.complete) {
+                        console.warn('Using fallback: yarnImg not complete');
+                    } else if (yarnImg.naturalWidth === 0) {
+                        console.warn('Using fallback: yarnImg has zero width');
+                    }
+                    yarnGame._fallbackLogged = true;
+                }
+
+                ctx.fillStyle = ball.color;
                 ctx.beginPath();
-                ctx.arc(0, 0, ball.radius * 0.7, angle, angle + Math.PI);
-                ctx.stroke();
+                ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw yarn texture
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 2;
+                for (let j = 0; j < 3; j++) {
+                    const angle = j * Math.PI / 3;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, ball.radius * 0.7, angle, angle + Math.PI);
+                    ctx.stroke();
+                }
             }
 
             ctx.restore();
@@ -1658,17 +1693,25 @@
         document.getElementById('yarnGameStart').disabled = false;
         document.getElementById('yarnGameStart').textContent = 'Play Again';
 
-        saveYarnScore(yarnGame.score);
+        // Ensure score is rounded before saving and displaying
+        const finalScore = Math.round(yarnGame.score * 10) / 10;
+
+        saveYarnScore(finalScore);
         loadYarnLeaderboard();
         updateYarnBestScore();
 
         // Award points to main game
         game.points += yarnGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(yarnGame.score);
+
+        savePoints();
         updatePointsDisplay();
-        showMessage(`Earned ${yarnGame.score} points from Yarn Ball Bounce!`);
+        showMessage(`Earned ${yarnGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         setTimeout(() => {
-            alert(`Game Over! Your score: ${yarnGame.score}`);
+            alert(`Game Over! Your score: ${finalScore.toFixed(1)}`);
         }, 100);
     }
 
@@ -1815,6 +1858,7 @@
         // Start with 4 random sounds
         melodyGame.pattern = Array.from({ length: 4 }, () => Math.floor(Math.random() * 4));
         melodyGame.playerPattern = [];
+        melodyGame.currentStep = 0;
 
         document.getElementById('melodyRound').textContent = '1';
         document.getElementById('melodyScore').textContent = '0';
@@ -1934,8 +1978,13 @@
 
         // Award points to main game
         game.points += melodyGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(melodyGame.score);
+
+        savePoints();
         updatePointsDisplay();
-        showMessage(`Earned ${melodyGame.score} points from Meow Melody!`);
+        showMessage(`Earned ${melodyGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         setTimeout(() => {
             const message = completed ?
