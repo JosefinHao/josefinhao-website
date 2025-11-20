@@ -1229,11 +1229,15 @@
             // Range: -70 to +70 degrees for good coverage of game area
             const randomAngle = -70 + Math.random() * 140;
 
-            // Apply rotation transform while keeping the wand centered
-            // The transform-origin is set to the base in CSS, so rotation pivots from top
+            // IMPORTANT: Set transform FIRST, then display
+            // This prevents the wand from briefly appearing at center before rotating
             wand.style.transform = `translate(-50%, 0) rotate(${randomAngle}deg)`;
-            wand.style.display = 'block';
-            wandGame.wandVisible = true;
+
+            // Use requestAnimationFrame to ensure transform is applied before showing
+            requestAnimationFrame(() => {
+                wand.style.display = 'block';
+                wandGame.wandVisible = true;
+            });
 
             // Hide wand after a reasonable time (starts at 2000-2800ms, gets shorter)
             // Wands stay visible longer at the beginning for easier gameplay
