@@ -1476,7 +1476,7 @@
                 ball.opacity = 1;
 
                 // Add score and round immediately to avoid floating-point precision issues
-                yarnGame.score = Math.round((yarnGame.score + 0.2) * 10) / 10;
+                yarnGame.score = Math.round((yarnGame.score + 0.5) * 10) / 10;
                 document.getElementById('yarnScore').textContent = yarnGame.score.toFixed(1);
 
                 // Increase difficulty gradually every 3 points
