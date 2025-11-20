@@ -3367,30 +3367,32 @@ body.dark-theme .floating-formula {
     position: relative;
     width: 100%;
     min-height: 600px;
+    background-image: url('/static/images/cat_cafe.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
 }
 
 .cat-cafe-intro {
     text-align: center;
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 12px;
     backdrop-filter: blur(10px);
 }
 
 .cat-cafe-intro h1 {
     font-size: 2.5rem;
-    color: #2c3e50;
+    color: #f0e6d2;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .cat-cafe-intro p {
-    color: #5f7c8a;
+    color: #e8d5c4;
     font-size: 1.1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Food Bowl Container (Left Side) */
@@ -3401,47 +3403,47 @@ body.dark-theme .floating-formula {
     z-index: 100;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    align-items: stretch;
+    gap: 12px;
+    width: 100px;
 }
 
 .food-bowl-btn {
-    width: 56px;
-    height: 56px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 152, 0, 0.6);
-    border-radius: 50%;
+    width: 100px;
+    height: 80px;
+    background: transparent;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
     transition: all 0.3s ease;
-    color: #ff9800;
+    font-size: 50px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .food-bowl-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
-    background: rgba(255, 255, 255, 1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
 }
 
 .food-bowl-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
 }
 
 .points-display {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(102, 126, 234, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
+    justify-content: center;
+    width: 100px;
+    height: 80px;
 }
 
 .points-label {
@@ -3453,7 +3455,7 @@ body.dark-theme .floating-formula {
 }
 
 .points-value {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #667eea;
 }
@@ -3461,15 +3463,16 @@ body.dark-theme .floating-formula {
 .size-display {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(255, 158, 128, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
-    margin-top: 8px;
+    justify-content: center;
+    width: 100px;
+    height: 80px;
 }
 
 .size-label {
@@ -3481,7 +3484,7 @@ body.dark-theme .floating-formula {
 }
 
 .size-value {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #ff9e80;
 }
@@ -3494,53 +3497,44 @@ body.dark-theme .floating-formula {
     z-index: 100;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 12px;
+    width: 100px;
 }
 
 .game-icon-btn {
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
+    width: 100px;
+    height: 80px;
+    background: transparent;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
+    font-size: 50px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .game-icon-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    background: rgba(255, 255, 255, 1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
 }
 
 .game-icon-btn:active {
-    transform: scale(0.95);
-}
-
-.game-icon-btn svg {
-    width: 24px;
-    height: 24px;
-}
-
-.wand-game-btn {
-    color: #ff9e80;
+    transform: scale(0.98);
 }
 
 .wand-game-btn:hover {
-    transform: scale(1.1) rotate(10deg);
+    transform: scale(1.1) rotate(5deg);
 }
 
-.yarn-game-btn {
-    color: #e91e63;
+.yarn-game-btn:hover {
+    transform: scale(1.1);
 }
 
-.melody-game-btn {
-    color: #9c27b0;
+.melody-game-btn:hover {
+    transform: scale(1.1);
 }
 
 /* Color Picker Icon */
@@ -4298,12 +4292,10 @@ body.dark-theme .floating-formula {
 #cat-cafe-canvas {
     width: 100%;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    background: #f5e6d3;
+    background: transparent;
     cursor: pointer;
     display: block;
     margin: 0 auto;
-    border: 3px solid rgba(255, 255, 255, 0.8);
 }
 
 /* Message Display */
