@@ -731,14 +731,6 @@
         const y = game.cat.y;
         const size = game.cat.size * game.catSize; // Scale cat by catSize
 
-        // Realistic shadow
-        ctx.save();
-        ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
-        ctx.beginPath();
-        ctx.ellipse(game.cat.x, game.cat.y + 8, size / 2.2, size / 10, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
         // Draw cat image
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
@@ -841,14 +833,6 @@
         const x = game.cat.x;
         const y = game.cat.y;
         const size = game.cat.size * game.catSize; // Scale cat by catSize
-
-        // Realistic shadow (wider for lying position)
-        ctx.save();
-        ctx.fillStyle = 'rgba(101, 67, 33, 0.25)';
-        ctx.beginPath();
-        ctx.ellipse(x, y + 12, size / 1.3, size / 10, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
 
         // Draw cat image lying down
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
