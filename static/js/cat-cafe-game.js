@@ -374,12 +374,6 @@
             // Update cat position while dragging
             game.cat.x = x - game.dragOffset.x;
             game.cat.y = y - game.dragOffset.y;
-
-            // Keep cat within canvas bounds
-            const catSize = game.cat.size * game.catSize;
-            const catRadius = catSize / 2;
-            game.cat.x = Math.max(catRadius, Math.min(game.width - catRadius, game.cat.x));
-            game.cat.y = Math.max(catRadius, Math.min(game.height - catRadius, game.cat.y));
         } else {
             // Change cursor when hovering over cat
             if (isCursorOverCat(x, y)) {
@@ -427,12 +421,6 @@
             // Update cat position while dragging
             game.cat.x = x - game.dragOffset.x;
             game.cat.y = y - game.dragOffset.y;
-
-            // Keep cat within canvas bounds
-            const catSize = game.cat.size * game.catSize;
-            const catRadius = catSize / 2;
-            game.cat.x = Math.max(catRadius, Math.min(game.width - catRadius, game.cat.x));
-            game.cat.y = Math.max(catRadius, Math.min(game.height - catRadius, game.cat.y));
         }
     }
 
