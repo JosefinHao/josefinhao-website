@@ -1357,7 +1357,7 @@
     function startYarnGame() {
         yarnGame.isPlaying = true;
         yarnGame.score = 0;
-        yarnGame.lives = 3;
+        yarnGame.lives = 5;
         yarnGame.balls = [];
         yarnGame.difficulty = 1;
         yarnGame._fallbackLogged = false; // Reset debug flag
@@ -1365,7 +1365,7 @@
         console.log('Starting Yarn Ball game. Images loaded:', yarnGame.imagesLoaded, 'Image count:', yarnGame.yarnImages.length);
 
         document.getElementById('yarnScore').textContent = '0.0';
-        document.getElementById('yarnLives').textContent = '3';
+        document.getElementById('yarnLives').textContent = '5';
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
@@ -1376,12 +1376,12 @@
         setTimeout(() => spawnYarnBall(), 600);
         setTimeout(() => spawnYarnBall(), 800);
 
-        // Spawn balls periodically - fast spawn rate to keep many balls on screen
+        // Spawn balls periodically - very fast spawn rate to keep many balls on screen
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 800); // Fast spawn rate (0.8 seconds) to maintain many balls
+        }, 500); // Very fast spawn rate (0.5 seconds) to maintain lots of balls
 
         // Start game loop
         yarnGameLoop();
@@ -1402,8 +1402,8 @@
             imageIndex: imageIndex
         };
 
-        // Fast speed with gradual difficulty increase
-        const baseSpeed = 1.0 + Math.random() * 0.5; // Start at fast speed: 1.0-1.5
+        // Very fast speed with gradual difficulty increase
+        const baseSpeed = 2.0 + Math.random() * 1.0; // Start at very fast speed: 2.0-3.0
         const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
@@ -1485,7 +1485,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(400, 800 - yarnGame.difficulty * 40);
+                        const newInterval = Math.max(300, 500 - yarnGame.difficulty * 30);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
