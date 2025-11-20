@@ -87,12 +87,16 @@
 
         // Load background image
         game.images.background = new Image();
-        game.images.background.onload = imageLoaded;
-        game.images.background.onerror = () => {
-            console.log('Background image failed to load, using fallback');
+        game.images.background.onload = () => {
+            console.log('Cat cafe background image loaded successfully:', game.images.background.naturalWidth, 'x', game.images.background.naturalHeight);
+            imageLoaded();
+        };
+        game.images.background.onerror = (e) => {
+            console.error('Background image failed to load:', e);
             imageLoaded();
         };
         game.images.background.src = '/static/images/cat_cafe.png';
+        console.log('Loading cat cafe background from:', game.images.background.src);
 
         // Load cat image - local custom cat PNG
         game.images.cat = new Image();
@@ -355,6 +359,13 @@
             ctx.drawImage(game.images.background, 0, 0, game.width, game.height);
         } else {
             // Fallback: Draw gradient background
+            if (!game.images.background) {
+                console.warn('Background image not loaded yet');
+            } else if (!game.images.background.complete) {
+                console.warn('Background image not complete');
+            } else if (game.images.background.naturalWidth === 0) {
+                console.warn('Background image has zero width');
+            }
             const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
             bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
             bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
@@ -1309,23 +1320,26 @@
             '/static/images/yarn_ball_yellow.png'
         ];
 
+        console.log('Loading yarn ball images...');
         let loadedCount = 0;
         yarnImageURLs.forEach((url, index) => {
             const img = new Image();
             img.onload = () => {
                 loadedCount++;
+                console.log(`Yarn ball image ${index} loaded successfully:`, url, img.naturalWidth, 'x', img.naturalHeight);
                 if (loadedCount === yarnImageURLs.length) {
                     yarnGame.imagesLoaded = true;
-                    console.log('All yarn ball images loaded');
+                    console.log('All', yarnImageURLs.length, 'yarn ball images loaded successfully!');
                 }
             };
-            img.onerror = () => {
-                console.log(`Yarn image ${index} failed to load, will use fallback`);
+            img.onerror = (e) => {
+                console.error(`Yarn image ${index} failed to load:`, url, e);
                 loadedCount++;
                 if (loadedCount === yarnImageURLs.length) {
                     yarnGame.imagesLoaded = true;
                 }
             };
+            console.log('Starting to load yarn image:', url);
             img.src = url;
             yarnGame.yarnImages.push(img);
         });
@@ -1337,6 +1351,9 @@
         yarnGame.lives = 3;
         yarnGame.balls = [];
         yarnGame.difficulty = 1;
+        yarnGame._fallbackLogged = false; // Reset debug flag
+
+        console.log('Starting Yarn Ball game. Images loaded:', yarnGame.imagesLoaded, 'Image count:', yarnGame.yarnImages.length);
 
         document.getElementById('yarnScore').textContent = '0.0';
         document.getElementById('yarnLives').textContent = '3';
@@ -1540,6 +1557,20 @@
                 ctx.drawImage(yarnImg, -size / 2, -size / 2, size, size);
             } else {
                 // Fallback: Draw simple ball with yarn texture
+                // Debug: log why we're using fallback (only log once per condition)
+                if (!yarnGame._fallbackLogged) {
+                    if (!yarnGame.imagesLoaded) {
+                        console.warn('Using fallback: yarn images not loaded yet. imagesLoaded =', yarnGame.imagesLoaded);
+                    } else if (!yarnImg) {
+                        console.warn('Using fallback: yarnImg is null/undefined for index', ball.imageIndex);
+                    } else if (!yarnImg.complete) {
+                        console.warn('Using fallback: yarnImg not complete');
+                    } else if (yarnImg.naturalWidth === 0) {
+                        console.warn('Using fallback: yarnImg has zero width');
+                    }
+                    yarnGame._fallbackLogged = true;
+                }
+
                 ctx.fillStyle = ball.color;
                 ctx.beginPath();
                 ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
