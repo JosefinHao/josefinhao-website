@@ -1278,7 +1278,8 @@
         yarnGame.canvas = yarnCanvas;
         yarnGame.ctx = yarnCanvas.getContext('2d');
 
-        // Load yarn ball images
+        // Load yarn ball images immediately when initializing
+        console.log('Initializing Yarn Ball game and preloading images...');
         loadYarnBallImages();
 
         // Open game modal
@@ -1302,8 +1303,15 @@
             }
         });
 
-        // Start game
-        yarnGameStart.addEventListener('click', startYarnGame);
+        // Start game - only allow if images are loaded
+        yarnGameStart.addEventListener('click', () => {
+            if (!yarnGame.imagesLoaded) {
+                console.warn('Yarn ball images still loading, please wait...');
+                alert('Loading yarn ball images, please wait a moment and try again!');
+                return;
+            }
+            startYarnGame();
+        });
 
         // Click on canvas
         yarnCanvas.addEventListener('click', handleYarnClick);
@@ -1329,7 +1337,8 @@
                 console.log(`Yarn ball image ${index} loaded successfully:`, url, img.naturalWidth, 'x', img.naturalHeight);
                 if (loadedCount === yarnImageURLs.length) {
                     yarnGame.imagesLoaded = true;
-                    console.log('All', yarnImageURLs.length, 'yarn ball images loaded successfully!');
+                    console.log('✓ All', yarnImageURLs.length, 'yarn ball images loaded successfully!');
+                    console.log('✓ Yarn ball images ready to use!');
                 }
             };
             img.onerror = (e) => {
