@@ -18,6 +18,7 @@
         catEnergy: 100,
         isDraggingCat: false,
         dragOffset: { x: 0, y: 0 },
+        userIP: null, // User's IP address for separating game state
         cat: {
             x: 0,
             y: 0,
@@ -50,17 +51,33 @@
         console.log('Cat Cafe cleaned up');
     }
 
-    function saveCatSize() {
+    async function getUserIP() {
         try {
-            localStorage.setItem('catCafeSize', game.catSize.toString());
+            const response = await fetch('/api/user-ip');
+            const data = await response.json();
+            game.userIP = data.ip || 'unknown';
+            console.log('User IP:', game.userIP);
+        } catch (e) {
+            console.error('Failed to fetch user IP:', e);
+            game.userIP = 'unknown';
+        }
+    }
+
+    function saveCatSize() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafeSize_${game.userIP}`;
+            localStorage.setItem(key, game.catSize.toString());
         } catch (e) {
             console.error('Failed to save cat size:', e);
         }
     }
 
     function loadCatSize() {
+        if (!game.userIP) return;
         try {
-            const savedSize = localStorage.getItem('catCafeSize');
+            const key = `catCafeSize_${game.userIP}`;
+            const savedSize = localStorage.getItem(key);
             if (savedSize) {
                 game.catSize = parseFloat(savedSize);
                 // Ensure cat size is at least 1
@@ -71,6 +88,33 @@
         } catch (e) {
             console.error('Failed to load cat size:', e);
             game.catSize = 1;
+        }
+    }
+
+    function savePoints() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafePoints_${game.userIP}`;
+            localStorage.setItem(key, game.points.toString());
+        } catch (e) {
+            console.error('Failed to save points:', e);
+        }
+    }
+
+    function loadPoints() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafePoints_${game.userIP}`;
+            const savedPoints = localStorage.getItem(key);
+            if (savedPoints) {
+                game.points = parseInt(savedPoints, 10);
+                if (game.points < 0 || isNaN(game.points)) {
+                    game.points = 0;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load points:', e);
+            game.points = 0;
         }
     }
 
@@ -143,7 +187,7 @@
         game.images.toy.src = 'data:image/png;base64,invalid';
     }
 
-    function init() {
+    async function init() {
         console.log('Cat Cafe 2D game initializing...');
 
         if (game.initialized) {
@@ -160,8 +204,12 @@
         game.canvas = canvas;
         game.ctx = canvas.getContext('2d');
 
-        // Load saved cat size
+        // Fetch user IP first to enable per-user storage
+        await getUserIP();
+
+        // Load saved cat size and points for this user
         loadCatSize();
+        loadPoints();
 
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -248,6 +296,7 @@
             // Increase cat size by 1 (10 points × 0.1 per point)
             game.catSize += 1;
             saveCatSize();
+            savePoints();
 
             updatePointsDisplay();
             updateCatSizeDisplay();
@@ -1251,6 +1300,7 @@
         // Exercise cat - reduce size based on score
         exerciseCat(wandGame.score);
 
+        savePoints();
         updatePointsDisplay();
         showMessage(`Earned ${wandGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
@@ -1709,6 +1759,7 @@
         // Exercise cat - reduce size based on score
         exerciseCat(yarnGame.score);
 
+        savePoints();
         updatePointsDisplay();
         showMessage(`Earned ${yarnGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
@@ -1984,6 +2035,7 @@
         // Exercise cat - reduce size based on score
         exerciseCat(melodyGame.score);
 
+        savePoints();
         updatePointsDisplay();
         showMessage(`Earned ${melodyGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
