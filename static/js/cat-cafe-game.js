@@ -16,6 +16,8 @@
         catSize: 1, // Logical cat size (starts at 1, increases with feeding, decreases with exercise)
         catHunger: 100,
         catEnergy: 100,
+        isDraggingCat: false,
+        dragOffset: { x: 0, y: 0 },
         cat: {
             x: 0,
             y: 0,
@@ -288,29 +290,101 @@
         }
     }
 
+    function isCursorOverCat(x, y) {
+        const catSize = game.cat.size * game.catSize;
+        const catRadius = catSize / 2;
+        const dx = x - game.cat.x;
+        const dy = y - game.cat.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance <= catRadius * 1.2; // Give a bit of extra clickable area
+    }
+
     function handlePointerDown(e) {
-        // Play meow sound when canvas is clicked
-        playMeowSound();
+        const rect = game.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (isCursorOverCat(x, y)) {
+            // Start dragging the cat
+            game.isDraggingCat = true;
+            game.dragOffset.x = x - game.cat.x;
+            game.dragOffset.y = y - game.cat.y;
+            game.canvas.style.cursor = 'grabbing';
+
+            // Play meow sound when picking up the cat
+            playMeowSound();
+        }
     }
 
     function handlePointerMove(e) {
-        // No longer needed for movement or dragging
-        game.canvas.style.cursor = 'pointer';
+        const rect = game.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (game.isDraggingCat) {
+            // Update cat position while dragging
+            game.cat.x = x - game.dragOffset.x;
+            game.cat.y = y - game.dragOffset.y;
+
+            // Keep cat within canvas bounds
+            const catSize = game.cat.size * game.catSize;
+            const catRadius = catSize / 2;
+            game.cat.x = Math.max(catRadius, Math.min(game.width - catRadius, game.cat.x));
+            game.cat.y = Math.max(catRadius, Math.min(game.height - catRadius, game.cat.y));
+        } else {
+            // Change cursor when hovering over cat
+            if (isCursorOverCat(x, y)) {
+                game.canvas.style.cursor = 'grab';
+            } else {
+                game.canvas.style.cursor = 'default';
+            }
+        }
     }
 
     function handlePointerUp() {
-        // No longer needed for movement or dragging
+        if (game.isDraggingCat) {
+            game.isDraggingCat = false;
+            game.canvas.style.cursor = 'grab';
+        }
     }
 
     function handleTouchStart(e) {
         e.preventDefault();
-        // Play meow sound when canvas is touched
-        playMeowSound();
+        const touch = e.touches[0];
+        const rect = game.canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        if (isCursorOverCat(x, y)) {
+            // Start dragging the cat
+            game.isDraggingCat = true;
+            game.dragOffset.x = x - game.cat.x;
+            game.dragOffset.y = y - game.cat.y;
+
+            // Play meow sound when picking up the cat
+            playMeowSound();
+        }
     }
 
     function handleTouchMove(e) {
         e.preventDefault();
-        // No longer needed for movement or dragging
+
+        if (game.isDraggingCat && e.touches.length > 0) {
+            const touch = e.touches[0];
+            const rect = game.canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            // Update cat position while dragging
+            game.cat.x = x - game.dragOffset.x;
+            game.cat.y = y - game.dragOffset.y;
+
+            // Keep cat within canvas bounds
+            const catSize = game.cat.size * game.catSize;
+            const catRadius = catSize / 2;
+            game.cat.x = Math.max(catRadius, Math.min(game.width - catRadius, game.cat.x));
+            game.cat.y = Math.max(catRadius, Math.min(game.height - catRadius, game.cat.y));
+        }
     }
 
     function update() {
@@ -339,8 +413,31 @@
     function drawCafeBackground(ctx) {
         // Use custom cat cafe background image if loaded
         if (game.images.background && game.images.background.complete && game.images.background.naturalWidth > 0) {
-            // Draw background image scaled to fit canvas
-            ctx.drawImage(game.images.background, 0, 0, game.width, game.height);
+            // Maintain original aspect ratio and crop from bottom
+            const img = game.images.background;
+            const imgAspect = img.naturalWidth / img.naturalHeight;
+            const canvasAspect = game.width / game.height;
+
+            let drawWidth, drawHeight, sx, sy, sWidth, sHeight;
+
+            // Scale to fit width, crop bottom if needed
+            drawWidth = game.width;
+            drawHeight = game.width / imgAspect;
+
+            // Source coordinates (crop from bottom if image is too tall)
+            sx = 0;
+            sy = 0;
+            sWidth = img.naturalWidth;
+            sHeight = img.naturalHeight;
+
+            if (drawHeight > game.height) {
+                // Image is taller than canvas, crop from bottom
+                const cropRatio = game.height / drawHeight;
+                sHeight = img.naturalHeight * cropRatio;
+                drawHeight = game.height;
+            }
+
+            ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, drawWidth, drawHeight);
         } else {
             // Fallback: Draw gradient background
             if (!game.images.background) {
