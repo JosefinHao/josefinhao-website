@@ -703,9 +703,15 @@
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position and scale cat properly for transparent PNG
-            const catWidth = size * 1.2;  // Slightly larger for visibility
-            const catHeight = size * 1.2;
+            // Maintain original aspect ratio - do not resize or distort
+            const imgWidth = game.images.cat.naturalWidth;
+            const imgHeight = game.images.cat.naturalHeight;
+            const aspectRatio = imgWidth / imgHeight;
+
+            // Scale based on size while maintaining aspect ratio
+            const scaleFactor = size / Math.max(imgWidth, imgHeight);
+            const catWidth = imgWidth * scaleFactor;
+            const catHeight = imgHeight * scaleFactor;
 
             // Flip cat based on direction
             if (game.cat.direction === -1) {
@@ -808,13 +814,17 @@
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position for lying cat (wider, flatter)
-            const catWidth = size * 1.5;
-            const catHeight = size * 0.8;
+            // Maintain original aspect ratio - do not resize or distort
+            const imgWidth = game.images.cat.naturalWidth;
+            const imgHeight = game.images.cat.naturalHeight;
+
+            // Scale based on size while maintaining aspect ratio
+            const scaleFactor = size / Math.max(imgWidth, imgHeight);
+            const catWidth = imgWidth * scaleFactor;
+            const catHeight = imgHeight * scaleFactor;
 
             ctx.translate(x, y);
-            ctx.rotate(Math.PI / 16); // Slight tilt
-            ctx.scale(1, 0.7); // Squash for lying effect
+            ctx.rotate(Math.PI / 16); // Slight tilt for lying effect
             ctx.drawImage(game.images.cat, -catWidth / 2, -catHeight / 2, catWidth, catHeight);
 
             ctx.restore();
@@ -1388,12 +1398,12 @@
         setTimeout(() => spawnYarnBall(), 600);
         setTimeout(() => spawnYarnBall(), 800);
 
-        // Spawn balls periodically - faster spawn rate
+        // Spawn balls periodically - fast spawn rate to keep many balls on screen
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 1200); // Even faster spawn rate (1.2 seconds)
+        }, 800); // Fast spawn rate (0.8 seconds) to maintain many balls
 
         // Start game loop
         yarnGameLoop();
@@ -1488,7 +1498,9 @@
                 ball.opacity = 1;
 
                 yarnGame.score += 0.2;
-                document.getElementById('yarnScore').textContent = yarnGame.score.toFixed(1);
+                // Round to avoid floating-point precision issues (e.g., 4.000000001)
+                const displayScore = Math.round(yarnGame.score * 10) / 10;
+                document.getElementById('yarnScore').textContent = displayScore.toFixed(1);
 
                 // Increase difficulty gradually every 3 points
                 if (yarnGame.score % 3 === 0) {
@@ -1496,7 +1508,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(600, 1200 - yarnGame.difficulty * 50);
+                        const newInterval = Math.max(400, 800 - yarnGame.difficulty * 40);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
