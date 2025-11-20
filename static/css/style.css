@@ -3393,6 +3393,11 @@ body.dark-theme .floating-formula {
     color: #E74C5C;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #E74C5C;
+    background-clip: unset;
+    animation: none;
 }
 
 .cat-cafe-intro p {
