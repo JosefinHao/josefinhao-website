@@ -3701,7 +3701,7 @@ body.dark-theme .floating-formula {
 
 .wand-game-area {
     position: relative;
-    height: 300px;
+    height: 260px;
     background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -3772,7 +3772,7 @@ body.dark-theme .floating-formula {
 
 .cat-paw {
     position: absolute;
-    bottom: 10px;
+    bottom: 0px;
     left: 50%;
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;
