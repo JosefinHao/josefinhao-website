@@ -4330,7 +4330,7 @@ body.dark-theme .floating-formula {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(102, 126, 234, 0.95);
+    background: rgba(102, 126, 234, 0.2);
     color: white;
     padding: 1rem 2rem;
     border-radius: 12px;
