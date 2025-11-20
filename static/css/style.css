@@ -3430,7 +3430,10 @@ body.dark-theme .floating-formula {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    font-size: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
