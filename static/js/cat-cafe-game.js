@@ -266,27 +266,11 @@
 
     function playMeowSound() {
         try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            // Create a meow-like sound with frequency modulation
-            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.1);
-            oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.15);
-            oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.25);
-
-            // Envelope for more natural sound
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-            oscillator.type = 'triangle';
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
+            // Use HTML5 Audio with a cat meow sound
+            // Using a free cat meow sound from freesound.org (Public Domain)
+            const audio = new Audio('https://freesound.org/data/previews/634/634537_12517018-lq.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log('Audio playback failed:', e));
         } catch (e) {
             console.log('Audio not supported:', e);
         }
