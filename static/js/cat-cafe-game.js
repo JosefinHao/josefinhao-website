@@ -197,46 +197,10 @@
     }
 
     function createCafeElements() {
+        // Clear all furniture and toys - keeping cafe simple
         game.catTrees = [];
         game.couches = [];
         game.toys = [];
-
-        // Create 2-3 cat trees
-        const numTrees = 2 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < numTrees; i++) {
-            game.catTrees.push({
-                x: 100 + (i * (game.width - 200) / numTrees),
-                y: 100 + Math.random() * (game.height - 200),
-                width: 80,
-                height: 120,
-                type: 'tree'
-            });
-        }
-
-        // Create 1-2 couches
-        const numCouches = 1 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < numCouches; i++) {
-            game.couches.push({
-                x: 120 + Math.random() * (game.width - 300),
-                y: game.height - 180 - Math.random() * 100,
-                width: 150,
-                height: 100,
-                type: 'couch'
-            });
-        }
-
-        // Create 3-5 cat toys
-        const numToys = 3 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < numToys; i++) {
-            const size = 30 + Math.random() * 20;
-            game.toys.push({
-                x: 80 + Math.random() * (game.width - 160),
-                y: 80 + Math.random() * (game.height - 160),
-                width: size,
-                height: size,
-                type: 'toy'
-            });
-        }
     }
 
     function setupEventListeners() {
