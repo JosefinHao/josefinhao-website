@@ -1179,7 +1179,7 @@ p {
 
 /* CrewAI - Warm Sunset with Subtle Glow */
 .flip-card-crewai .flip-card-front {
-    background: linear-gradient(135deg, #fff9f5 0%, #fff3eb 50%, #ffede0 100%);
+    background: linear-gradient(135deg, #fffcfa 0%, #fffaf5 50%, #fff8f2 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
@@ -1203,7 +1203,7 @@ p {
 }
 
 .flip-card-crewai .flip-card-back {
-    background: linear-gradient(135deg, #fff3eb 0%, #ffe9d9 50%, #ffede0 100%);
+    background: linear-gradient(135deg, #fffaf5 0%, #fff6ef 50%, #fff8f2 100%);
     border: 3px solid transparent;
     border-image: linear-gradient(135deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%) 1;
     background-clip: padding-box;
