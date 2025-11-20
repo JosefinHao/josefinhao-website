@@ -16,22 +16,11 @@
         catSize: 1, // Logical cat size (starts at 1, increases with feeding, decreases with exercise)
         catHunger: 100,
         catEnergy: 100,
-        isDragging: false,
-        draggedObject: null,
-        dragOffset: { x: 0, y: 0 },
         cat: {
             x: 0,
             y: 0,
-            targetX: 0,
-            targetY: 0,
             size: 80,
-            speed: 2,
-            isMoving: false,
-            moveType: 'walk',
             direction: 1,
-            animationFrame: 0,
-            jumpHeight: 0,
-            jumpProgress: 0,
             state: 'standing'
         },
         catTrees: [],
@@ -168,8 +157,6 @@
 
             game.cat.x = game.width / 2;
             game.cat.y = game.height / 2;
-            game.cat.targetX = game.cat.x;
-            game.cat.targetY = game.cat.y;
 
             game.initialized = true;
             gameLoop();
@@ -275,203 +262,62 @@
         updateCatSizeDisplay();
     }
 
-    function getObjectAtPosition(x, y) {
-        // Check cat trees
-        for (let tree of game.catTrees) {
-            if (x >= tree.x && x <= tree.x + tree.width &&
-                y >= tree.y && y <= tree.y + tree.height) {
-                return tree;
-            }
-        }
+    function playMeowSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
 
-        // Check couches
-        for (let couch of game.couches) {
-            if (x >= couch.x && x <= couch.x + couch.width &&
-                y >= couch.y && y <= couch.y + couch.height) {
-                return couch;
-            }
-        }
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
 
-        // Check toys
-        for (let toy of game.toys) {
-            if (x >= toy.x && x <= toy.x + toy.width &&
-                y >= toy.y && y <= toy.y + toy.height) {
-                return toy;
-            }
-        }
+            // Create a meow-like sound with frequency modulation
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.1);
+            oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.15);
+            oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.25);
 
-        return null;
+            // Envelope for more natural sound
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+            oscillator.type = 'triangle';
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch (e) {
+            console.log('Audio not supported:', e);
+        }
     }
 
     function handlePointerDown(e) {
-        const rect = game.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const obj = getObjectAtPosition(x, y);
-
-        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-            game.isDragging = true;
-            game.draggedObject = obj;
-            game.dragOffset = {
-                x: x - obj.x,
-                y: y - obj.y
-            };
-        } else {
-            const clickedCouch = getObjectAtPosition(x, y);
-            if (clickedCouch && clickedCouch.type === 'couch') {
-                handleCouchClick(clickedCouch, x, y);
-            } else {
-                moveCatTo(x, y);
-            }
-        }
+        // Play meow sound when canvas is clicked
+        playMeowSound();
     }
 
     function handlePointerMove(e) {
-        const rect = game.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        if (game.isDragging && game.draggedObject) {
-            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
-            game.canvas.style.cursor = 'grabbing';
-        } else {
-            const obj = getObjectAtPosition(x, y);
-            if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-                game.canvas.style.cursor = 'grab';
-            } else {
-                game.canvas.style.cursor = 'pointer';
-            }
-        }
+        // No longer needed for movement or dragging
+        game.canvas.style.cursor = 'pointer';
     }
 
     function handlePointerUp() {
-        if (game.isDragging) {
-            game.isDragging = false;
-            game.draggedObject = null;
-            game.canvas.style.cursor = 'pointer';
-        }
+        // No longer needed for movement or dragging
     }
 
     function handleTouchStart(e) {
         e.preventDefault();
-        const touch = e.touches[0];
-        const rect = game.canvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        const obj = getObjectAtPosition(x, y);
-
-        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-            game.isDragging = true;
-            game.draggedObject = obj;
-            game.dragOffset = {
-                x: x - obj.x,
-                y: y - obj.y
-            };
-        } else {
-            const clickedCouch = getObjectAtPosition(x, y);
-            if (clickedCouch && clickedCouch.type === 'couch') {
-                handleCouchClick(clickedCouch, x, y);
-            } else {
-                moveCatTo(x, y);
-            }
-        }
+        // Play meow sound when canvas is touched
+        playMeowSound();
     }
 
     function handleTouchMove(e) {
         e.preventDefault();
-        const touch = e.touches[0];
-        const rect = game.canvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        if (game.isDragging && game.draggedObject) {
-            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
-        }
-    }
-
-    function handleCouchClick(couch, clickX, clickY) {
-        const couchCenterX = couch.x + couch.width / 2;
-        const couchCenterY = couch.y + couch.height / 2;
-        moveCatToLie(couchCenterX, couchCenterY, 'ontop');
-    }
-
-    function moveCatTo(x, y) {
-        game.cat.targetX = Math.max(30, Math.min(game.width - 30, x));
-        game.cat.targetY = Math.max(30, Math.min(game.height - 30, y));
-        game.cat.isMoving = true;
-        game.cat.state = 'standing';
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        const rand = Math.random();
-        if (rand < 0.33) {
-            game.cat.moveType = 'walk';
-            game.cat.speed = 2;
-        } else if (rand < 0.66) {
-            game.cat.moveType = 'run';
-            game.cat.speed = 4;
-        } else {
-            game.cat.moveType = 'jump';
-            game.cat.speed = 3;
-            game.cat.jumpProgress = 0;
-        }
-    }
-
-    function moveCatToLie(x, y, lieType) {
-        game.cat.targetX = x;
-        game.cat.targetY = y;
-        game.cat.isMoving = true;
-        game.cat.lieType = lieType;
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        game.cat.moveType = 'walk';
-        game.cat.speed = 2;
+        // No longer needed for movement or dragging
     }
 
     function update() {
-        if (game.cat.isMoving) {
-            const dx = game.cat.targetX - game.cat.x;
-            const dy = game.cat.targetY - game.cat.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < game.cat.speed) {
-                game.cat.x = game.cat.targetX;
-                game.cat.y = game.cat.targetY;
-                game.cat.isMoving = false;
-                game.cat.jumpHeight = 0;
-
-                if (game.cat.lieType) {
-                    game.cat.state = 'lying';
-                    game.cat.lieType = null;
-                } else {
-                    game.cat.state = 'standing';
-                }
-            } else {
-                const angle = Math.atan2(dy, dx);
-                game.cat.x += Math.cos(angle) * game.cat.speed;
-                game.cat.y += Math.sin(angle) * game.cat.speed;
-
-                if (game.cat.moveType === 'jump') {
-                    game.cat.jumpProgress += 0.05;
-                    game.cat.jumpHeight = Math.sin(game.cat.jumpProgress * Math.PI) * 20;
-                }
-            }
-
-            game.cat.animationFrame += 0.2;
-        }
+        // Cat no longer moves - stays in standing state
+        game.cat.state = 'standing';
     }
 
     function render() {
@@ -842,7 +688,7 @@
     function drawCatStanding() {
         const ctx = game.ctx;
         const x = game.cat.x;
-        const y = game.cat.y - game.cat.jumpHeight;
+        const y = game.cat.y;
         const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow
@@ -861,16 +707,13 @@
             const catWidth = size * 1.2;  // Slightly larger for visibility
             const catHeight = size * 1.2;
 
-            // Add subtle bounce animation when moving
-            const bounce = game.cat.isMoving ? Math.sin(game.cat.animationFrame * 2) * 2 : 0;
-
             // Flip cat based on direction
             if (game.cat.direction === -1) {
-                ctx.translate(x, y - catHeight / 2 + bounce);
+                ctx.translate(x, y - catHeight / 2);
                 ctx.scale(-1, 1);
                 ctx.drawImage(game.images.cat, -catWidth / 2, 0, catWidth, catHeight);
             } else {
-                ctx.translate(x - catWidth / 2, y - catHeight / 2 + bounce);
+                ctx.translate(x - catWidth / 2, y - catHeight / 2);
                 ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
             }
 
