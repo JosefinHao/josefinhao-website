@@ -1535,6 +1535,10 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
+        // Spawn 2 balls immediately for instant action
+        spawnYarnBall();
+        setTimeout(() => spawnYarnBall(), 500);
+
         // Spawn balls periodically - start slower
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
@@ -1604,16 +1608,26 @@
         if (!yarnGame.isPlaying) return;
 
         const rect = yarnGame.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        // Account for canvas scaling
+        const scaleX = yarnGame.canvas.width / rect.width;
+        const scaleY = yarnGame.canvas.height / rect.height;
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+
+        console.log('Click at:', x, y, 'Balls:', yarnGame.balls.length);
 
         // Check if clicked on any ball
         for (let i = yarnGame.balls.length - 1; i >= 0; i--) {
             const ball = yarnGame.balls[i];
             const dist = Math.sqrt(Math.pow(x - ball.x, 2) + Math.pow(y - ball.y, 2));
 
-            if (dist < ball.radius) {
+            // Use radius * 1.5 for more forgiving click detection since visual size is radius * 2
+            const clickRadius = ball.radius * 1.5;
+            console.log('Ball', i, 'at', ball.x, ball.y, 'dist:', dist, 'clickRadius:', clickRadius);
+
+            if (dist < clickRadius) {
                 // Hit! Remove the ball
+                console.log('Ball clicked!');
                 yarnGame.balls.splice(i, 1);
                 yarnGame.score++;
                 document.getElementById('yarnScore').textContent = yarnGame.score;
