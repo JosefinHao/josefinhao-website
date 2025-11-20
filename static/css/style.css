@@ -1033,37 +1033,37 @@ p {
 
 @keyframes holographic-green {
     0% {
-        border-image-source: linear-gradient(0deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+        border-image-source: linear-gradient(0deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
     }
     25% {
-        border-image-source: linear-gradient(90deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+        border-image-source: linear-gradient(90deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
     }
     50% {
-        border-image-source: linear-gradient(180deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+        border-image-source: linear-gradient(180deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
     }
     75% {
-        border-image-source: linear-gradient(270deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+        border-image-source: linear-gradient(270deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
     }
     100% {
-        border-image-source: linear-gradient(360deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+        border-image-source: linear-gradient(360deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
     }
 }
 
 @keyframes holographic-orange {
     0% {
-        border-image-source: linear-gradient(0deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+        border-image-source: linear-gradient(0deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
     }
     25% {
-        border-image-source: linear-gradient(90deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+        border-image-source: linear-gradient(90deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
     }
     50% {
-        border-image-source: linear-gradient(180deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+        border-image-source: linear-gradient(180deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
     }
     75% {
-        border-image-source: linear-gradient(270deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+        border-image-source: linear-gradient(270deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
     }
     100% {
-        border-image-source: linear-gradient(360deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+        border-image-source: linear-gradient(360deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
     }
 }
 
@@ -1137,7 +1137,7 @@ p {
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%) 1;
+    border-image: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%) 1;
     background-clip: padding-box;
     animation: holographic-green 8s linear infinite;
     box-shadow:
@@ -1159,7 +1159,7 @@ p {
 .flip-card-openai .flip-card-back {
     background: linear-gradient(135deg, #e6f5ed 0%, #d9f0e3 50%, #ddf0e6 100%);
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%) 1;
+    border-image: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%) 1;
     background-clip: padding-box;
     animation: holographic-green 8s linear infinite;
     box-shadow:
@@ -1183,7 +1183,7 @@ p {
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%) 1;
+    border-image: linear-gradient(135deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%) 1;
     background-clip: padding-box;
     animation: holographic-orange 8s linear infinite;
     box-shadow:
@@ -1205,7 +1205,7 @@ p {
 .flip-card-crewai .flip-card-back {
     background: linear-gradient(135deg, #fff3eb 0%, #ffe9d9 50%, #ffede0 100%);
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%) 1;
+    border-image: linear-gradient(135deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%) 1;
     background-clip: padding-box;
     animation: holographic-orange 8s linear infinite;
     box-shadow:
