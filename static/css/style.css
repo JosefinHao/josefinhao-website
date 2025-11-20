@@ -3746,7 +3746,7 @@ body.dark-theme .floating-formula {
     height: 180px;
     background-image: url('../images/cat_paw_no_background.png');
     background-size: cover;
-    background-position: center top;
+    background-position: center bottom;
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     opacity: 0;
