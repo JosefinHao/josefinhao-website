@@ -1495,19 +1495,19 @@
     }
 
     function loadYarnBallImages() {
-        // Use realistic yarn ball images from pngimg.com with different colors
+        // Use local yarn ball images with different colors
         const yarnImageURLs = [
-            'https://pngimg.com/uploads/yarn/yarn_PNG108081.png', // Pink yarn
-            'https://pngimg.com/uploads/yarn/yarn_PNG108093.png', // Blue yarn
-            'https://pngimg.com/uploads/yarn/yarn_PNG108087.png', // Purple yarn
-            'https://pngimg.com/uploads/yarn/yarn_PNG108065.png', // Orange yarn
-            'https://pngimg.com/uploads/yarn/yarn_PNG108086.png'  // Green yarn
+            '/static/images/yarn_ball_pink.png',
+            '/static/images/yarn_ball_blue.png',
+            '/static/images/yarn_ball_purple.png',
+            '/static/images/yarn_ball_orange.png',
+            '/static/images/yarn_ball_green.png',
+            '/static/images/yarn_ball_yellow.png'
         ];
 
         let loadedCount = 0;
         yarnImageURLs.forEach((url, index) => {
             const img = new Image();
-            img.crossOrigin = 'anonymous';
             img.onload = () => {
                 loadedCount++;
                 if (loadedCount === yarnImageURLs.length) {
@@ -1539,16 +1539,17 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn 2 balls immediately for instant action
+        // Spawn 3 balls immediately for instant action
         spawnYarnBall();
-        setTimeout(() => spawnYarnBall(), 500);
+        setTimeout(() => spawnYarnBall(), 400);
+        setTimeout(() => spawnYarnBall(), 800);
 
-        // Spawn balls periodically - start slower
+        // Spawn balls periodically - faster spawn rate
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 3000); // Start with slower spawn rate (3 seconds)
+        }, 1800); // Faster spawn rate (1.8 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1564,14 +1565,14 @@
         let ball = {
             radius: 25 + Math.random() * 10, // Slightly larger for visibility
             color: colors[Math.floor(Math.random() * colors.length)],
-            rotation: 0,
-            rotationSpeed: (Math.random() - 0.5) * 0.2,
+            rotation: Math.random() * Math.PI * 2, // Start at random rotation
+            rotationSpeed: 0, // Will be calculated based on movement speed
             imageIndex: imageIndex
         };
 
-        // Moderate speed with gradual difficulty increase
-        const baseSpeed = 0.4 + Math.random() * 0.3; // Start at moderate speed: 0.4-0.7
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.1; // Gradual 10% increase per level
+        // Fast speed with gradual difficulty increase
+        const baseSpeed = 1.0 + Math.random() * 0.5; // Start at fast speed: 1.0-1.5
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         // Spawn from any edge with random angle across the screen
@@ -1604,6 +1605,11 @@
             ball.vx = Math.cos(angle) * speed;
             ball.vy = Math.sin(angle) * speed;
         }
+
+        // Calculate rotation speed based on linear velocity
+        // The yarn ball should rotate realistically as it rolls
+        const velocity = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+        ball.rotationSpeed = velocity / ball.radius * 0.8; // Realistic rolling physics
 
         yarnGame.balls.push(ball);
     }
@@ -1642,7 +1648,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(1200, 3000 - yarnGame.difficulty * 100);
+                        const newInterval = Math.max(800, 1800 - yarnGame.difficulty * 80);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
