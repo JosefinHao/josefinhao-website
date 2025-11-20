@@ -3869,7 +3869,7 @@ body.dark-theme .floating-formula {
 
 .cat-paw {
     position: absolute;
-    bottom: 0px;
+    bottom: -20px;
     left: 50%;
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;
