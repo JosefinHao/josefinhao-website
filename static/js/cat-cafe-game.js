@@ -1845,8 +1845,8 @@
         melodyGame.playerPattern = [];
         melodyGame.currentStep = 0;
 
-        // Add new random toy to pattern
-        melodyGame.pattern.push(Math.floor(Math.random() * 4));
+        // Generate completely new random pattern (length increases with round)
+        melodyGame.pattern = Array.from({ length: 3 + melodyGame.round }, () => Math.floor(Math.random() * 4));
 
         // Show pattern
         showPattern();
