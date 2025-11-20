@@ -13,24 +13,14 @@
         width: 0,
         height: 0,
         points: 0,
+        catSize: 1, // Logical cat size (starts at 1, increases with feeding, decreases with exercise)
         catHunger: 100,
         catEnergy: 100,
-        isDragging: false,
-        draggedObject: null,
-        dragOffset: { x: 0, y: 0 },
         cat: {
             x: 0,
             y: 0,
-            targetX: 0,
-            targetY: 0,
             size: 80,
-            speed: 2,
-            isMoving: false,
-            moveType: 'walk',
             direction: 1,
-            animationFrame: 0,
-            jumpHeight: 0,
-            jumpProgress: 0,
             state: 'standing'
         },
         catTrees: [],
@@ -56,6 +46,30 @@
         window.removeEventListener('resize', resizeCanvas);
         game.initialized = false;
         console.log('Cat Cafe cleaned up');
+    }
+
+    function saveCatSize() {
+        try {
+            localStorage.setItem('catCafeSize', game.catSize.toString());
+        } catch (e) {
+            console.error('Failed to save cat size:', e);
+        }
+    }
+
+    function loadCatSize() {
+        try {
+            const savedSize = localStorage.getItem('catCafeSize');
+            if (savedSize) {
+                game.catSize = parseFloat(savedSize);
+                // Ensure cat size is at least 1
+                if (game.catSize < 1) {
+                    game.catSize = 1;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load cat size:', e);
+            game.catSize = 1;
+        }
     }
 
     function loadImages(callback) {
@@ -140,6 +154,9 @@
         game.canvas = canvas;
         game.ctx = canvas.getContext('2d');
 
+        // Load saved cat size
+        loadCatSize();
+
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
@@ -150,8 +167,6 @@
 
             game.cat.x = game.width / 2;
             game.cat.y = game.height / 2;
-            game.cat.targetX = game.cat.x;
-            game.cat.targetY = game.cat.y;
 
             game.initialized = true;
             gameLoop();
@@ -177,46 +192,10 @@
     }
 
     function createCafeElements() {
+        // Clear all furniture and toys - keeping cafe simple
         game.catTrees = [];
         game.couches = [];
         game.toys = [];
-
-        // Create 2-3 cat trees
-        const numTrees = 2 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < numTrees; i++) {
-            game.catTrees.push({
-                x: 100 + (i * (game.width - 200) / numTrees),
-                y: 100 + Math.random() * (game.height - 200),
-                width: 80,
-                height: 120,
-                type: 'tree'
-            });
-        }
-
-        // Create 1-2 couches
-        const numCouches = 1 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < numCouches; i++) {
-            game.couches.push({
-                x: 120 + Math.random() * (game.width - 300),
-                y: game.height - 180 - Math.random() * 100,
-                width: 150,
-                height: 100,
-                type: 'couch'
-            });
-        }
-
-        // Create 3-5 cat toys
-        const numToys = 3 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < numToys; i++) {
-            const size = 30 + Math.random() * 20;
-            game.toys.push({
-                x: 80 + Math.random() * (game.width - 160),
-                y: 80 + Math.random() * (game.height - 160),
-                width: size,
-                height: size,
-                type: 'toy'
-            });
-        }
     }
 
     function setupEventListeners() {
@@ -235,8 +214,9 @@
             foodBowlBtn.addEventListener('click', feedCat);
         }
 
-        // Update points display
+        // Update points and cat size display
         updatePointsDisplay();
+        updateCatSizeDisplay();
     }
 
     function updatePointsDisplay() {
@@ -246,15 +226,28 @@
         }
     }
 
+    function updateCatSizeDisplay() {
+        const catSizeDisplay = document.getElementById('catSizeDisplay');
+        if (catSizeDisplay) {
+            catSizeDisplay.textContent = game.catSize.toFixed(1);
+        }
+    }
+
     function feedCat() {
         const FOOD_COST = 10;
         if (game.points >= FOOD_COST) {
             game.points -= FOOD_COST;
             game.catHunger = Math.min(100, game.catHunger + 30);
+
+            // Increase cat size by 1 (10 points × 0.1 per point)
+            game.catSize += 1;
+            saveCatSize();
+
             updatePointsDisplay();
+            updateCatSizeDisplay();
 
             // Show feeding animation or message
-            showMessage(`Fed the cat! Hunger: ${Math.floor(game.catHunger)}%`);
+            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)} | Hunger: ${Math.floor(game.catHunger)}%`);
         } else {
             showMessage(`Need ${FOOD_COST} points to feed the cat!`);
         }
@@ -271,203 +264,70 @@
         }
     }
 
-    function getObjectAtPosition(x, y) {
-        // Check cat trees
-        for (let tree of game.catTrees) {
-            if (x >= tree.x && x <= tree.x + tree.width &&
-                y >= tree.y && y <= tree.y + tree.height) {
-                return tree;
-            }
-        }
+    function exerciseCat(points) {
+        // Each point of exercise reduces cat size by 0.1
+        const sizeReduction = points * 0.1;
+        game.catSize = Math.max(1, game.catSize - sizeReduction);
+        saveCatSize();
+        updateCatSizeDisplay();
+    }
 
-        // Check couches
-        for (let couch of game.couches) {
-            if (x >= couch.x && x <= couch.x + couch.width &&
-                y >= couch.y && y <= couch.y + couch.height) {
-                return couch;
-            }
-        }
+    function playMeowSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
 
-        // Check toys
-        for (let toy of game.toys) {
-            if (x >= toy.x && x <= toy.x + toy.width &&
-                y >= toy.y && y <= toy.y + toy.height) {
-                return toy;
-            }
-        }
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
 
-        return null;
+            // Create a meow-like sound with frequency modulation
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.1);
+            oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.15);
+            oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.25);
+
+            // Envelope for more natural sound
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+            oscillator.type = 'triangle';
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch (e) {
+            console.log('Audio not supported:', e);
+        }
     }
 
     function handlePointerDown(e) {
-        const rect = game.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const obj = getObjectAtPosition(x, y);
-
-        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-            game.isDragging = true;
-            game.draggedObject = obj;
-            game.dragOffset = {
-                x: x - obj.x,
-                y: y - obj.y
-            };
-        } else {
-            const clickedCouch = getObjectAtPosition(x, y);
-            if (clickedCouch && clickedCouch.type === 'couch') {
-                handleCouchClick(clickedCouch, x, y);
-            } else {
-                moveCatTo(x, y);
-            }
-        }
+        // Play meow sound when canvas is clicked
+        playMeowSound();
     }
 
     function handlePointerMove(e) {
-        const rect = game.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        if (game.isDragging && game.draggedObject) {
-            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
-            game.canvas.style.cursor = 'grabbing';
-        } else {
-            const obj = getObjectAtPosition(x, y);
-            if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-                game.canvas.style.cursor = 'grab';
-            } else {
-                game.canvas.style.cursor = 'pointer';
-            }
-        }
+        // No longer needed for movement or dragging
+        game.canvas.style.cursor = 'pointer';
     }
 
     function handlePointerUp() {
-        if (game.isDragging) {
-            game.isDragging = false;
-            game.draggedObject = null;
-            game.canvas.style.cursor = 'pointer';
-        }
+        // No longer needed for movement or dragging
     }
 
     function handleTouchStart(e) {
         e.preventDefault();
-        const touch = e.touches[0];
-        const rect = game.canvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        const obj = getObjectAtPosition(x, y);
-
-        if (obj && (obj.type === 'tree' || obj.type === 'couch' || obj.type === 'toy')) {
-            game.isDragging = true;
-            game.draggedObject = obj;
-            game.dragOffset = {
-                x: x - obj.x,
-                y: y - obj.y
-            };
-        } else {
-            const clickedCouch = getObjectAtPosition(x, y);
-            if (clickedCouch && clickedCouch.type === 'couch') {
-                handleCouchClick(clickedCouch, x, y);
-            } else {
-                moveCatTo(x, y);
-            }
-        }
+        // Play meow sound when canvas is touched
+        playMeowSound();
     }
 
     function handleTouchMove(e) {
         e.preventDefault();
-        const touch = e.touches[0];
-        const rect = game.canvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-
-        if (game.isDragging && game.draggedObject) {
-            game.draggedObject.x = Math.max(50, Math.min(game.width - 50, x - game.dragOffset.x));
-            game.draggedObject.y = Math.max(50, Math.min(game.height - 50, y - game.dragOffset.y));
-        }
-    }
-
-    function handleCouchClick(couch, clickX, clickY) {
-        const couchCenterX = couch.x + couch.width / 2;
-        const couchCenterY = couch.y + couch.height / 2;
-        moveCatToLie(couchCenterX, couchCenterY, 'ontop');
-    }
-
-    function moveCatTo(x, y) {
-        game.cat.targetX = Math.max(30, Math.min(game.width - 30, x));
-        game.cat.targetY = Math.max(30, Math.min(game.height - 30, y));
-        game.cat.isMoving = true;
-        game.cat.state = 'standing';
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        const rand = Math.random();
-        if (rand < 0.33) {
-            game.cat.moveType = 'walk';
-            game.cat.speed = 2;
-        } else if (rand < 0.66) {
-            game.cat.moveType = 'run';
-            game.cat.speed = 4;
-        } else {
-            game.cat.moveType = 'jump';
-            game.cat.speed = 3;
-            game.cat.jumpProgress = 0;
-        }
-    }
-
-    function moveCatToLie(x, y, lieType) {
-        game.cat.targetX = x;
-        game.cat.targetY = y;
-        game.cat.isMoving = true;
-        game.cat.lieType = lieType;
-
-        if (x > game.cat.x) {
-            game.cat.direction = 1;
-        } else {
-            game.cat.direction = -1;
-        }
-
-        game.cat.moveType = 'walk';
-        game.cat.speed = 2;
+        // No longer needed for movement or dragging
     }
 
     function update() {
-        if (game.cat.isMoving) {
-            const dx = game.cat.targetX - game.cat.x;
-            const dy = game.cat.targetY - game.cat.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < game.cat.speed) {
-                game.cat.x = game.cat.targetX;
-                game.cat.y = game.cat.targetY;
-                game.cat.isMoving = false;
-                game.cat.jumpHeight = 0;
-
-                if (game.cat.lieType) {
-                    game.cat.state = 'lying';
-                    game.cat.lieType = null;
-                } else {
-                    game.cat.state = 'standing';
-                }
-            } else {
-                const angle = Math.atan2(dy, dx);
-                game.cat.x += Math.cos(angle) * game.cat.speed;
-                game.cat.y += Math.sin(angle) * game.cat.speed;
-
-                if (game.cat.moveType === 'jump') {
-                    game.cat.jumpProgress += 0.05;
-                    game.cat.jumpHeight = Math.sin(game.cat.jumpProgress * Math.PI) * 20;
-                }
-            }
-
-            game.cat.animationFrame += 0.2;
-        }
+        // Cat no longer moves - stays in standing state
+        game.cat.state = 'standing';
     }
 
     function render() {
@@ -780,8 +640,8 @@
     function drawCatStanding() {
         const ctx = game.ctx;
         const x = game.cat.x;
-        const y = game.cat.y - game.cat.jumpHeight;
-        const size = game.cat.size;
+        const y = game.cat.y;
+        const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow
         ctx.save();
@@ -805,16 +665,13 @@
             const catWidth = imgWidth * scaleFactor;
             const catHeight = imgHeight * scaleFactor;
 
-            // Add subtle bounce animation when moving
-            const bounce = game.cat.isMoving ? Math.sin(game.cat.animationFrame * 2) * 2 : 0;
-
             // Flip cat based on direction
             if (game.cat.direction === -1) {
-                ctx.translate(x, y - catHeight / 2 + bounce);
+                ctx.translate(x, y - catHeight / 2);
                 ctx.scale(-1, 1);
                 ctx.drawImage(game.images.cat, -catWidth / 2, 0, catWidth, catHeight);
             } else {
-                ctx.translate(x - catWidth / 2, y - catHeight / 2 + bounce);
+                ctx.translate(x - catWidth / 2, y - catHeight / 2);
                 ctx.drawImage(game.images.cat, 0, 0, catWidth, catHeight);
             }
 
@@ -895,7 +752,7 @@
         const ctx = game.ctx;
         const x = game.cat.x;
         const y = game.cat.y;
-        const size = game.cat.size;
+        const size = game.cat.size * game.catSize; // Scale cat by catSize
 
         // Realistic shadow (wider for lying position)
         ctx.save();
@@ -1172,48 +1029,38 @@
 
         // Difficulty progression: game gets faster as time goes on
         const timeElapsed = 30 - wandGame.timeLeft;
-        const speedMultiplier = Math.max(0.5, 1 - (timeElapsed / 60)); // Slows down in beginning, speeds up over time
+        // Start at 0.65, decrease to 0.35 as game progresses (smaller = faster)
+        const speedMultiplier = Math.max(0.35, 0.65 - (timeElapsed / 40));
 
-        // Random delay before showing next wand (starts at 800-1500ms, gets faster)
-        const baseDelay = 800 + Math.random() * 700;
+        // Random delay before showing next wand (starts at 300-700ms, gets faster)
+        const baseDelay = 300 + Math.random() * 400;
         const delay = baseDelay * speedMultiplier;
 
         wandGame.wandTimeout = setTimeout(() => {
             if (!wandGame.isPlaying) return;
 
-            // Get game area dimensions
-            const gameRect = gameArea.getBoundingClientRect();
-            const wandWidth = 80;
-            const wandHeight = 80;
+            // Wand base is fixed at top center (via CSS)
+            // We only rotate the wand to make feathers appear at different positions
 
-            // Generate random position anywhere in the upper area of the game
-            // Leave bottom 150px for the cat paw area
-            const minX = wandWidth / 2;
-            const maxX = gameRect.width - wandWidth / 2;
-            const minY = 40;
-            const maxY = gameRect.height - 150;
+            // Generate random rotation angle (degrees)
+            // Negative = swing left, Positive = swing right
+            // Range: -70 to +70 degrees for good coverage of game area
+            const randomAngle = -70 + Math.random() * 140;
 
-            const randomX = minX + Math.random() * (maxX - minX);
-            const randomY = minY + Math.random() * (maxY - minY);
+            // IMPORTANT: Set transform FIRST, then display
+            // This prevents the wand from briefly appearing at center before rotating
+            wand.style.transform = `translate(-50%, 0) rotate(${randomAngle}deg)`;
 
-            // Clear all positioning styles first to prevent conflicts
-            wand.style.left = '';
-            wand.style.right = '';
-            wand.style.top = '';
-            wand.style.transform = '';
-            wand.style.bottom = '';
+            // Use requestAnimationFrame to ensure transform is applied before showing
+            requestAnimationFrame(() => {
+                wand.style.display = 'block';
+                wandGame.wandVisible = true;
+            });
 
-            // Set new position using left/top for consistency
-            wand.style.left = randomX + 'px';
-            wand.style.top = randomY + 'px';
-            wand.style.transform = 'translate(-50%, -50%)'; // Center the wand on the position
-            wand.style.display = 'block';
-            wandGame.wandVisible = true;
-
-            // Hide wand after a reasonable time (starts at 2000-2800ms, gets shorter)
+            // Hide wand after a reasonable time (starts at 900-1400ms, gets shorter)
             // Wands stay visible longer at the beginning for easier gameplay
-            const baseVisibleTime = 2000 + Math.random() * 800;
-            const visibleTime = baseVisibleTime * Math.max(0.6, speedMultiplier);
+            const baseVisibleTime = 900 + Math.random() * 500;
+            const visibleTime = baseVisibleTime * Math.max(0.45, speedMultiplier);
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
@@ -1308,8 +1155,12 @@
 
         // Award points to main game
         game.points += wandGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(wandGame.score);
+
         updatePointsDisplay();
-        showMessage(`Earned ${wandGame.score} points from Wand Game!`);
+        showMessage(`Earned ${wandGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         // Show game over message
         setTimeout(() => {
@@ -1732,9 +1583,13 @@
         updateYarnBestScore();
 
         // Award points to main game
-        game.points += finalScore;
+        game.points += yarnGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(yarnGame.score);
+
         updatePointsDisplay();
-        showMessage(`Earned ${finalScore.toFixed(1)} points from Yarn Ball Bounce!`);
+        showMessage(`Earned ${yarnGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         setTimeout(() => {
             alert(`Game Over! Your score: ${finalScore.toFixed(1)}`);
@@ -1884,6 +1739,7 @@
         // Start with 4 random sounds
         melodyGame.pattern = Array.from({ length: 4 }, () => Math.floor(Math.random() * 4));
         melodyGame.playerPattern = [];
+        melodyGame.currentStep = 0;
 
         document.getElementById('melodyRound').textContent = '1';
         document.getElementById('melodyScore').textContent = '0';
@@ -2003,8 +1859,12 @@
 
         // Award points to main game
         game.points += melodyGame.score;
+
+        // Exercise cat - reduce size based on score
+        exerciseCat(melodyGame.score);
+
         updatePointsDisplay();
-        showMessage(`Earned ${melodyGame.score} points from Meow Melody!`);
+        showMessage(`Earned ${melodyGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
         setTimeout(() => {
             const message = completed ?
