@@ -87,12 +87,16 @@
 
         // Load background image
         game.images.background = new Image();
-        game.images.background.onload = imageLoaded;
-        game.images.background.onerror = () => {
-            console.log('Background image failed to load, using fallback');
+        game.images.background.onload = () => {
+            console.log('Cat cafe background image loaded successfully:', game.images.background.naturalWidth, 'x', game.images.background.naturalHeight);
+            imageLoaded();
+        };
+        game.images.background.onerror = (e) => {
+            console.error('Background image failed to load:', e);
             imageLoaded();
         };
         game.images.background.src = '/static/images/cat_cafe.png';
+        console.log('Loading cat cafe background from:', game.images.background.src);
 
         // Load cat image - local custom cat PNG
         game.images.cat = new Image();
@@ -355,6 +359,13 @@
             ctx.drawImage(game.images.background, 0, 0, game.width, game.height);
         } else {
             // Fallback: Draw gradient background
+            if (!game.images.background) {
+                console.warn('Background image not loaded yet');
+            } else if (!game.images.background.complete) {
+                console.warn('Background image not complete');
+            } else if (game.images.background.naturalWidth === 0) {
+                console.warn('Background image has zero width');
+            }
             const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
             bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
             bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
