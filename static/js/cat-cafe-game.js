@@ -1262,7 +1262,8 @@
         yarnGame.canvas = yarnCanvas;
         yarnGame.ctx = yarnCanvas.getContext('2d');
 
-        // Load yarn ball images
+        // Load yarn ball images immediately when initializing
+        console.log('Initializing Yarn Ball game and preloading images...');
         loadYarnBallImages();
 
         // Open game modal
@@ -1286,8 +1287,15 @@
             }
         });
 
-        // Start game
-        yarnGameStart.addEventListener('click', startYarnGame);
+        // Start game - only allow if images are loaded
+        yarnGameStart.addEventListener('click', () => {
+            if (!yarnGame.imagesLoaded) {
+                console.warn('Yarn ball images still loading, please wait...');
+                alert('Loading yarn ball images, please wait a moment and try again!');
+                return;
+            }
+            startYarnGame();
+        });
 
         // Click on canvas
         yarnCanvas.addEventListener('click', handleYarnClick);
@@ -1313,7 +1321,8 @@
                 console.log(`Yarn ball image ${index} loaded successfully:`, url, img.naturalWidth, 'x', img.naturalHeight);
                 if (loadedCount === yarnImageURLs.length) {
                     yarnGame.imagesLoaded = true;
-                    console.log('All', yarnImageURLs.length, 'yarn ball images loaded successfully!');
+                    console.log('✓ All', yarnImageURLs.length, 'yarn ball images loaded successfully!');
+                    console.log('✓ Yarn ball images ready to use!');
                 }
             };
             img.onerror = (e) => {
@@ -1332,7 +1341,7 @@
     function startYarnGame() {
         yarnGame.isPlaying = true;
         yarnGame.score = 0;
-        yarnGame.lives = 3;
+        yarnGame.lives = 5;
         yarnGame.balls = [];
         yarnGame.difficulty = 1;
         yarnGame._fallbackLogged = false; // Reset debug flag
@@ -1340,7 +1349,7 @@
         console.log('Starting Yarn Ball game. Images loaded:', yarnGame.imagesLoaded, 'Image count:', yarnGame.yarnImages.length);
 
         document.getElementById('yarnScore').textContent = '0.0';
-        document.getElementById('yarnLives').textContent = '3';
+        document.getElementById('yarnLives').textContent = '5';
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
@@ -1351,12 +1360,12 @@
         setTimeout(() => spawnYarnBall(), 600);
         setTimeout(() => spawnYarnBall(), 800);
 
-        // Spawn balls periodically - fast spawn rate to keep many balls on screen
+        // Spawn balls periodically - very fast spawn rate to keep many balls on screen
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 800); // Fast spawn rate (0.8 seconds) to maintain many balls
+        }, 500); // Very fast spawn rate (0.5 seconds) to maintain lots of balls
 
         // Start game loop
         yarnGameLoop();
@@ -1377,8 +1386,8 @@
             imageIndex: imageIndex
         };
 
-        // Fast speed with gradual difficulty increase
-        const baseSpeed = 1.0 + Math.random() * 0.5; // Start at fast speed: 1.0-1.5
+        // Very fast speed with gradual difficulty increase
+        const baseSpeed = 2.0 + Math.random() * 1.0; // Start at very fast speed: 2.0-3.0
         const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
@@ -1460,7 +1469,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(400, 800 - yarnGame.difficulty * 40);
+                        const newInterval = Math.max(300, 500 - yarnGame.difficulty * 30);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
