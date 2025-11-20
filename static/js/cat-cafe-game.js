@@ -1537,12 +1537,12 @@
         setTimeout(() => spawnYarnBall(), 600);
         setTimeout(() => spawnYarnBall(), 800);
 
-        // Spawn balls periodically - faster spawn rate
+        // Spawn balls periodically - fast spawn rate to keep many balls on screen
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 1200); // Even faster spawn rate (1.2 seconds)
+        }, 800); // Fast spawn rate (0.8 seconds) to maintain many balls
 
         // Start game loop
         yarnGameLoop();
@@ -1637,7 +1637,9 @@
                 ball.opacity = 1;
 
                 yarnGame.score += 0.2;
-                document.getElementById('yarnScore').textContent = yarnGame.score.toFixed(1);
+                // Round to avoid floating-point precision issues (e.g., 4.000000001)
+                const displayScore = Math.round(yarnGame.score * 10) / 10;
+                document.getElementById('yarnScore').textContent = displayScore.toFixed(1);
 
                 // Increase difficulty gradually every 3 points
                 if (yarnGame.score % 3 === 0) {
@@ -1645,7 +1647,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(600, 1200 - yarnGame.difficulty * 50);
+                        const newInterval = Math.max(400, 800 - yarnGame.difficulty * 40);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
