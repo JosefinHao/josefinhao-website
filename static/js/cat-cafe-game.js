@@ -843,9 +843,15 @@
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position and scale cat properly for transparent PNG
-            const catWidth = size * 1.2;  // Slightly larger for visibility
-            const catHeight = size * 1.2;
+            // Maintain original aspect ratio - do not resize or distort
+            const imgWidth = game.images.cat.naturalWidth;
+            const imgHeight = game.images.cat.naturalHeight;
+            const aspectRatio = imgWidth / imgHeight;
+
+            // Scale based on size while maintaining aspect ratio
+            const scaleFactor = size / Math.max(imgWidth, imgHeight);
+            const catWidth = imgWidth * scaleFactor;
+            const catHeight = imgHeight * scaleFactor;
 
             // Add subtle bounce animation when moving
             const bounce = game.cat.isMoving ? Math.sin(game.cat.animationFrame * 2) * 2 : 0;
@@ -951,13 +957,17 @@
         if (game.images.cat && game.images.cat.complete && game.images.cat.naturalWidth > 0) {
             ctx.save();
 
-            // Position for lying cat (wider, flatter)
-            const catWidth = size * 1.5;
-            const catHeight = size * 0.8;
+            // Maintain original aspect ratio - do not resize or distort
+            const imgWidth = game.images.cat.naturalWidth;
+            const imgHeight = game.images.cat.naturalHeight;
+
+            // Scale based on size while maintaining aspect ratio
+            const scaleFactor = size / Math.max(imgWidth, imgHeight);
+            const catWidth = imgWidth * scaleFactor;
+            const catHeight = imgHeight * scaleFactor;
 
             ctx.translate(x, y);
-            ctx.rotate(Math.PI / 16); // Slight tilt
-            ctx.scale(1, 0.7); // Squash for lying effect
+            ctx.rotate(Math.PI / 16); // Slight tilt for lying effect
             ctx.drawImage(game.images.cat, -catWidth / 2, -catHeight / 2, catWidth, catHeight);
 
             ctx.restore();
