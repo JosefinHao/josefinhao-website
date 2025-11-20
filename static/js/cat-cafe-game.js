@@ -1532,9 +1532,11 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn 3 balls immediately for instant action
+        // Spawn 5 balls immediately for instant action at faster intervals
         spawnYarnBall();
+        setTimeout(() => spawnYarnBall(), 200);
         setTimeout(() => spawnYarnBall(), 400);
+        setTimeout(() => spawnYarnBall(), 600);
         setTimeout(() => spawnYarnBall(), 800);
 
         // Spawn balls periodically - faster spawn rate
@@ -1542,7 +1544,7 @@
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 1800); // Faster spawn rate (1.8 seconds)
+        }, 1200); // Even faster spawn rate (1.2 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1629,11 +1631,15 @@
             console.log('Ball', i, 'at', ball.x, ball.y, 'dist:', dist, 'clickRadius:', clickRadius);
 
             if (dist < clickRadius) {
-                // Hit! Remove the ball
+                // Hit! Make ball fly away with animation
                 console.log('Ball clicked!');
-                yarnGame.balls.splice(i, 1);
-                yarnGame.score++;
-                document.getElementById('yarnScore').textContent = yarnGame.score;
+                ball.flyingAway = true;
+                ball.flyVelocityX = (x - ball.x) * 0.3;
+                ball.flyVelocityY = -15 - Math.random() * 5; // Strong upward velocity
+                ball.opacity = 1;
+
+                yarnGame.score += 0.2;
+                document.getElementById('yarnScore').textContent = yarnGame.score.toFixed(1);
 
                 // Increase difficulty gradually every 3 points
                 if (yarnGame.score % 3 === 0) {
@@ -1641,7 +1647,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(800, 1800 - yarnGame.difficulty * 80);
+                        const newInterval = Math.max(600, 1200 - yarnGame.difficulty * 50);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -1667,31 +1673,52 @@
         for (let i = yarnGame.balls.length - 1; i >= 0; i--) {
             const ball = yarnGame.balls[i];
 
-            // Update position
-            ball.x += ball.vx;
-            ball.y += ball.vy;
-            // No gravity - balls maintain constant speed
-            ball.rotation += ball.rotationSpeed;
+            // Update position based on state
+            if (ball.flyingAway) {
+                // Flying away animation
+                ball.x += ball.flyVelocityX;
+                ball.y += ball.flyVelocityY;
+                ball.flyVelocityY += 0.5; // Gravity pulls it down eventually
+                ball.rotation += ball.rotationSpeed * 3; // Spin faster when flying
+                ball.opacity -= 0.02; // Fade out
 
-            // Remove if off-screen in any direction (with margin for complete disappearance)
-            const margin = ball.radius * 3;
-            if (ball.x < -margin || ball.x > canvas.width + margin ||
-                ball.y < -margin || ball.y > canvas.height + margin) {
-                yarnGame.balls.splice(i, 1);
-                yarnGame.lives--;
-                document.getElementById('yarnLives').textContent = yarnGame.lives;
-
-                if (yarnGame.lives <= 0) {
-                    endYarnGame();
-                    return;
+                // Remove when fully faded or far off screen
+                if (ball.opacity <= 0 || ball.y < -200 || ball.y > canvas.height + 200) {
+                    yarnGame.balls.splice(i, 1);
+                    continue;
                 }
-                continue;
+            } else {
+                // Normal rolling
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                // No gravity - balls maintain constant speed
+                ball.rotation += ball.rotationSpeed;
+
+                // Remove if off-screen in any direction (with margin for complete disappearance)
+                const margin = ball.radius * 3;
+                if (ball.x < -margin || ball.x > canvas.width + margin ||
+                    ball.y < -margin || ball.y > canvas.height + margin) {
+                    yarnGame.balls.splice(i, 1);
+                    yarnGame.lives--;
+                    document.getElementById('yarnLives').textContent = yarnGame.lives;
+
+                    if (yarnGame.lives <= 0) {
+                        endYarnGame();
+                        return;
+                    }
+                    continue;
+                }
             }
 
             // Draw yarn ball
             ctx.save();
             ctx.translate(ball.x, ball.y);
             ctx.rotate(ball.rotation);
+
+            // Apply opacity for flying away animation
+            if (ball.flyingAway && ball.opacity !== undefined) {
+                ctx.globalAlpha = ball.opacity;
+            }
 
             // Use realistic yarn ball image if loaded, otherwise use fallback
             const yarnImg = yarnGame.yarnImages[ball.imageIndex];
