@@ -460,49 +460,8 @@
     }
 
     function drawCafeBackground(ctx) {
-        // Use custom cat cafe background image if loaded
-        if (game.images.background && game.images.background.complete && game.images.background.naturalWidth > 0) {
-            // Maintain original aspect ratio and crop from bottom
-            const img = game.images.background;
-            const imgAspect = img.naturalWidth / img.naturalHeight;
-            const canvasAspect = game.width / game.height;
-
-            let drawWidth, drawHeight, sx, sy, sWidth, sHeight;
-
-            // Scale to fit width, crop bottom if needed
-            drawWidth = game.width;
-            drawHeight = game.width / imgAspect;
-
-            // Source coordinates (crop from bottom if image is too tall)
-            sx = 0;
-            sy = 0;
-            sWidth = img.naturalWidth;
-            sHeight = img.naturalHeight;
-
-            if (drawHeight > game.height) {
-                // Image is taller than canvas, crop from bottom
-                const cropRatio = game.height / drawHeight;
-                sHeight = img.naturalHeight * cropRatio;
-                drawHeight = game.height;
-            }
-
-            ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, drawWidth, drawHeight);
-        } else {
-            // Fallback: Draw gradient background
-            if (!game.images.background) {
-                console.warn('Background image not loaded yet');
-            } else if (!game.images.background.complete) {
-                console.warn('Background image not complete');
-            } else if (game.images.background.naturalWidth === 0) {
-                console.warn('Background image has zero width');
-            }
-            const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
-            bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
-            bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
-            bgGradient.addColorStop(1, '#e8d5c4');   // Darker tan
-            ctx.fillStyle = bgGradient;
-            ctx.fillRect(0, 0, game.width, game.height);
-        }
+        // Background is now drawn on the container element (cat_cafe.png)
+        // Canvas is transparent, so no need to draw background here
     }
 
     function drawCatTrees() {
