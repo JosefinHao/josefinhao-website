@@ -1532,16 +1532,17 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn 2 balls immediately for instant action
+        // Spawn 3 balls immediately for instant action
         spawnYarnBall();
-        setTimeout(() => spawnYarnBall(), 500);
+        setTimeout(() => spawnYarnBall(), 400);
+        setTimeout(() => spawnYarnBall(), 800);
 
-        // Spawn balls periodically - start slower
+        // Spawn balls periodically - faster spawn rate
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 3000); // Start with slower spawn rate (3 seconds)
+        }, 1800); // Faster spawn rate (1.8 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1562,9 +1563,9 @@
             imageIndex: imageIndex
         };
 
-        // Moderate speed with gradual difficulty increase
-        const baseSpeed = 0.4 + Math.random() * 0.3; // Start at moderate speed: 0.4-0.7
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.1; // Gradual 10% increase per level
+        // Fast speed with gradual difficulty increase
+        const baseSpeed = 1.0 + Math.random() * 0.5; // Start at fast speed: 1.0-1.5
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         // Spawn from any edge with random angle across the screen
@@ -1635,7 +1636,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(1200, 3000 - yarnGame.difficulty * 100);
+                        const newInterval = Math.max(800, 1800 - yarnGame.difficulty * 80);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
