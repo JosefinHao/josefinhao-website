@@ -1012,12 +1012,88 @@ p {
 
 /* Color-code individual project cards by category */
 
+/* Keyframe animations for holographic border effects */
+@keyframes holographic-steel {
+    0% {
+        border-image-source: linear-gradient(0deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+}
+
+@keyframes holographic-green {
+    0% {
+        border-image-source: linear-gradient(0deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%);
+    }
+}
+
+@keyframes holographic-orange {
+    0% {
+        border-image-source: linear-gradient(0deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%);
+    }
+}
+
+@keyframes holographic-purple {
+    0% {
+        border-image-source: linear-gradient(0deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+}
+
 /* Current Projects - Steel Blue with Subtle Glow */
 .flip-card-current .flip-card-front {
     background: linear-gradient(135deg, #f0f5fa 0%, #e8eff7 50%, #e0ebf5 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #7d8c99;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-steel 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(125, 140, 153, 0.15),
         0 2px 8px rgba(125, 140, 153, 0.1),
@@ -1036,7 +1112,10 @@ p {
 
 .flip-card-current .flip-card-back {
     background: linear-gradient(135deg, #e8eff7 0%, #dde7f2 50%, #e0ebf5 100%);
-    border: 3px solid #7d8c99;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-steel 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(125, 140, 153, 0.2),
         0 2px 8px rgba(125, 140, 153, 0.15),
@@ -1057,7 +1136,10 @@ p {
     background: linear-gradient(135deg, #f0faf5 0%, #e6f5ed 50%, #ddf0e6 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #10b981;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-green 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(16, 185, 129, 0.18),
         0 2px 8px rgba(16, 185, 129, 0.12),
@@ -1076,7 +1158,10 @@ p {
 
 .flip-card-openai .flip-card-back {
     background: linear-gradient(135deg, #e6f5ed 0%, #d9f0e3 50%, #ddf0e6 100%);
-    border: 3px solid #10b981;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 20%, #6ee7b7 40%, #a7f3d0 60%, #d1fae5 80%, #ecfdf5 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-green 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(16, 185, 129, 0.22),
         0 2px 8px rgba(16, 185, 129, 0.16),
@@ -1097,7 +1182,10 @@ p {
     background: linear-gradient(135deg, #fff9f5 0%, #fff3eb 50%, #ffede0 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #ff8c42;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-orange 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(255, 140, 66, 0.18),
         0 2px 8px rgba(255, 140, 66, 0.12),
@@ -1116,7 +1204,10 @@ p {
 
 .flip-card-crewai .flip-card-back {
     background: linear-gradient(135deg, #fff3eb 0%, #ffe9d9 50%, #ffede0 100%);
-    border: 3px solid #ff8c42;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #fed7aa 0%, #fde68a 20%, #fef3c7 40%, #fffbeb 60%, #fef3c7 80%, #fed7aa 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-orange 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(255, 140, 66, 0.22),
         0 2px 8px rgba(255, 140, 66, 0.16),
@@ -1137,7 +1228,10 @@ p {
     background: linear-gradient(135deg, #faf8ff 0%, #f3f0ff 50%, #ede8ff 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
-    border: 3px solid #a78bfa;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-purple 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(167, 139, 250, 0.18),
         0 2px 8px rgba(167, 139, 250, 0.12),
@@ -1156,7 +1250,10 @@ p {
 
 .flip-card-langgraph .flip-card-back {
     background: linear-gradient(135deg, #f3f0ff 0%, #ebe5ff 50%, #ede8ff 100%);
-    border: 3px solid #a78bfa;
+    border: 3px solid transparent;
+    border-image: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%) 1;
+    background-clip: padding-box;
+    animation: holographic-purple 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(167, 139, 250, 0.22),
         0 2px 8px rgba(167, 139, 250, 0.16),
@@ -3366,82 +3463,90 @@ body.dark-theme .floating-formula {
 .cat-cafe-container {
     position: relative;
     width: 100%;
-    min-height: 600px;
+    min-height: 100vh;
+    height: 150vh;
+    background-image: url('/static/images/cat_cafe.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
 }
 
 .cat-cafe-intro {
     text-align: center;
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.6);
+    background: transparent;
     border-radius: 12px;
-    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    max-width: 800px;
 }
 
 .cat-cafe-intro h1 {
     font-size: 2.5rem;
-    color: #2c3e50;
+    color: #FF9A76;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .cat-cafe-intro p {
-    color: #5f7c8a;
+    color: #e8d5c4;
     font-size: 1.1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Food Bowl Container (Left Side) */
 .food-bowl-container {
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 20px;
     z-index: 100;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    align-items: stretch;
+    gap: 12px;
+    width: 100px;
 }
 
 .food-bowl-btn {
-    width: 56px;
-    height: 56px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 152, 0, 0.6);
-    border-radius: 50%;
+    width: 100px;
+    height: 80px;
+    background: transparent;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
     transition: all 0.3s ease;
-    color: #ff9800;
+    font-size: 50px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .food-bowl-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
-    background: rgba(255, 255, 255, 1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
 }
 
 .food-bowl-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
 }
 
 .points-display {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(102, 126, 234, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
+    justify-content: center;
+    width: 100px;
+    height: 80px;
 }
 
 .points-label {
@@ -3453,7 +3558,7 @@ body.dark-theme .floating-formula {
 }
 
 .points-value {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #667eea;
 }
@@ -3461,15 +3566,16 @@ body.dark-theme .floating-formula {
 .size-display {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(255, 158, 128, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 80px;
-    margin-top: 8px;
+    justify-content: center;
+    width: 100px;
+    height: 80px;
 }
 
 .size-label {
@@ -3481,66 +3587,57 @@ body.dark-theme .floating-formula {
 }
 
 .size-value {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #ff9e80;
 }
 
 /* Game Icons (Right Side) */
 .game-icons-right {
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 100;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 12px;
+    width: 100px;
 }
 
 .game-icon-btn {
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
+    width: 100px;
+    height: 80px;
+    background: transparent;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
+    font-size: 50px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .game-icon-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    background: rgba(255, 255, 255, 1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
 }
 
 .game-icon-btn:active {
-    transform: scale(0.95);
-}
-
-.game-icon-btn svg {
-    width: 24px;
-    height: 24px;
-}
-
-.wand-game-btn {
-    color: #ff9e80;
+    transform: scale(0.98);
 }
 
 .wand-game-btn:hover {
-    transform: scale(1.1) rotate(10deg);
+    transform: scale(1.1) rotate(5deg);
 }
 
-.yarn-game-btn {
-    color: #e91e63;
+.yarn-game-btn:hover {
+    transform: scale(1.1);
 }
 
-.melody-game-btn {
-    color: #9c27b0;
+.melody-game-btn:hover {
+    transform: scale(1.1);
 }
 
 /* Color Picker Icon */
@@ -3701,7 +3798,7 @@ body.dark-theme .floating-formula {
 
 .wand-game-area {
     position: relative;
-    height: 200px;
+    height: 260px;
     background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
     border-radius: 10px;
     margin-bottom: 1rem;
@@ -3772,14 +3869,14 @@ body.dark-theme .floating-formula {
 
 .cat-paw {
     position: absolute;
-    bottom: -80px;
+    bottom: -20px;
     left: 50%;
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;
     height: 180px;
     background-image: url('../images/cat_paw_no_background.png');
     background-size: cover;
-    background-position: center top;
+    background-position: center bottom;
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     opacity: 0;
@@ -4202,7 +4299,7 @@ body.dark-theme .floating-formula {
 }
 
 .melody-toy.ball {
-    border: 3px solid #f44336;
+    border: 3px solid #4caf50;
 }
 
 .melody-toy.mouse {
@@ -4210,7 +4307,7 @@ body.dark-theme .floating-formula {
 }
 
 .melody-toy.feather {
-    border: 3px solid #00bcd4;
+    border: 3px solid #e91e63;
 }
 
 .melody-toy.fish {
@@ -4298,17 +4395,15 @@ body.dark-theme .floating-formula {
 #cat-cafe-canvas {
     width: 100%;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    background: #f5e6d3;
+    background: transparent;
     cursor: pointer;
     display: block;
     margin: 0 auto;
-    border: 3px solid rgba(255, 255, 255, 0.8);
 }
 
 /* Message Display */
 .cafe-message {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

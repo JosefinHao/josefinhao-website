@@ -16,6 +16,9 @@
         catSize: 1, // Logical cat size (starts at 1, increases with feeding, decreases with exercise)
         catHunger: 100,
         catEnergy: 100,
+        isDraggingCat: false,
+        dragOffset: { x: 0, y: 0 },
+        userIP: null, // User's IP address for separating game state
         cat: {
             x: 0,
             y: 0,
@@ -48,17 +51,33 @@
         console.log('Cat Cafe cleaned up');
     }
 
-    function saveCatSize() {
+    async function getUserIP() {
         try {
-            localStorage.setItem('catCafeSize', game.catSize.toString());
+            const response = await fetch('/api/user-ip');
+            const data = await response.json();
+            game.userIP = data.ip || 'unknown';
+            console.log('User IP:', game.userIP);
+        } catch (e) {
+            console.error('Failed to fetch user IP:', e);
+            game.userIP = 'unknown';
+        }
+    }
+
+    function saveCatSize() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafeSize_${game.userIP}`;
+            localStorage.setItem(key, game.catSize.toString());
         } catch (e) {
             console.error('Failed to save cat size:', e);
         }
     }
 
     function loadCatSize() {
+        if (!game.userIP) return;
         try {
-            const savedSize = localStorage.getItem('catCafeSize');
+            const key = `catCafeSize_${game.userIP}`;
+            const savedSize = localStorage.getItem(key);
             if (savedSize) {
                 game.catSize = parseFloat(savedSize);
                 // Ensure cat size is at least 1
@@ -69,6 +88,33 @@
         } catch (e) {
             console.error('Failed to load cat size:', e);
             game.catSize = 1;
+        }
+    }
+
+    function savePoints() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafePoints_${game.userIP}`;
+            localStorage.setItem(key, game.points.toString());
+        } catch (e) {
+            console.error('Failed to save points:', e);
+        }
+    }
+
+    function loadPoints() {
+        if (!game.userIP) return;
+        try {
+            const key = `catCafePoints_${game.userIP}`;
+            const savedPoints = localStorage.getItem(key);
+            if (savedPoints) {
+                game.points = parseInt(savedPoints, 10);
+                if (game.points < 0 || isNaN(game.points)) {
+                    game.points = 0;
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load points:', e);
+            game.points = 0;
         }
     }
 
@@ -141,7 +187,7 @@
         game.images.toy.src = 'data:image/png;base64,invalid';
     }
 
-    function init() {
+    async function init() {
         console.log('Cat Cafe 2D game initializing...');
 
         if (game.initialized) {
@@ -158,8 +204,12 @@
         game.canvas = canvas;
         game.ctx = canvas.getContext('2d');
 
-        // Load saved cat size
+        // Fetch user IP first to enable per-user storage
+        await getUserIP();
+
+        // Load saved cat size and points for this user
         loadCatSize();
+        loadPoints();
 
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -246,6 +296,7 @@
             // Increase cat size by 1 (10 points × 0.1 per point)
             game.catSize += 1;
             saveCatSize();
+            savePoints();
 
             updatePointsDisplay();
             updateCatSizeDisplay();
@@ -278,55 +329,111 @@
 
     function playMeowSound() {
         try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            // Create a meow-like sound with frequency modulation
-            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.1);
-            oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.15);
-            oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.25);
-
-            // Envelope for more natural sound
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-            oscillator.type = 'triangle';
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
+            // Use HTML5 Audio with a cat meow sound
+            // Using a free cat meow sound from freesound.org (Public Domain)
+            const audio = new Audio('https://freesound.org/data/previews/634/634537_12517018-lq.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log('Audio playback failed:', e));
         } catch (e) {
             console.log('Audio not supported:', e);
         }
     }
 
+    function isCursorOverCat(x, y) {
+        const catSize = game.cat.size * game.catSize;
+        const catRadius = catSize / 2;
+        const dx = x - game.cat.x;
+        const dy = y - game.cat.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance <= catRadius * 1.2; // Give a bit of extra clickable area
+    }
+
     function handlePointerDown(e) {
-        // Play meow sound when canvas is clicked
-        playMeowSound();
+        const rect = game.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (isCursorOverCat(x, y)) {
+            // Start dragging the cat
+            game.isDraggingCat = true;
+            game.dragOffset.x = x - game.cat.x;
+            game.dragOffset.y = y - game.cat.y;
+            game.canvas.style.cursor = 'grabbing';
+
+            // Play meow sound when picking up the cat
+            playMeowSound();
+        }
     }
 
     function handlePointerMove(e) {
-        // No longer needed for movement or dragging
-        game.canvas.style.cursor = 'pointer';
+        const rect = game.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (game.isDraggingCat) {
+            // Update cat position while dragging
+            game.cat.x = x - game.dragOffset.x;
+            game.cat.y = y - game.dragOffset.y;
+
+            // Keep cat within canvas bounds
+            const catSize = game.cat.size * game.catSize;
+            const catRadius = catSize / 2;
+            game.cat.x = Math.max(catRadius, Math.min(game.width - catRadius, game.cat.x));
+            game.cat.y = Math.max(catRadius, Math.min(game.height - catRadius, game.cat.y));
+        } else {
+            // Change cursor when hovering over cat
+            if (isCursorOverCat(x, y)) {
+                game.canvas.style.cursor = 'grab';
+            } else {
+                game.canvas.style.cursor = 'default';
+            }
+        }
     }
 
     function handlePointerUp() {
-        // No longer needed for movement or dragging
+        if (game.isDraggingCat) {
+            game.isDraggingCat = false;
+            game.canvas.style.cursor = 'grab';
+        }
     }
 
     function handleTouchStart(e) {
         e.preventDefault();
-        // Play meow sound when canvas is touched
-        playMeowSound();
+        const touch = e.touches[0];
+        const rect = game.canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        if (isCursorOverCat(x, y)) {
+            // Start dragging the cat
+            game.isDraggingCat = true;
+            game.dragOffset.x = x - game.cat.x;
+            game.dragOffset.y = y - game.cat.y;
+
+            // Play meow sound when picking up the cat
+            playMeowSound();
+        }
     }
 
     function handleTouchMove(e) {
         e.preventDefault();
-        // No longer needed for movement or dragging
+
+        if (game.isDraggingCat && e.touches.length > 0) {
+            const touch = e.touches[0];
+            const rect = game.canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            // Update cat position while dragging
+            game.cat.x = x - game.dragOffset.x;
+            game.cat.y = y - game.dragOffset.y;
+
+            // Keep cat within canvas bounds
+            const catSize = game.cat.size * game.catSize;
+            const catRadius = catSize / 2;
+            game.cat.x = Math.max(catRadius, Math.min(game.width - catRadius, game.cat.x));
+            game.cat.y = Math.max(catRadius, Math.min(game.height - catRadius, game.cat.y));
+        }
     }
 
     function update() {
@@ -353,26 +460,8 @@
     }
 
     function drawCafeBackground(ctx) {
-        // Use custom cat cafe background image if loaded
-        if (game.images.background && game.images.background.complete && game.images.background.naturalWidth > 0) {
-            // Draw background image scaled to fit canvas
-            ctx.drawImage(game.images.background, 0, 0, game.width, game.height);
-        } else {
-            // Fallback: Draw gradient background
-            if (!game.images.background) {
-                console.warn('Background image not loaded yet');
-            } else if (!game.images.background.complete) {
-                console.warn('Background image not complete');
-            } else if (game.images.background.naturalWidth === 0) {
-                console.warn('Background image has zero width');
-            }
-            const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
-            bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
-            bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
-            bgGradient.addColorStop(1, '#e8d5c4');   // Darker tan
-            ctx.fillStyle = bgGradient;
-            ctx.fillRect(0, 0, game.width, game.height);
-        }
+        // Background is now drawn on the container element (cat_cafe.png)
+        // Canvas is transparent, so no need to draw background here
     }
 
     function drawCatTrees() {
@@ -1170,6 +1259,7 @@
         // Exercise cat - reduce size based on score
         exerciseCat(wandGame.score);
 
+        savePoints();
         updatePointsDisplay();
         showMessage(`Earned ${wandGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
@@ -1628,6 +1718,7 @@
         // Exercise cat - reduce size based on score
         exerciseCat(yarnGame.score);
 
+        savePoints();
         updatePointsDisplay();
         showMessage(`Earned ${yarnGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 
@@ -1903,6 +1994,7 @@
         // Exercise cat - reduce size based on score
         exerciseCat(melodyGame.score);
 
+        savePoints();
         updatePointsDisplay();
         showMessage(`Earned ${melodyGame.score} points! Cat size: ${game.catSize.toFixed(1)}`);
 

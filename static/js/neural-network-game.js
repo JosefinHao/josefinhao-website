@@ -689,10 +689,26 @@ class SimpleNeuralNetwork {
 }
 
 // Initialize the game when the page loads
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new NeuralNetworkGame();
-    });
-} else {
-    new NeuralNetworkGame();
+let nnGameInstance = null;
+
+function initNNGame() {
+    // Only initialize if we're on the games page and haven't initialized yet
+    const gameElement = document.getElementById('nn-canvas');
+    if (gameElement && !nnGameInstance) {
+        nnGameInstance = new NeuralNetworkGame();
+    }
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNNGame);
+} else {
+    initNNGame();
+}
+
+// Re-initialize when navigating via SPA
+document.addEventListener('spa-page-loaded', (event) => {
+    if (event.detail.path === '/games') {
+        nnGameInstance = null; // Reset instance
+        initNNGame();
+    }
+});

@@ -743,14 +743,26 @@ class BigOGame {
 }
 
 // Initialize game when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('bigo-code-display')) {
-            new BigOGame();
-        }
-    });
-} else {
-    if (document.getElementById('bigo-code-display')) {
-        new BigOGame();
+let bigoGameInstance = null;
+
+function initBigoGame() {
+    // Only initialize if we're on the games page and haven't initialized yet
+    const gameElement = document.getElementById('bigo-code-display');
+    if (gameElement && !bigoGameInstance) {
+        bigoGameInstance = new BigOGame();
     }
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBigoGame);
+} else {
+    initBigoGame();
+}
+
+// Re-initialize when navigating via SPA
+document.addEventListener('spa-page-loaded', (event) => {
+    if (event.detail.path === '/games') {
+        bigoGameInstance = null; // Reset instance
+        initBigoGame();
+    }
+});

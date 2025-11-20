@@ -385,10 +385,26 @@ class TypingGame {
 }
 
 // Initialize game when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new TypingGame();
-    });
-} else {
-    new TypingGame();
+let typingGameInstance = null;
+
+function initTypingGame() {
+    // Only initialize if we're on the games page and haven't initialized yet
+    const gameModal = document.getElementById('typing-game-modal');
+    if (gameModal && !typingGameInstance) {
+        typingGameInstance = new TypingGame();
+    }
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTypingGame);
+} else {
+    initTypingGame();
+}
+
+// Re-initialize when navigating via SPA
+document.addEventListener('spa-page-loaded', (event) => {
+    if (event.detail.path === '/games') {
+        typingGameInstance = null; // Reset instance
+        initTypingGame();
+    }
+});

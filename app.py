@@ -353,6 +353,19 @@ def api_status():
         "database": "connected"
     }), 200
 
+@app.route('/api/user-ip', methods=['GET'])
+def get_user_ip():
+    """Returns the user's IP address for client-side storage separation"""
+    # Get IP address - handle proxy headers if behind a proxy
+    user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    if user_ip and ',' in user_ip:
+        # X-Forwarded-For can contain multiple IPs, use the first one
+        user_ip = user_ip.split(',')[0].strip()
+
+    return jsonify({
+        "ip": user_ip
+    }), 200
+
 # ============================================
 # AI CHAT API - POWERED BY CAREER AGENT
 # ============================================
