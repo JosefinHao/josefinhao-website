@@ -3366,25 +3366,34 @@ body.dark-theme .floating-formula {
 .cat-cafe-container {
     position: relative;
     width: 100%;
-    min-height: 600px;
+    min-height: 100vh;
+    height: 150vh;
     background-image: url('/static/images/cat_cafe.png');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow-y: auto;
 }
 
 .cat-cafe-intro {
     text-align: center;
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     backdrop-filter: blur(10px);
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    max-width: 800px;
 }
 
 .cat-cafe-intro h1 {
     font-size: 2.5rem;
-    color: #f0e6d2;
+    color: #FF9A76;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -3397,7 +3406,7 @@ body.dark-theme .floating-formula {
 
 /* Food Bowl Container (Left Side) */
 .food-bowl-container {
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 20px;
     z-index: 100;
@@ -3491,7 +3500,7 @@ body.dark-theme .floating-formula {
 
 /* Game Icons (Right Side) */
 .game-icons-right {
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 100;
@@ -4300,7 +4309,7 @@ body.dark-theme .floating-formula {
 
 /* Message Display */
 .cafe-message {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
