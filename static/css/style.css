@@ -3390,12 +3390,12 @@ body.dark-theme .floating-formula {
 
 .cat-cafe-intro h1 {
     font-size: 2.5rem;
-    color: #D4A574;
+    color: #F0D8B0;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     background: none;
     -webkit-background-clip: unset;
-    -webkit-text-fill-color: #D4A574;
+    -webkit-text-fill-color: #F0D8B0;
     background-clip: unset;
     animation: none;
 }
@@ -3460,16 +3460,18 @@ body.dark-theme .floating-formula {
 
 .points-label {
     font-size: 0.6rem;
-    color: #5f7c8a;
+    color: #f0f0f0;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .points-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #667eea;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .size-display {
@@ -3489,16 +3491,18 @@ body.dark-theme .floating-formula {
 
 .size-label {
     font-size: 0.6rem;
-    color: #5f7c8a;
+    color: #f0f0f0;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .size-value {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #ff9e80;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 /* Game Icons (Right Side) */
@@ -3537,13 +3541,13 @@ body.dark-theme .floating-formula {
 }
 
 .wand-game-btn {
-    width: 90px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
 }
 
 .wand-game-btn svg {
-    width: 80px !important;
-    height: 80px !important;
+    width: 110px !important;
+    height: 110px !important;
 }
 
 .wand-game-btn:hover {
@@ -3555,7 +3559,7 @@ body.dark-theme .floating-formula {
 }
 
 .melody-game-btn img {
-    filter: sepia(100%) saturate(200%) hue-rotate(330deg) brightness(1.1);
+    filter: sepia(100%) saturate(300%) hue-rotate(320deg) brightness(1.2);
 }
 
 .melody-game-btn:hover {
