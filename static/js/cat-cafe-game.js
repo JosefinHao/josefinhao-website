@@ -70,16 +70,14 @@
             }
         }
 
-        // Load cat image - transparent PNG orange cat
+        // Load cat image - local custom cat PNG
         game.images.cat = new Image();
-        game.images.cat.crossOrigin = 'anonymous';
         game.images.cat.onload = imageLoaded;
         game.images.cat.onerror = () => {
             console.log('Cat image failed to load, using fallback');
             imageLoaded();
         };
-        // Using pngimg.com transparent PNG
-        game.images.cat.src = 'https://pngimg.com/uploads/cat/cat_PNG50434.png';
+        game.images.cat.src = '/static/images/cat.png';
 
         // Load cat tree image - transparent PNG
         game.images.catTree = new Image();
