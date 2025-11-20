@@ -1402,8 +1402,8 @@
             imageIndex: imageIndex
         };
 
-        // Very fast speed with gradual difficulty increase
-        const baseSpeed = 2.0 + Math.random() * 1.0; // Start at very fast speed: 2.0-3.0
+        // Moderate speed with gradual difficulty increase
+        const baseSpeed = 1.5 + Math.random() * 0.5; // Start at moderate speed: 1.5-2.0
         const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.15; // Gradual 15% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
