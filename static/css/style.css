@@ -3708,19 +3708,8 @@ body.dark-theme .floating-formula {
     /* Transform origin at the base/handle (top center of SVG) */
     transform-origin: 50% 7.5%; /* 7.5% is where the base circle is in the 200px viewBox (15/200) */
     cursor: pointer;
-    animation: wandFadeIn 0.3s ease;
-    transition: transform 0.15s ease-out;
-}
-
-@keyframes wandFadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 0) rotate(0deg) scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0) rotate(0deg) scale(1);
-    }
+    /* No animation - wand appears instantly at rotated position */
+    transition: none;
 }
 
 .wand:hover {
