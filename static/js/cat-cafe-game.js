@@ -1963,16 +1963,15 @@
         playMeow(index);
         highlightToy(index);
 
-        // Add to player pattern
-        melodyGame.playerPattern.push(index);
-
-        // Check if correct
-        if (melodyGame.playerPattern[melodyGame.currentStep] !== melodyGame.pattern[melodyGame.currentStep]) {
+        // Check if correct BEFORE adding to player pattern
+        if (index !== melodyGame.pattern[melodyGame.currentStep]) {
             // Wrong!
             endMelodyGame(false);
             return;
         }
 
+        // Add to player pattern
+        melodyGame.playerPattern.push(index);
         melodyGame.currentStep++;
 
         // Check if pattern complete
