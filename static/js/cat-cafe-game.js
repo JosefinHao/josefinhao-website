@@ -236,7 +236,7 @@
 
         const container = game.canvas.parentElement;
         game.canvas.width = container.clientWidth;
-        game.canvas.height = Math.max(500, Math.min(700, window.innerHeight - 250));
+        game.canvas.height = container.clientHeight;
         game.width = game.canvas.width;
         game.height = game.canvas.height;
 
