@@ -1012,14 +1012,88 @@ p {
 
 /* Color-code individual project cards by category */
 
+/* Keyframe animations for holographic border effects */
+@keyframes holographic-steel {
+    0% {
+        border-image-source: linear-gradient(0deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%);
+    }
+}
+
+@keyframes holographic-green {
+    0% {
+        border-image-source: linear-gradient(0deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%);
+    }
+}
+
+@keyframes holographic-orange {
+    0% {
+        border-image-source: linear-gradient(0deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%);
+    }
+}
+
+@keyframes holographic-purple {
+    0% {
+        border-image-source: linear-gradient(0deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    25% {
+        border-image-source: linear-gradient(90deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    50% {
+        border-image-source: linear-gradient(180deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    75% {
+        border-image-source: linear-gradient(270deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+    100% {
+        border-image-source: linear-gradient(360deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%);
+    }
+}
+
 /* Current Projects - Steel Blue with Subtle Glow */
 .flip-card-current .flip-card-front {
     background: linear-gradient(135deg, #f0f5fa 0%, #e8eff7 50%, #e0ebf5 100%);
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 25%, #43e97b 50%, #38f9d7 75%, #4facfe 100%) 1;
+    border-image: linear-gradient(135deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%) 1;
     background-clip: padding-box;
+    animation: holographic-steel 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(125, 140, 153, 0.15),
         0 2px 8px rgba(125, 140, 153, 0.1),
@@ -1039,8 +1113,9 @@ p {
 .flip-card-current .flip-card-back {
     background: linear-gradient(135deg, #e8eff7 0%, #dde7f2 50%, #e0ebf5 100%);
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #4facfe 0%, #00f2fe 25%, #43e97b 50%, #38f9d7 75%, #4facfe 100%) 1;
+    border-image: linear-gradient(135deg, #7dd3fc 0%, #3b82f6 20%, #8b5cf6 40%, #60a5fa 60%, #93c5fd 80%, #7dd3fc 100%) 1;
     background-clip: padding-box;
+    animation: holographic-steel 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(125, 140, 153, 0.2),
         0 2px 8px rgba(125, 140, 153, 0.15),
@@ -1062,8 +1137,9 @@ p {
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #34d399 0%, #10b981 25%, #059669 50%, #6ee7b7 75%, #34d399 100%) 1;
+    border-image: linear-gradient(135deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%) 1;
     background-clip: padding-box;
+    animation: holographic-green 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(16, 185, 129, 0.18),
         0 2px 8px rgba(16, 185, 129, 0.12),
@@ -1083,8 +1159,9 @@ p {
 .flip-card-openai .flip-card-back {
     background: linear-gradient(135deg, #e6f5ed 0%, #d9f0e3 50%, #ddf0e6 100%);
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #34d399 0%, #10b981 25%, #059669 50%, #6ee7b7 75%, #34d399 100%) 1;
+    border-image: linear-gradient(135deg, #6ee7b7 0%, #34d399 20%, #10b981 40%, #86efac 60%, #a7f3d0 80%, #6ee7b7 100%) 1;
     background-clip: padding-box;
+    animation: holographic-green 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(16, 185, 129, 0.22),
         0 2px 8px rgba(16, 185, 129, 0.16),
@@ -1106,8 +1183,9 @@ p {
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #fb923c 0%, #ff8c42 25%, #f97316 50%, #fdba74 75%, #fb923c 100%) 1;
+    border-image: linear-gradient(135deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%) 1;
     background-clip: padding-box;
+    animation: holographic-orange 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(255, 140, 66, 0.18),
         0 2px 8px rgba(255, 140, 66, 0.12),
@@ -1127,8 +1205,9 @@ p {
 .flip-card-crewai .flip-card-back {
     background: linear-gradient(135deg, #fff3eb 0%, #ffe9d9 50%, #ffede0 100%);
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #fb923c 0%, #ff8c42 25%, #f97316 50%, #fdba74 75%, #fb923c 100%) 1;
+    border-image: linear-gradient(135deg, #fdba74 0%, #fb923c 20%, #fbbf24 40%, #fcd34d 60%, #fde68a 80%, #fdba74 100%) 1;
     background-clip: padding-box;
+    animation: holographic-orange 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(255, 140, 66, 0.22),
         0 2px 8px rgba(255, 140, 66, 0.16),
@@ -1150,8 +1229,9 @@ p {
     background-size: 200% 200%;
     background-position: 0% 50%;
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 25%, #8b5cf6 50%, #ddd6fe 75%, #c4b5fd 100%) 1;
+    border-image: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%) 1;
     background-clip: padding-box;
+    animation: holographic-purple 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(167, 139, 250, 0.18),
         0 2px 8px rgba(167, 139, 250, 0.12),
@@ -1171,8 +1251,9 @@ p {
 .flip-card-langgraph .flip-card-back {
     background: linear-gradient(135deg, #f3f0ff 0%, #ebe5ff 50%, #ede8ff 100%);
     border: 3px solid transparent;
-    border-image: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 25%, #8b5cf6 50%, #ddd6fe 75%, #c4b5fd 100%) 1;
+    border-image: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 20%, #a78bfa 40%, #e9d5ff 60%, #f3e8ff 80%, #ddd6fe 100%) 1;
     background-clip: padding-box;
+    animation: holographic-purple 8s linear infinite;
     box-shadow:
         0 4px 16px rgba(167, 139, 250, 0.22),
         0 2px 8px rgba(167, 139, 250, 0.16),
