@@ -485,10 +485,26 @@ class BlockchainGame {
 }
 
 // Initialize the game when the page loads
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new BlockchainGame();
-    });
-} else {
-    new BlockchainGame();
+let blockchainGameInstance = null;
+
+function initBlockchainGame() {
+    // Only initialize if we're on the games page and haven't initialized yet
+    const gameElement = document.getElementById('blockchain-chain');
+    if (gameElement && !blockchainGameInstance) {
+        blockchainGameInstance = new BlockchainGame();
+    }
 }
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlockchainGame);
+} else {
+    initBlockchainGame();
+}
+
+// Re-initialize when navigating via SPA
+document.addEventListener('spa-page-loaded', (event) => {
+    if (event.detail.path === '/games') {
+        blockchainGameInstance = null; // Reset instance
+        initBlockchainGame();
+    }
+});
