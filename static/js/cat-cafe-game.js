@@ -41,6 +41,7 @@
             catTree: null,
             couch: null,
             toy: null,
+            background: null,
             loaded: false
         },
         initialized: false,
@@ -59,7 +60,7 @@
 
     function loadImages(callback) {
         let loadedCount = 0;
-        const totalImages = 4;
+        const totalImages = 5;
 
         function imageLoaded() {
             loadedCount++;
@@ -69,6 +70,15 @@
                 callback();
             }
         }
+
+        // Load background image
+        game.images.background = new Image();
+        game.images.background.onload = imageLoaded;
+        game.images.background.onerror = () => {
+            console.log('Background image failed to load, using fallback');
+            imageLoaded();
+        };
+        game.images.background.src = '/static/images/cat_cafe.png';
 
         // Load cat image - local custom cat PNG
         game.images.cat = new Image();
@@ -466,11 +476,8 @@
         // Clear canvas
         ctx.clearRect(0, 0, game.width, game.height);
 
-        // Draw subtle, cozy cafe background
-        drawCozyBackground(ctx);
-
-        // Draw wooden floor
-        drawWoodenFloor(ctx);
+        // Draw cafe background image
+        drawCafeBackground(ctx);
 
         // Draw cafe elements (order matters for layering)
         drawCouches();
@@ -481,75 +488,20 @@
         drawCat();
     }
 
-    function drawCozyBackground(ctx) {
-        // Warm gradient background
-        const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
-        bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
-        bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
-        bgGradient.addColorStop(1, '#e8d5c4');   // Darker tan
-        ctx.fillStyle = bgGradient;
-        ctx.fillRect(0, 0, game.width, game.height);
-
-        // Add subtle texture with very light dots
-        ctx.fillStyle = 'rgba(139, 115, 85, 0.02)';
-        for (let i = 0; i < 200; i++) {
-            const x = Math.random() * game.width;
-            const y = Math.random() * game.height;
-            ctx.beginPath();
-            ctx.arc(x, y, Math.random() * 2, 0, Math.PI * 2);
-            ctx.fill();
+    function drawCafeBackground(ctx) {
+        // Use custom cat cafe background image if loaded
+        if (game.images.background && game.images.background.complete && game.images.background.naturalWidth > 0) {
+            // Draw background image scaled to fit canvas
+            ctx.drawImage(game.images.background, 0, 0, game.width, game.height);
+        } else {
+            // Fallback: Draw gradient background
+            const bgGradient = ctx.createLinearGradient(0, 0, 0, game.height);
+            bgGradient.addColorStop(0, '#fdf6e3');  // Warm cream
+            bgGradient.addColorStop(0.7, '#f5e6d3'); // Beige
+            bgGradient.addColorStop(1, '#e8d5c4');   // Darker tan
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, game.width, game.height);
         }
-
-        // Soft vignette effect
-        const vignette = ctx.createRadialGradient(
-            game.width / 2, game.height / 2, game.height * 0.3,
-            game.width / 2, game.height / 2, game.height * 0.8
-        );
-        vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        vignette.addColorStop(1, 'rgba(101, 67, 33, 0.1)');
-        ctx.fillStyle = vignette;
-        ctx.fillRect(0, 0, game.width, game.height);
-    }
-
-    function drawWoodenFloor(ctx) {
-        const floorHeight = 80;
-        const floorY = game.height - floorHeight;
-
-        // Base floor color
-        const floorGradient = ctx.createLinearGradient(0, floorY, 0, game.height);
-        floorGradient.addColorStop(0, '#a88860');
-        floorGradient.addColorStop(0.5, '#8b7355');
-        floorGradient.addColorStop(1, '#6d5d4b');
-        ctx.fillStyle = floorGradient;
-        ctx.fillRect(0, floorY, game.width, floorHeight);
-
-        // Wood grain effect with planks
-        ctx.strokeStyle = 'rgba(101, 67, 33, 0.2)';
-        ctx.lineWidth = 2;
-        for (let x = 0; x < game.width; x += 120) {
-            ctx.beginPath();
-            ctx.moveTo(x, floorY);
-            ctx.lineTo(x, game.height);
-            ctx.stroke();
-        }
-
-        // Horizontal grain lines
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(101, 67, 33, 0.1)';
-        for (let y = floorY; y < game.height; y += 8) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(game.width, y);
-            ctx.stroke();
-        }
-
-        // Floor edge highlight
-        ctx.strokeStyle = 'rgba(168, 136, 96, 0.5)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(0, floorY);
-        ctx.lineTo(game.width, floorY);
-        ctx.stroke();
     }
 
     function drawCatTrees() {
