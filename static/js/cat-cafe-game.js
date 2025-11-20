@@ -1487,7 +1487,7 @@
         yarnGame.balls = [];
         yarnGame.difficulty = 1;
 
-        document.getElementById('yarnScore').textContent = '0';
+        document.getElementById('yarnScore').textContent = '0.0';
         document.getElementById('yarnLives').textContent = '3';
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
@@ -1598,10 +1598,9 @@
                 ball.flyVelocityY = -15 - Math.random() * 5; // Strong upward velocity
                 ball.opacity = 1;
 
-                yarnGame.score += 0.2;
-                // Round to avoid floating-point precision issues (e.g., 4.000000001)
-                const displayScore = Math.round(yarnGame.score * 10) / 10;
-                document.getElementById('yarnScore').textContent = displayScore.toFixed(1);
+                // Add score and round immediately to avoid floating-point precision issues
+                yarnGame.score = Math.round((yarnGame.score + 0.2) * 10) / 10;
+                document.getElementById('yarnScore').textContent = yarnGame.score.toFixed(1);
 
                 // Increase difficulty gradually every 3 points
                 if (yarnGame.score % 3 === 0) {
@@ -1725,17 +1724,20 @@
         document.getElementById('yarnGameStart').disabled = false;
         document.getElementById('yarnGameStart').textContent = 'Play Again';
 
-        saveYarnScore(yarnGame.score);
+        // Ensure score is rounded before saving and displaying
+        const finalScore = Math.round(yarnGame.score * 10) / 10;
+
+        saveYarnScore(finalScore);
         loadYarnLeaderboard();
         updateYarnBestScore();
 
         // Award points to main game
-        game.points += yarnGame.score;
+        game.points += finalScore;
         updatePointsDisplay();
-        showMessage(`Earned ${yarnGame.score} points from Yarn Ball Bounce!`);
+        showMessage(`Earned ${finalScore.toFixed(1)} points from Yarn Ball Bounce!`);
 
         setTimeout(() => {
-            alert(`Game Over! Your score: ${yarnGame.score}`);
+            alert(`Game Over! Your score: ${finalScore.toFixed(1)}`);
         }, 100);
     }
 
