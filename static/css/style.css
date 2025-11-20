@@ -3858,11 +3858,11 @@ body.dark-theme .floating-formula {
     position: absolute;
     /* Fixed at top center - base of wand stays here */
     left: 50%;
-    top: -10px;
-    width: 180px;
-    height: 240px;
+    top: -35px;
+    width: 250px;
+    height: 320px;
     /* Transform origin at the base/handle (top center) */
-    transform-origin: 50% 10%; /* Positioned closer to top for handle at edge */
+    transform-origin: 50% 8%; /* Positioned at top for handle to touch edge */
     cursor: pointer;
     /* No animation - wand appears instantly at rotated position */
     transition: none;
@@ -3897,7 +3897,7 @@ body.dark-theme .floating-formula {
 
 .cat-paw {
     position: absolute;
-    bottom: -20px;
+    bottom: -50px;
     left: 50%;
     transform: translate(-50%, 0) rotate(0deg);
     width: 100px;
