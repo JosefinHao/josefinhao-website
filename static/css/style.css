@@ -3487,12 +3487,12 @@ body.dark-theme .floating-formula {
 
 .cat-cafe-intro h1 {
     font-size: 2.5rem;
-    color: #E74C5C;
+    color: #D4A574;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     background: none;
     -webkit-background-clip: unset;
-    -webkit-text-fill-color: #E74C5C;
+    -webkit-text-fill-color: #D4A574;
     background-clip: unset;
     animation: none;
 }
@@ -3541,22 +3541,22 @@ body.dark-theme .floating-formula {
 }
 
 .points-display {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
-    padding: 10px 12px;
-    border-radius: 12px;
+    padding: 6px 8px;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(102, 126, 234, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 80px;
+    width: 80px;
+    height: 60px;
 }
 
 .points-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     color: #5f7c8a;
     font-weight: 500;
     text-transform: uppercase;
@@ -3564,28 +3564,28 @@ body.dark-theme .floating-formula {
 }
 
 .points-value {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #667eea;
 }
 
 .size-display {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
-    padding: 10px 12px;
-    border-radius: 12px;
+    padding: 6px 8px;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 2px solid rgba(255, 158, 128, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 80px;
+    width: 80px;
+    height: 60px;
 }
 
 .size-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     color: #5f7c8a;
     font-weight: 500;
     text-transform: uppercase;
@@ -3593,7 +3593,7 @@ body.dark-theme .floating-formula {
 }
 
 .size-value {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #ff9e80;
 }
@@ -3633,12 +3633,26 @@ body.dark-theme .floating-formula {
     transform: scale(0.95);
 }
 
+.wand-game-btn {
+    width: 90px;
+    height: 90px;
+}
+
+.wand-game-btn svg {
+    width: 80px !important;
+    height: 80px !important;
+}
+
 .wand-game-btn:hover {
     transform: scale(1.1) rotate(5deg);
 }
 
 .yarn-game-btn:hover {
     transform: scale(1.1);
+}
+
+.melody-game-btn img {
+    filter: sepia(100%) saturate(200%) hue-rotate(330deg) brightness(1.1);
 }
 
 .melody-game-btn:hover {
@@ -4415,7 +4429,7 @@ body.dark-theme .floating-formula {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(102, 126, 234, 0.95);
+    background: rgba(102, 126, 234, 0.2);
     color: white;
     padding: 1rem 2rem;
     border-radius: 12px;
