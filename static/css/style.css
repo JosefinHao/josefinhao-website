@@ -3390,12 +3390,12 @@ body.dark-theme .floating-formula {
 
 .cat-cafe-intro h1 {
     font-size: 2.5rem;
-    color: #E74C5C;
+    color: #D4A574;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     background: none;
     -webkit-background-clip: unset;
-    -webkit-text-fill-color: #E74C5C;
+    -webkit-text-fill-color: #D4A574;
     background-clip: unset;
     animation: none;
 }
@@ -3536,12 +3536,26 @@ body.dark-theme .floating-formula {
     transform: scale(0.95);
 }
 
+.wand-game-btn {
+    width: 90px;
+    height: 90px;
+}
+
+.wand-game-btn svg {
+    width: 80px !important;
+    height: 80px !important;
+}
+
 .wand-game-btn:hover {
     transform: scale(1.1) rotate(5deg);
 }
 
 .yarn-game-btn:hover {
     transform: scale(1.1);
+}
+
+.melody-game-btn img {
+    filter: sepia(100%) saturate(200%) hue-rotate(330deg) brightness(1.1);
 }
 
 .melody-game-btn:hover {
