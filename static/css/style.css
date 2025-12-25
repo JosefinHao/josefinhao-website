@@ -199,22 +199,18 @@ nav a.active {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--holo-1), var(--holo-2), var(--holo-3));
-    background-size: 200% 200%;
-    animation: holoRotate 10s ease infinite;
+    background: #1a1a2e;
     margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 3rem;
-    font-weight: 300;
     box-shadow:
         0 8px 25px rgba(220, 190, 150, 0.3),
         0 4px 12px rgba(124, 110, 255, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 3px solid transparent;
     position: relative;
+    overflow: hidden;
 }
 
 .profile-photo-placeholder::before {
@@ -228,6 +224,15 @@ nav a.active {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     animation: holoBorderRotate 8s linear infinite;
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes holoRotate {
