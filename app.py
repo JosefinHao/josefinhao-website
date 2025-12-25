@@ -209,10 +209,10 @@ def games():
     """Games page with interactive mini-games"""
     return render_template('games.html')
 
-@app.route('/cat-cafe')
-def cat_cafe():
-    """Cat Cafe interactive experience"""
-    return render_template('cat-cafe.html')
+# @app.route('/cat-cafe')
+# def cat_cafe():
+#     """Cat Cafe interactive experience"""
+#     return render_template('cat-cafe.html')
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
