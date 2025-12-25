@@ -1442,7 +1442,7 @@
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 1100); // Moderate spawn rate (1.1 seconds)
+        }, 950); // Moderate spawn rate (0.95 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1463,8 +1463,8 @@
             imageIndex: imageIndex
         };
 
-        // Moderate speed with gradual difficulty increase
-        const baseSpeed = 1.1 + Math.random() * 0.4; // Start at moderate speed: 1.1-1.5
+        // Moderate-fast speed with gradual difficulty increase
+        const baseSpeed = 1.2 + Math.random() * 0.5; // Start at moderate-fast speed: 1.2-1.7
         const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.1; // Gradual 10% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
@@ -1546,7 +1546,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(600, 1100 - yarnGame.difficulty * 40);
+                        const newInterval = Math.max(550, 950 - yarnGame.difficulty * 40);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -1920,8 +1920,8 @@
 
         // Check if pattern complete
         if (melodyGame.currentStep === melodyGame.pattern.length) {
-            // Correct! Next round
-            melodyGame.score++;
+            // Correct! Award points equal to current round number
+            melodyGame.score += melodyGame.round;
             melodyGame.round++;
 
             document.getElementById('melodyScore').textContent = melodyGame.score;
