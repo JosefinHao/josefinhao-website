@@ -209,7 +209,6 @@ nav a.active {
         0 4px 12px rgba(124, 110, 255, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    overflow: hidden;
 }
 
 .profile-photo-placeholder::before {
@@ -232,6 +231,7 @@ nav a.active {
     object-fit: cover;
     position: relative;
     z-index: 1;
+    overflow: hidden;
 }
 
 @keyframes holoRotate {
