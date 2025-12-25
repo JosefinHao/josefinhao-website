@@ -1920,8 +1920,8 @@
 
         // Check if pattern complete
         if (melodyGame.currentStep === melodyGame.pattern.length) {
-            // Correct! Next round
-            melodyGame.score++;
+            // Correct! Award points equal to current round number
+            melodyGame.score += melodyGame.round;
             melodyGame.round++;
 
             document.getElementById('melodyScore').textContent = melodyGame.score;
