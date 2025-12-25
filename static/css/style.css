@@ -3460,6 +3460,21 @@ body.dark-theme .floating-formula {
 /* CAT CAFE INTERACTIVE PAGE */
 /* ============================================ */
 
+/* Remove white container styling for Cat Cafe page */
+body[data-page="cat-cafe"] .main-container {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    max-width: 100%;
+}
+
+body[data-page="cat-cafe"] .main-container:hover {
+    box-shadow: none;
+}
+
 .cat-cafe-container {
     position: relative;
     width: 100%;
