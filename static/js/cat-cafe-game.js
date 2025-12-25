@@ -1101,12 +1101,12 @@
 
         // Difficulty progression: game gets faster as time goes on
         const timeElapsed = 30 - wandGame.timeLeft;
-        // Start at 0.7 (faster than before), decrease to 0.3 as game progresses (smaller = faster)
+        // Start at 0.55 (even faster), decrease to 0.25 as game progresses (smaller = faster)
         // More gradual progression for better gameplay
-        const speedMultiplier = Math.max(0.3, 0.7 - (timeElapsed / 90));
+        const speedMultiplier = Math.max(0.25, 0.55 - (timeElapsed / 90));
 
-        // Random delay before showing next wand (starts at 300-700ms, faster than before)
-        const baseDelay = 300 + Math.random() * 400;
+        // Random delay before showing next wand (starts at 250-600ms, very fast)
+        const baseDelay = 250 + Math.random() * 350;
         const delay = baseDelay * speedMultiplier;
 
         wandGame.wandTimeout = setTimeout(() => {
@@ -1130,10 +1130,10 @@
                 wandGame.wandVisible = true;
             });
 
-            // Hide wand after a reasonable time (starts at 900-1400ms, gets shorter)
-            // Wands stay visible for moderate time for better challenge
-            const baseVisibleTime = 900 + Math.random() * 500;
-            const visibleTime = baseVisibleTime * Math.max(0.4, speedMultiplier);
+            // Hide wand after a short time (starts at 750-1200ms, gets shorter)
+            // Wands stay visible for short time for real challenge
+            const baseVisibleTime = 750 + Math.random() * 450;
+            const visibleTime = baseVisibleTime * Math.max(0.35, speedMultiplier);
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
@@ -1432,17 +1432,16 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn 3 balls immediately for gentler start
+        // Spawn 2 balls immediately for gentle start
         spawnYarnBall();
-        setTimeout(() => spawnYarnBall(), 300);
-        setTimeout(() => spawnYarnBall(), 600);
+        setTimeout(() => spawnYarnBall(), 400);
 
-        // Spawn balls periodically - slower spawn rate for easier gameplay
+        // Spawn balls periodically - slow spawn rate for easier gameplay
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 1000); // Slower spawn rate (1 second) for easier difficulty
+        }, 1300); // Slow spawn rate (1.3 seconds) for easier difficulty
 
         // Start game loop
         yarnGameLoop();
@@ -1463,9 +1462,9 @@
             imageIndex: imageIndex
         };
 
-        // Slower speed with very gradual difficulty increase
-        const baseSpeed = 1.0 + Math.random() * 0.5; // Start at slower speed: 1.0-1.5
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.1; // Very gradual 10% increase per level
+        // Very slow speed with very gradual difficulty increase
+        const baseSpeed = 0.8 + Math.random() * 0.4; // Start at very slow speed: 0.8-1.2
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.08; // Very gradual 8% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         // Spawn from any edge with random angle across the screen
@@ -1546,7 +1545,7 @@
                     // Update spawn interval for slightly faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(600, 1000 - yarnGame.difficulty * 40);
+                        const newInterval = Math.max(700, 1300 - yarnGame.difficulty * 50);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
