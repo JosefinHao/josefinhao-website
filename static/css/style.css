@@ -3506,7 +3506,7 @@ body.dark-theme .floating-formula {
 
 /* Food Bowl Container (Left Side) */
 .food-bowl-container {
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     z-index: 100;
@@ -3607,7 +3607,7 @@ body.dark-theme .floating-formula {
 
 /* Game Icons (Right Side) */
 .game-icons-right {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
     z-index: 100;
