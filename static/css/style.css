@@ -199,7 +199,7 @@ nav a.active {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    background: #1a1a2e;
+    background: transparent;
     margin: 0 auto 1rem;
     display: flex;
     align-items: center;
@@ -208,7 +208,6 @@ nav a.active {
         0 8px 25px rgba(220, 190, 150, 0.3),
         0 4px 12px rgba(124, 110, 255, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 3px solid transparent;
     position: relative;
     overflow: hidden;
 }
