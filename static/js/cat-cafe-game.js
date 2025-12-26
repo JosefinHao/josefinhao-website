@@ -339,6 +339,32 @@
         }
     }
 
+    function playBounceSound() {
+        try {
+            // Create a short, crisp bounce sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Quick pitch sweep for bounce effect (high to low)
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+            oscillator.type = 'sine';
+
+            // Quick envelope for crisp sound
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.15);
+        } catch (e) {
+            console.error('Bounce sound playback failed:', e);
+        }
+    }
+
     function isCursorOverCat(x, y) {
         const catSize = game.cat.size * game.catSize;
         const catRadius = catSize / 2;
@@ -1156,6 +1182,9 @@
         wandGame.score++;
         document.getElementById('wandScore').textContent = wandGame.score;
 
+        // Play meow sound on successful hit
+        playMeowSound();
+
         // Add hit effect to paw
         const catPaw = document.getElementById('catPaw');
         if (catPaw) {
@@ -1531,6 +1560,10 @@
             if (dist < clickRadius) {
                 // Hit! Make ball fly away with animation
                 console.log('Ball clicked!');
+
+                // Play bounce sound on successful hit
+                playBounceSound();
+
                 ball.flyingAway = true;
                 ball.flyVelocityX = (x - ball.x) * 0.3;
                 ball.flyVelocityY = -15 - Math.random() * 5; // Strong upward velocity
