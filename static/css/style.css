@@ -25,9 +25,25 @@
     box-sizing: border-box;
 }
 
+/* Prevent images and content from overflowing */
+img,
+video,
+iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+pre,
+code {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
 /* Ensure consistent background during page loads */
 html {
     background-color: #f8fafc;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* Smooth theme transitions */
@@ -53,6 +69,8 @@ body {
     animation: holoShift 20s ease infinite;
     min-height: 100vh;
     position: relative;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 @keyframes holoShift {
@@ -91,6 +109,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
 }
 
 /* Removed holoBorderShift animation - no longer needed */
@@ -205,6 +224,7 @@ nav a.active {
     align-items: start;
     /* Prevent grid children from overflowing */
     max-width: 100%;
+    width: 100%;
 }
 
 /* Enhanced Glassmorphism Profile Section with Holographic Border */
@@ -1500,7 +1520,8 @@ p {
 @media (max-width: 768px) {
     .home-layout {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
+        width: 100%;
     }
 
     .profile-section {
@@ -1557,6 +1578,14 @@ p {
 
     h1 {
         font-size: 1.6rem;
+    }
+
+    /* Main container mobile adjustments */
+    .main-container {
+        padding: 1rem;
+        margin: 0.5rem;
+        border-radius: 16px;
+        width: calc(100% - 1rem);
     }
 
     /* Chat widget responsive */
