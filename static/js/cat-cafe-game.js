@@ -1876,10 +1876,6 @@
         melodyGame.playerPattern = [];
         melodyGame.currentStep = 0;
 
-        console.log('=== GAME STARTED ===');
-        console.log('Initial pattern:', melodyGame.pattern);
-        console.log('Round:', melodyGame.round);
-
         document.getElementById('melodyRound').textContent = '1';
         document.getElementById('melodyScore').textContent = '0';
         document.getElementById('melodyGameStart').disabled = true;
@@ -1939,13 +1935,6 @@
     function handleToyClick(index) {
         if (!melodyGame.isPlaying || melodyGame.isShowingPattern) return;
 
-        console.log('=== TOY CLICKED ===');
-        console.log('Clicked toy index:', index);
-        console.log('Current step:', melodyGame.currentStep);
-        console.log('Expected toy:', melodyGame.pattern[melodyGame.currentStep]);
-        console.log('Full pattern:', melodyGame.pattern);
-        console.log('Player pattern so far:', melodyGame.playerPattern);
-
         // Play sound and highlight
         playMeow(index);
         highlightToy(index);
@@ -1953,12 +1942,10 @@
         // Check if correct BEFORE adding to player pattern
         if (index !== melodyGame.pattern[melodyGame.currentStep]) {
             // Wrong!
-            console.log('WRONG! Ending game.');
             endMelodyGame(false);
             return;
         }
 
-        console.log('CORRECT! Continuing...');
         // Add to player pattern (only if correct)
         melodyGame.playerPattern.push(index);
         melodyGame.currentStep++;
