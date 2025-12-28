@@ -1217,6 +1217,30 @@
         e.stopPropagation();
 
         const wand = document.getElementById('wand');
+        const rect = wand.getBoundingClientRect();
+
+        // Get click position relative to wand element
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+
+        // Calculate distance from transform origin (handle at top center)
+        // The wand is 250px wide and 320px tall, transform-origin is at 50% 8%
+        const originX = rect.width / 2;
+        const originY = rect.height * 0.08;
+
+        const distanceFromOrigin = Math.sqrt(
+            Math.pow(clickX - originX, 2) +
+            Math.pow(clickY - originY, 2)
+        );
+
+        // Only count clicks that are at least 180px away from the handle (feather area)
+        // This prevents clicking on the stick/handle near the center
+        const minDistance = 180;
+
+        if (distanceFromOrigin < minDistance) {
+            // Clicked on handle/stick, not the feathers - don't count it
+            return;
+        }
 
         // Score!
         wandGame.score++;
