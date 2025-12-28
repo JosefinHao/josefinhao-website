@@ -302,7 +302,7 @@
             updateCatSizeDisplay();
 
             // Show feeding animation or message
-            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)} | Hunger: ${Math.floor(game.catHunger)}%`);
+            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)}`);
         } else {
             showMessage(`Need ${FOOD_COST} points to feed the cat!`);
         }
@@ -425,9 +425,6 @@
             game.dragOffset.x = x - game.cat.x;
             game.dragOffset.y = y - game.cat.y;
             game.canvas.style.cursor = 'grabbing';
-
-            // Play meow sound when picking up the cat
-            playMeowSound();
         }
     }
 
@@ -471,9 +468,6 @@
             game.isDraggingCat = true;
             game.dragOffset.x = x - game.cat.x;
             game.dragOffset.y = y - game.cat.y;
-
-            // Play meow sound when picking up the cat
-            playMeowSound();
         }
     }
 
