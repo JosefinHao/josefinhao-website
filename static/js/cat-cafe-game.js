@@ -385,9 +385,6 @@
             game.dragOffset.x = x - game.cat.x;
             game.dragOffset.y = y - game.cat.y;
             game.canvas.style.cursor = 'grabbing';
-
-            // Play meow sound when picking up the cat
-            playMeowSound();
         }
     }
 
@@ -429,9 +426,6 @@
             game.isDraggingCat = true;
             game.dragOffset.x = x - game.cat.x;
             game.dragOffset.y = y - game.cat.y;
-
-            // Play meow sound when picking up the cat
-            playMeowSound();
         }
     }
 
