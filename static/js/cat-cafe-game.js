@@ -329,13 +329,53 @@
 
     function playMeowSound() {
         try {
-            // Use HTML5 Audio with a cat meow sound
-            // Using a free cat meow sound from freesound.org (Public Domain)
-            const audio = new Audio('https://freesound.org/data/previews/634/634537_12517018-lq.mp3');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log('Audio playback failed:', e));
+            // Create a pleasant cat meow sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Create two oscillators for a richer, more pleasant sound
+            const osc1 = audioContext.createOscillator();
+            const osc2 = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const gain2 = audioContext.createGain();
+            const masterGain = audioContext.createGain();
+
+            osc1.connect(gainNode);
+            osc2.connect(gain2);
+            gainNode.connect(masterGain);
+            gain2.connect(masterGain);
+            masterGain.connect(audioContext.destination);
+
+            // Main oscillator: gentle sine wave for soft meow
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(800, audioContext.currentTime);
+            osc1.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.12);
+            osc1.frequency.exponentialRampToValueAtTime(450, audioContext.currentTime + 0.25);
+
+            // Second oscillator: adds warmth at a lower octave
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(400, audioContext.currentTime);
+            osc2.frequency.exponentialRampToValueAtTime(250, audioContext.currentTime + 0.12);
+            osc2.frequency.exponentialRampToValueAtTime(225, audioContext.currentTime + 0.25);
+
+            // Volume envelope for natural, pleasant meow
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.04);
+            gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.15);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.28);
+
+            gain2.gain.setValueAtTime(0, audioContext.currentTime);
+            gain2.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.04);
+            gain2.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.15);
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.28);
+
+            masterGain.gain.setValueAtTime(0.6, audioContext.currentTime);
+
+            osc1.start(audioContext.currentTime);
+            osc2.start(audioContext.currentTime);
+            osc1.stop(audioContext.currentTime + 0.3);
+            osc2.stop(audioContext.currentTime + 0.3);
         } catch (e) {
-            console.log('Audio not supported:', e);
+            console.error('Meow sound playback failed:', e);
         }
     }
 
@@ -415,13 +455,15 @@
     }
 
     function handleTouchStart(e) {
-        e.preventDefault();
         const touch = e.touches[0];
         const rect = game.canvas.getBoundingClientRect();
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
 
         if (isCursorOverCat(x, y)) {
+            // Only prevent default when touching the cat (allows scrolling on empty areas)
+            e.preventDefault();
+
             // Start dragging the cat
             game.isDraggingCat = true;
             game.dragOffset.x = x - game.cat.x;
@@ -430,9 +472,10 @@
     }
 
     function handleTouchMove(e) {
-        e.preventDefault();
-
+        // Only prevent default when actually dragging (allows scrolling otherwise)
         if (game.isDraggingCat && e.touches.length > 0) {
+            e.preventDefault();
+
             const touch = e.touches[0];
             const rect = game.canvas.getBoundingClientRect();
             const x = touch.clientX - rect.left;
@@ -1121,12 +1164,12 @@
 
         // Difficulty progression: game gets faster as time goes on
         const timeElapsed = 30 - wandGame.timeLeft;
-        // Start at 0.65 (moderate pace), decrease to 0.35 as game progresses
-        // Balanced progression for good challenge
-        const speedMultiplier = Math.max(0.35, 0.65 - (timeElapsed / 90));
+        // Start at 0.75 (faster pace), decrease to 0.4 as game progresses
+        // Good challenge with steady progression
+        const speedMultiplier = Math.max(0.4, 0.75 - (timeElapsed / 85));
 
-        // Random delay before showing next wand (starts at 350-650ms, moderate speed)
-        const baseDelay = 350 + Math.random() * 300;
+        // Random delay before showing next wand (starts at 350-600ms, faster speed)
+        const baseDelay = 350 + Math.random() * 250;
         const delay = baseDelay * speedMultiplier;
 
         wandGame.wandTimeout = setTimeout(() => {
@@ -1150,9 +1193,9 @@
                 wandGame.wandVisible = true;
             });
 
-            // Hide wand after moderate time (starts at 900-1300ms, gets shorter)
-            // Wands stay visible for balanced challenge
-            const baseVisibleTime = 900 + Math.random() * 400;
+            // Hide wand after shorter time (starts at 850-1250ms, gets shorter)
+            // Faster challenge for more engaging gameplay
+            const baseVisibleTime = 850 + Math.random() * 400;
             const visibleTime = baseVisibleTime * Math.max(0.45, speedMultiplier);
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
@@ -1933,16 +1976,15 @@
         playMeow(index);
         highlightToy(index);
 
-        // Add to player pattern
-        melodyGame.playerPattern.push(index);
-
-        // Check if correct
-        if (melodyGame.playerPattern[melodyGame.currentStep] !== melodyGame.pattern[melodyGame.currentStep]) {
+        // Check if correct BEFORE adding to player pattern
+        if (index !== melodyGame.pattern[melodyGame.currentStep]) {
             // Wrong!
             endMelodyGame(false);
             return;
         }
 
+        // Add to player pattern (only if correct)
+        melodyGame.playerPattern.push(index);
         melodyGame.currentStep++;
 
         // Check if pattern complete
