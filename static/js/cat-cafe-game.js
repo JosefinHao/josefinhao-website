@@ -418,13 +418,15 @@
     }
 
     function handleTouchStart(e) {
-        e.preventDefault();
         const touch = e.touches[0];
         const rect = game.canvas.getBoundingClientRect();
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
 
         if (isCursorOverCat(x, y)) {
+            // Only prevent default when touching the cat (allows scrolling on empty areas)
+            e.preventDefault();
+
             // Start dragging the cat
             game.isDraggingCat = true;
             game.dragOffset.x = x - game.cat.x;
@@ -436,9 +438,10 @@
     }
 
     function handleTouchMove(e) {
-        e.preventDefault();
-
+        // Only prevent default when actually dragging (allows scrolling otherwise)
         if (game.isDraggingCat && e.touches.length > 0) {
+            e.preventDefault();
+
             const touch = e.touches[0];
             const rect = game.canvas.getBoundingClientRect();
             const x = touch.clientX - rect.left;
