@@ -1164,12 +1164,12 @@
 
         // Difficulty progression: game gets faster as time goes on
         const timeElapsed = 30 - wandGame.timeLeft;
-        // Start at 0.75 (faster pace), decrease to 0.4 as game progresses
+        // Start at 0.8 (moderate-fast pace), decrease to 0.45 as game progresses
         // Good challenge with steady progression
-        const speedMultiplier = Math.max(0.4, 0.75 - (timeElapsed / 85));
+        const speedMultiplier = Math.max(0.45, 0.8 - (timeElapsed / 85));
 
-        // Random delay before showing next wand (starts at 350-600ms, faster speed)
-        const baseDelay = 350 + Math.random() * 250;
+        // Random delay before showing next wand (starts at 400-650ms, moderate-fast speed)
+        const baseDelay = 400 + Math.random() * 250;
         const delay = baseDelay * speedMultiplier;
 
         wandGame.wandTimeout = setTimeout(() => {
@@ -1193,10 +1193,10 @@
                 wandGame.wandVisible = true;
             });
 
-            // Hide wand after shorter time (starts at 850-1250ms, gets shorter)
-            // Faster challenge for more engaging gameplay
-            const baseVisibleTime = 850 + Math.random() * 400;
-            const visibleTime = baseVisibleTime * Math.max(0.45, speedMultiplier);
+            // Hide wand after moderate time (starts at 900-1300ms, gets shorter)
+            // Balanced challenge for engaging gameplay
+            const baseVisibleTime = 900 + Math.random() * 400;
+            const visibleTime = baseVisibleTime * Math.max(0.48, speedMultiplier);
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
@@ -1214,6 +1214,30 @@
         e.stopPropagation();
 
         const wand = document.getElementById('wand');
+        const rect = wand.getBoundingClientRect();
+
+        // Get click position relative to wand element
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+
+        // Calculate distance from transform origin (handle at top center)
+        // The wand is 250px wide and 320px tall, transform-origin is at 50% 8%
+        const originX = rect.width / 2;
+        const originY = rect.height * 0.08;
+
+        const distanceFromOrigin = Math.sqrt(
+            Math.pow(clickX - originX, 2) +
+            Math.pow(clickY - originY, 2)
+        );
+
+        // Only count clicks that are at least 180px away from the handle (feather area)
+        // This prevents clicking on the stick/handle near the center
+        const minDistance = 180;
+
+        if (distanceFromOrigin < minDistance) {
+            // Clicked on handle/stick, not the feathers - don't count it
+            return;
+        }
 
         // Score!
         wandGame.score++;
