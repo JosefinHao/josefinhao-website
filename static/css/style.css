@@ -3983,7 +3983,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     position: absolute;
     /* Fixed at top center - base of wand stays here */
     left: 50%;
-    top: -35px;
+    top: -26px;
     width: 250px;
     height: 320px;
     /* Transform origin at the base/handle (top center) */
