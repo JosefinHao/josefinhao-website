@@ -1509,12 +1509,12 @@
         setTimeout(() => spawnYarnBall(), 250);
         setTimeout(() => spawnYarnBall(), 500);
 
-        // Spawn balls periodically - very slow spawn rate for relaxed gameplay
+        // Spawn balls periodically - balanced spawn rate for engaging gameplay
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 2000); // Very slow spawn rate (2.0 seconds)
+        }, 1200); // Balanced spawn rate (1.2 seconds)
 
         // Start game loop
         yarnGameLoop();
@@ -1535,9 +1535,9 @@
             imageIndex: imageIndex
         };
 
-        // Much slower speed with minimal difficulty increase
-        const baseSpeed = 0.5 + Math.random() * 0.25; // Start at very slow speed: 0.5-0.75
-        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.05; // Very slow 5% increase per level
+        // Moderate speed with balanced difficulty increase
+        const baseSpeed = 0.9 + Math.random() * 0.4; // Balanced speed: 0.9-1.3
+        const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.07; // Balanced 7% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
         // Spawn from any edge with random angle across the screen
@@ -1622,7 +1622,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(1200, 2000 - yarnGame.difficulty * 50);
+                        const newInterval = Math.max(700, 1200 - yarnGame.difficulty * 40);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
