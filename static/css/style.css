@@ -2675,8 +2675,9 @@ body.dark-theme .theme-name {
     overflow: hidden;
     z-index: 1;
     pointer-events: none;
-    /* Add padding to prevent formulas from being cut off at edges */
-    padding: 20px;
+    /* Remove padding on mobile to prevent overflow */
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .floating-formula {
@@ -2785,17 +2786,28 @@ body.dark-theme .floating-formula {
 /* Responsive - reduce formula size on mobile */
 @media (max-width: 768px) {
     .floating-formulas-container {
-        padding: 10px;
+        padding: 0;
+        /* Ensure formulas stay within viewport on mobile */
+        max-width: 100vw;
+        max-height: 100vh;
     }
 
     .floating-formula {
         font-size: 0.7rem;
-        max-width: calc(100vw - 40px);
+        max-width: 90vw;
+        /* Scale down formulas more on mobile */
+        --formula-scale: 0.5;
     }
 
     .floating-formula[data-category="neural"],
     .floating-formula[data-category="bayesian"] {
         font-size: 0.75rem;
+        --formula-scale: 0.52;
+    }
+
+    .floating-formula[data-category="finance"],
+    .floating-formula[data-category="clustering"] {
+        --formula-scale: 0.48;
     }
 }
 
