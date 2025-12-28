@@ -3861,8 +3861,10 @@ body[data-page="cat-cafe"] .main-container:hover {
     backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 2rem;
+    overflow-y: auto;
     animation: fadeIn 0.3s ease;
 }
 
@@ -3877,11 +3879,12 @@ body[data-page="cat-cafe"] .main-container:hover {
     padding: 1.5rem;
     max-width: 500px;
     width: 90%;
-    max-height: 85vh;
+    max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
     animation: slideUp 0.3s ease;
+    margin-bottom: 2rem;
 }
 
 @keyframes slideUp {
@@ -4162,8 +4165,10 @@ body[data-page="cat-cafe"] .main-container:hover {
     backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 2rem;
+    overflow-y: auto;
     animation: fadeIn 0.3s ease;
 }
 
@@ -4173,11 +4178,12 @@ body[data-page="cat-cafe"] .main-container:hover {
     padding: 1.5rem;
     max-width: 500px;
     width: 90%;
-    max-height: 85vh;
+    max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
     animation: slideUp 0.3s ease;
+    margin-bottom: 2rem;
 }
 
 .yarn-game-close {
@@ -4329,8 +4335,10 @@ body[data-page="cat-cafe"] .main-container:hover {
     backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 2rem;
+    overflow-y: auto;
     animation: fadeIn 0.3s ease;
 }
 
@@ -4340,11 +4348,12 @@ body[data-page="cat-cafe"] .main-container:hover {
     padding: 1.5rem;
     max-width: 500px;
     width: 90%;
-    max-height: 85vh;
+    max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
     animation: slideUp 0.3s ease;
+    margin-bottom: 2rem;
 }
 
 .melody-game-close {
