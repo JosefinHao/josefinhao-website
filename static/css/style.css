@@ -4625,44 +4625,61 @@ body[data-page="cat-cafe"] .main-container:hover {
 @media (max-width: 768px) {
     .cat-cafe-intro {
         padding: 0.5rem;
-        top: 5px;
-        width: calc(100% - 10px);
+        /* Move below the top controls to avoid collision */
+        top: 85px;
+        width: calc(100% - 20px);
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .cat-cafe-intro h1 {
-        font-size: 1.5rem;
-        margin-bottom: 0.25rem;
+        font-size: 1.3rem;
+        margin-bottom: 0.2rem;
     }
 
     .cat-cafe-intro p {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
 
     .food-bowl-container {
         top: 10px;
-        left: 10px;
-        width: 70px;
-        gap: 8px;
+        left: 5px;
+        width: 60px;
+        gap: 6px;
     }
 
     .food-bowl-btn {
-        width: 70px;
-        height: 60px;
-        font-size: 1rem;
+        width: 60px;
+        height: 50px;
+        font-size: 0.9rem;
     }
 
     .points-display {
-        width: 65px;
-        height: 50px;
-        padding: 4px 6px;
+        width: 55px;
+        height: 45px;
+        padding: 3px 5px;
     }
 
     .points-label {
-        font-size: 0.55rem;
+        font-size: 0.5rem;
     }
 
     .points-value {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+    }
+
+    .size-display {
+        width: 55px;
+        height: 45px;
+        padding: 3px 5px;
+    }
+
+    .size-label {
+        font-size: 0.5rem;
+    }
+
+    .size-value {
+        font-size: 0.85rem;
     }
 
     .game-icons-left {
@@ -4671,9 +4688,31 @@ body[data-page="cat-cafe"] .main-container:hover {
         gap: 8px;
     }
 
+    .game-icons-right {
+        top: 10px;
+        right: 5px;
+        width: 65px;
+        gap: 6px;
+    }
+
     .game-icon-btn {
-        width: 42px;
-        height: 42px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .game-icon-btn img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .wand-game-btn {
+        width: 50px;
+        height: 50px;
+    }
+
+    .wand-game-btn img {
+        width: 45px !important;
+        height: 45px !important;
     }
 
     .game-icon-btn svg {
@@ -4683,17 +4722,17 @@ body[data-page="cat-cafe"] .main-container:hover {
 
     .color-picker-container {
         top: 10px;
-        right: 10px;
+        right: 5px;
     }
 
     .color-picker-btn {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
     }
 
     .color-picker-btn svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
     }
 
     .cafe-instructions {
