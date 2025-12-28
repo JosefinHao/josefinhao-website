@@ -302,7 +302,7 @@
             updateCatSizeDisplay();
 
             // Show feeding animation or message
-            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)} | Hunger: ${Math.floor(game.catHunger)}%`);
+            showMessage(`Fed the cat! Size: ${game.catSize.toFixed(1)}`);
         } else {
             showMessage(`Need ${FOOD_COST} points to feed the cat!`);
         }
