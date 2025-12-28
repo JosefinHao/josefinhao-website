@@ -1224,9 +1224,9 @@
         const clickY = e.clientY - rect.top;
 
         // Calculate distance from transform origin (handle at top center)
-        // The wand is 250px wide and 320px tall, transform-origin is at 50% 8%
+        // The wand is 250px wide and 320px tall, transform-origin is at 50% 0%
         const originX = rect.width / 2;
-        const originY = rect.height * 0.08;
+        const originY = 0;
 
         const distanceFromOrigin = Math.sqrt(
             Math.pow(clickX - originX, 2) +
