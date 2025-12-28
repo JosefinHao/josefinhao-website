@@ -329,13 +329,30 @@
 
     function playMeowSound() {
         try {
-            // Use HTML5 Audio with a cat meow sound
-            // Using a free cat meow sound from freesound.org (Public Domain)
-            const audio = new Audio('https://freesound.org/data/previews/634/634537_12517018-lq.mp3');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log('Audio playback failed:', e));
+            // Create a cat meow sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Cat-like meow: slide from high to mid-low frequency
+            oscillator.frequency.setValueAtTime(900, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.15);
+            oscillator.frequency.exponentialRampToValueAtTime(350, audioContext.currentTime + 0.35);
+            oscillator.type = 'sawtooth'; // Richer tone for cat-like sound
+
+            // Volume envelope for natural meow sound
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.05);
+            gainNode.gain.linearRampToValueAtTime(0.25, audioContext.currentTime + 0.2);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.4);
         } catch (e) {
-            console.log('Audio not supported:', e);
+            console.error('Meow sound playback failed:', e);
         }
     }
 
@@ -1130,12 +1147,12 @@
 
         // Difficulty progression: game gets faster as time goes on
         const timeElapsed = 30 - wandGame.timeLeft;
-        // Start at 1.0 (slower pace), decrease to 0.6 as game progresses
-        // More relaxed progression for better playability
-        const speedMultiplier = Math.max(0.6, 1.0 - (timeElapsed / 90));
+        // Start at 0.85 (moderate pace), decrease to 0.5 as game progresses
+        // Balanced progression for good playability
+        const speedMultiplier = Math.max(0.5, 0.85 - (timeElapsed / 90));
 
-        // Random delay before showing next wand (starts at 600-1000ms, slower speed)
-        const baseDelay = 600 + Math.random() * 400;
+        // Random delay before showing next wand (starts at 450-750ms, moderate speed)
+        const baseDelay = 450 + Math.random() * 300;
         const delay = baseDelay * speedMultiplier;
 
         wandGame.wandTimeout = setTimeout(() => {
@@ -1159,10 +1176,10 @@
                 wandGame.wandVisible = true;
             });
 
-            // Hide wand after longer time (starts at 1200-1800ms, gets shorter)
-            // Wands stay visible longer for more relaxed gameplay
-            const baseVisibleTime = 1200 + Math.random() * 600;
-            const visibleTime = baseVisibleTime * Math.max(0.6, speedMultiplier);
+            // Hide wand after moderate time (starts at 1000-1500ms, gets shorter)
+            // Wands stay visible for balanced gameplay
+            const baseVisibleTime = 1000 + Math.random() * 500;
+            const visibleTime = baseVisibleTime * Math.max(0.5, speedMultiplier);
             wandGame.hideTimeout = setTimeout(() => {
                 if (wandGame.wandVisible && wandGame.isPlaying) {
                     wand.style.display = 'none';
