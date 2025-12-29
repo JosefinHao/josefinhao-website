@@ -4651,9 +4651,9 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .food-bowl-container {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
+        position: fixed !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
         left: 5px;
         width: 60px;
         gap: 6px;
@@ -4700,9 +4700,9 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .game-icons-right {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
+        position: fixed !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
         right: 5px;
         width: 65px;
         gap: 6px;
