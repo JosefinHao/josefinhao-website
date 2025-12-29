@@ -4013,6 +4013,8 @@ body[data-page="cat-cafe"] .main-container:hover {
     height: 320px;
     /* Transform origin at the base/handle (top center) */
     transform-origin: 50% 0; /* Handle positioned exactly at top edge */
+    /* Center the wand horizontally at top center */
+    transform: translate(-50%, 0);
     cursor: pointer;
     /* No animation - wand appears instantly at rotated position */
     transition: none;
@@ -4828,6 +4830,8 @@ body[data-page="cat-cafe"] .main-container:hover {
         top: 0;
         left: 50%;
         transform-origin: 50% 0;
+        /* Ensure wand stays centered horizontally */
+        transform: translate(-50%, 0);
     }
 
     #yarnCanvas {
