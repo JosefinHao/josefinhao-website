@@ -3595,7 +3595,8 @@ body[data-page="cat-cafe"] .main-container {
     border-radius: 0;
     border: none;
     box-shadow: none;
-    max-width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 body[data-page="cat-cafe"] .main-container:hover {
@@ -3605,12 +3606,14 @@ body[data-page="cat-cafe"] .main-container:hover {
 .cat-cafe-container {
     position: relative;
     width: 100%;
+    max-width: 100vw;
     min-height: 100vh;
     height: 150vh;
     background-image: url('/static/images/cat_cafe.png');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
+    overflow-x: hidden;
 }
 
 .cat-cafe-intro {
@@ -3861,6 +3864,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     top: 0;
     left: 0;
     width: 100%;
+    max-width: 100vw;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(8px);
@@ -3870,6 +3874,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     justify-content: center;
     padding-top: 2rem;
     overflow-y: auto;
+    overflow-x: hidden;
     animation: fadeIn 0.3s ease;
 }
 
@@ -4165,6 +4170,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     top: 0;
     left: 0;
     width: 100%;
+    max-width: 100vw;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(8px);
@@ -4174,6 +4180,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     justify-content: center;
     padding-top: 2rem;
     overflow-y: auto;
+    overflow-x: hidden;
     animation: fadeIn 0.3s ease;
 }
 
@@ -4335,6 +4342,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     top: 0;
     left: 0;
     width: 100%;
+    max-width: 100vw;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(8px);
@@ -4344,6 +4352,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     justify-content: center;
     padding-top: 2rem;
     overflow-y: auto;
+    overflow-x: hidden;
     animation: fadeIn 0.3s ease;
 }
 
@@ -4573,6 +4582,7 @@ body[data-page="cat-cafe"] .main-container:hover {
 /* Main Canvas */
 #cat-cafe-canvas {
     width: 100%;
+    max-width: 100vw;
     height: 100%;
     border-radius: 12px;
     background: transparent;
