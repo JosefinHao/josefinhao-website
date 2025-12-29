@@ -3591,6 +3591,8 @@ body[data-page="cat-cafe"] .main-container {
     border: none;
     box-shadow: none;
     max-width: 100%;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 
 body[data-page="cat-cafe"] .main-container:hover {
