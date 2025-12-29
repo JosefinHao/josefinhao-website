@@ -2357,7 +2357,6 @@ p {
 /* ============================================ */
 
 .game-modal {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -2366,11 +2365,19 @@ p {
     z-index: 2000;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+
+    /* Use opacity and visibility for smooth transitions */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 /* When modal is shown */
 .game-modal.show {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .game-modal-content {
@@ -2396,11 +2403,9 @@ p {
 
 @keyframes modalFadeIn {
     from {
-        opacity: 0;
         transform: translate(-50%, -50%) scale(0.95);
     }
     to {
-        opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
 }
@@ -2531,11 +2536,9 @@ p {
     /* Fix animation on mobile */
     @keyframes modalFadeIn {
         from {
-            opacity: 0;
             transform: translate(-50%, -50%) scale(0.95);
         }
         to {
-            opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
     }
