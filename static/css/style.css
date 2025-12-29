@@ -4008,11 +4008,11 @@ body[data-page="cat-cafe"] .main-container:hover {
     position: absolute;
     /* Fixed at top center - base of wand stays here */
     left: 50%;
-    top: 0;
+    top: -156px; /* Offset to position stick end at top (accounts for SVG viewBox padding) */
     width: 250px;
     height: 320px;
-    /* Transform origin at the base/handle (top center) */
-    transform-origin: 50% 0; /* Handle positioned exactly at top edge */
+    /* Transform origin at where the stick end actually is in the container */
+    transform-origin: 50% 156px; /* Stick is 156px down from container top due to SVG viewBox */
     /* Center the wand horizontally at top center */
     transform: translate(-50%, 0);
     cursor: pointer;
@@ -4827,10 +4827,11 @@ body[data-page="cat-cafe"] .main-container:hover {
     .wand {
         width: 156px;  /* 250px * 0.625 */
         height: 200px; /* 320px * 0.625 */
-        /* Keep stick at top center */
-        top: 0;
+        /* Offset to position stick end at top (accounts for SVG viewBox padding on mobile) */
+        top: -97px;
         left: 50%;
-        transform-origin: 50% 0;
+        /* Transform origin at where the stick end actually is in the mobile container */
+        transform-origin: 50% 97px;
         /* Ensure wand stays centered horizontally */
         transform: translate(-50%, 0);
     }
