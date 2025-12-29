@@ -4661,6 +4661,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .cat-cafe-intro {
+        position: fixed;
         padding: 0.5rem;
         /* Move below the top controls to avoid collision */
         top: 85px;
@@ -4679,6 +4680,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .food-bowl-container {
+        position: fixed;
         top: 10px;
         left: 5px;
         width: 60px;
@@ -4726,6 +4728,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .game-icons-right {
+        position: fixed;
         top: 10px;
         right: 5px;
         width: 65px;
