@@ -4820,6 +4820,16 @@ body[data-page="cat-cafe"] .main-container:hover {
         height: 200px;
     }
 
+    /* Scale down wand on mobile to fit within game area */
+    .wand {
+        width: 156px;  /* 250px * 0.625 */
+        height: 200px; /* 320px * 0.625 */
+        /* Keep stick at top center */
+        top: 0;
+        left: 50%;
+        transform-origin: 50% 0;
+    }
+
     #yarnCanvas {
         /* Maintain aspect ratio on mobile */
     }
