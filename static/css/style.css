@@ -4664,6 +4664,7 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .cat-cafe-intro {
+        position: fixed;
         padding: 0.5rem;
         /* Move below the top controls to avoid collision */
         top: 85px;
