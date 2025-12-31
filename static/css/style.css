@@ -4008,11 +4008,11 @@ body[data-page="cat-cafe"] .main-container:hover {
     position: absolute;
     /* Fixed at top center - base of wand stays here */
     left: 50%;
-    top: -156px; /* Offset to position stick end at top (accounts for SVG viewBox padding) */
-    width: 250px;
-    height: 320px;
+    top: -218px; /* Offset to position stick end at top (accounts for SVG viewBox padding, scaled 1.4x) */
+    width: 350px; /* Increased from 250px for better proportion with cat paw */
+    height: 448px; /* Increased from 320px (1.4x scale) */
     /* Transform origin at where the stick end actually is in the container */
-    transform-origin: 50% 156px; /* Stick is 156px down from container top due to SVG viewBox */
+    transform-origin: 50% 218px; /* Stick position scaled 1.4x (156px * 1.4) */
     /* Center the wand horizontally at top center */
     transform: translate(-50%, 0);
     cursor: pointer;
@@ -4820,18 +4820,18 @@ body[data-page="cat-cafe"] .main-container:hover {
     }
 
     .wand-game-area {
-        height: 200px;
+        height: 280px; /* Increased from 200px for larger wand */
     }
 
     /* Scale down wand on mobile to fit within game area */
     .wand {
-        width: 156px;  /* 250px * 0.625 */
-        height: 200px; /* 320px * 0.625 */
+        width: 218px;  /* 350px * 0.625 - larger for better proportion */
+        height: 280px; /* 448px * 0.625 - scaled to fit game area */
         /* Offset to position stick end at top (accounts for SVG viewBox padding on mobile) */
-        top: -97px;
+        top: -136px; /* 218px * 0.625 (scaled from desktop 218px) */
         left: 50%;
         /* Transform origin at where the stick end actually is in the mobile container */
-        transform-origin: 50% 97px;
+        transform-origin: 50% 136px; /* Scaled from desktop 218px */
         /* Ensure wand stays centered horizontally */
         transform: translate(-50%, 0);
     }

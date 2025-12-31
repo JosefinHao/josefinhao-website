@@ -1220,22 +1220,22 @@
         const clickX = e.clientX - rect.left;
         const clickY = e.clientY - rect.top;
 
-        // Calculate distance from transform origin (handle at top center)
-        // The wand is 250px wide and 320px tall, transform-origin is at 50% 0%
+        // Calculate distance from transform origin (stick end at top center)
+        // Transform origin is at 50% and 48.75% of height (156px/320px or 97px/200px)
         const originX = rect.width / 2;
-        const originY = 0;
+        const originY = rect.height * 0.4875; // Stick end position as ratio of height
 
         const distanceFromOrigin = Math.sqrt(
             Math.pow(clickX - originX, 2) +
             Math.pow(clickY - originY, 2)
         );
 
-        // Only count clicks that are at least 180px away from the handle (feather area)
-        // This prevents clicking on the stick/handle near the center
-        const minDistance = 180;
+        // Only count clicks that are far enough from the stick end (feather area)
+        // Adjusted for new positioning: feathers are roughly 60% of wand length away from origin
+        const minDistance = rect.height * 0.6;
 
         if (distanceFromOrigin < minDistance) {
-            // Clicked on handle/stick, not the feathers - don't count it
+            // Clicked on handle/stick area, not the feathers - don't count it
             return;
         }
 
