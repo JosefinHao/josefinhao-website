@@ -4008,11 +4008,11 @@ body[data-page="cat-cafe"] .main-container:hover {
     position: absolute;
     /* Fixed at top center - base of wand stays here */
     left: 50%;
-    top: -218px; /* Offset to position stick end at top (accounts for SVG viewBox padding, scaled 1.4x) */
+    top: -230px; /* Offset to position stick end at top (accounts for SVG viewBox padding and internal rotation) */
     width: 350px; /* Increased from 250px for better proportion with cat paw */
     height: 448px; /* Increased from 320px (1.4x scale) */
     /* Transform origin at where the stick end actually is in the container */
-    transform-origin: 50% 218px; /* Stick position scaled 1.4x (156px * 1.4) */
+    transform-origin: 50% 230px; /* Stick position after accounting for SVG's -25deg internal rotation */
     /* Center the wand horizontally at top center */
     transform: translate(-50%, 0);
     cursor: pointer;
@@ -4827,11 +4827,11 @@ body[data-page="cat-cafe"] .main-container:hover {
     .wand {
         width: 218px;  /* 350px * 0.625 - larger for better proportion */
         height: 280px; /* 448px * 0.625 - scaled to fit game area */
-        /* Offset to position stick end at top (accounts for SVG viewBox padding on mobile) */
-        top: -136px; /* 218px * 0.625 (scaled from desktop 218px) */
+        /* Offset to position stick end at top (accounts for SVG viewBox padding and rotation on mobile) */
+        top: -143px; /* Corrected position accounting for SVG internal rotation */
         left: 50%;
         /* Transform origin at where the stick end actually is in the mobile container */
-        transform-origin: 50% 136px; /* Scaled from desktop 218px */
+        transform-origin: 50% 143px; /* Corrected from 136px after accounting for SVG rotation */
         /* Ensure wand stays centered horizontally */
         transform: translate(-50%, 0);
     }
