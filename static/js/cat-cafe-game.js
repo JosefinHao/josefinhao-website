@@ -1522,17 +1522,17 @@
         document.getElementById('yarnGameStart').disabled = true;
         document.getElementById('yarnGameStart').textContent = 'Playing...';
 
-        // Spawn 3 balls immediately for fast start
+        // Spawn 3 balls immediately for ultra fast start
         spawnYarnBall();
         setTimeout(() => spawnYarnBall(), 250);
         setTimeout(() => spawnYarnBall(), 500);
 
-        // Spawn balls periodically - fast spawn rate (69% faster than original)
+        // Spawn balls periodically - ultra fast spawn rate (214% faster than original)
         yarnGame.spawnInterval = setInterval(() => {
             if (yarnGame.isPlaying) {
                 spawnYarnBall();
             }
-        }, 912); // Fast spawn rate (0.912 seconds, 69% faster than 1.54s)
+        }, 491); // Ultra fast spawn rate (0.491 seconds, 214% faster than 1.54s)
 
         // Start game loop
         yarnGameLoop();
@@ -1553,8 +1553,8 @@
             imageIndex: imageIndex
         };
 
-        // Fast speed (69% faster than original) with balanced difficulty increase
-        const baseSpeed = 1.014 + Math.random() * 0.507; // Fast speed: 1.014-1.521 (69% faster than 0.6-0.9)
+        // Ultra fast speed (186% faster than original) with balanced difficulty increase
+        const baseSpeed = 1.713 + Math.random() * 0.857; // Ultra fast speed: 1.713-2.57 (186% faster than 0.6-0.9)
         const difficultyMultiplier = 1 + (yarnGame.difficulty - 1) * 0.065; // Balanced 6.5% increase per level
         const speed = baseSpeed * difficultyMultiplier;
 
@@ -1640,7 +1640,7 @@
                     // Update spawn interval for faster spawning as difficulty increases
                     if (yarnGame.spawnInterval) {
                         clearInterval(yarnGame.spawnInterval);
-                        const newInterval = Math.max(496, 912 - yarnGame.difficulty * 52);
+                        const newInterval = Math.max(267, 491 - yarnGame.difficulty * 88);
                         yarnGame.spawnInterval = setInterval(() => {
                             if (yarnGame.isPlaying) {
                                 spawnYarnBall();
@@ -1671,9 +1671,9 @@
                 // Flying away animation
                 ball.x += ball.flyVelocityX;
                 ball.y += ball.flyVelocityY;
-                ball.flyVelocityY += 0.65; // Gravity pulls it down eventually (30% faster)
+                ball.flyVelocityY += 1.099; // Gravity pulls it down eventually (120% faster)
                 ball.rotation += ball.rotationSpeed * 3; // Spin faster when flying
-                ball.opacity -= 0.026; // Fade out (30% faster)
+                ball.opacity -= 0.044; // Fade out (120% faster)
 
                 // Remove when fully faded or far off screen
                 if (ball.opacity <= 0 || ball.y < -200 || ball.y > canvas.height + 200) {
