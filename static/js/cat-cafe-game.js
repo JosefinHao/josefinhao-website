@@ -1221,9 +1221,9 @@
         const clickY = e.clientY - rect.top;
 
         // Calculate distance from transform origin (stick end at top center)
-        // Transform origin is at 50% and 51.34% of height (230px/448px desktop, 143px/280px mobile)
+        // Transform origin is at 50% and ~30.6% of height (137px/448px desktop, 85px/280px mobile)
         const originX = rect.width / 2;
-        const originY = rect.height * 0.5134; // Stick end position as ratio of height (accounting for SVG rotation)
+        const originY = rect.height * 0.306; // Stick end position after all SVG transforms (internal -25deg + .wand-image 115deg)
 
         const distanceFromOrigin = Math.sqrt(
             Math.pow(clickX - originX, 2) +
