@@ -4614,6 +4614,84 @@ body[data-page="cat-cafe"] .main-container:hover {
     max-width: 80%;
 }
 
+/* Cat Speech Bubble */
+.cat-speech-bubble {
+    position: absolute;
+    background: white;
+    border-radius: 20px;
+    padding: 12px 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.cat-speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid white;
+}
+
+.speech-bubble-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6b9d;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Animation for speech bubble */
+@keyframes bubbleBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes bubbleFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(20px);
+    }
+    50% {
+        transform: scale(1.05) translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes bubbleFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.cat-speech-bubble.show {
+    opacity: 1;
+    animation: bubbleFadeIn 0.5s ease-out forwards, bubbleBounce 1s ease-in-out 0.5s 3;
+}
+
+.cat-speech-bubble.hide {
+    animation: bubbleFadeOut 0.5s ease-out forwards;
+}
+
 /* Instructions */
 .cafe-instructions {
     text-align: center;

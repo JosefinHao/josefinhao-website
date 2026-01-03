@@ -225,6 +225,11 @@
             game.initialized = true;
             gameLoop();
 
+            // Show greeting bubble after a short delay
+            setTimeout(() => {
+                showGreetingBubble();
+            }, 1000);
+
             console.log('Cat Cafe 2D game initialized successfully');
         });
     }
@@ -317,6 +322,49 @@
                 messageEl.style.opacity = '0';
             }, 2000);
         }
+    }
+
+    function showGreetingBubble() {
+        const bubble = document.getElementById('catSpeechBubble');
+        if (!bubble) return;
+
+        // Position the bubble above the cat
+        positionSpeechBubble();
+
+        // Show the bubble with animation
+        bubble.classList.add('show');
+
+        // Play meow sound to draw attention
+        playMeowSound();
+
+        // Hide the bubble after 4 seconds (fade in 0.5s + bounce 3s + fade out 0.5s)
+        setTimeout(() => {
+            bubble.classList.remove('show');
+            bubble.classList.add('hide');
+
+            // Remove hide class after animation completes
+            setTimeout(() => {
+                bubble.classList.remove('hide');
+            }, 500);
+        }, 4000);
+    }
+
+    function positionSpeechBubble() {
+        const bubble = document.getElementById('catSpeechBubble');
+        if (!bubble) return;
+
+        // Get the cat's current position and size
+        const catSize = game.cat.size * game.catSize;
+        const bubbleWidth = bubble.offsetWidth || 150; // Default width if not yet rendered
+        const bubbleHeight = bubble.offsetHeight || 60; // Default height if not yet rendered
+
+        // Position above the cat, centered horizontally
+        // Offset by cat size plus some extra space for the speech bubble tail
+        const x = game.cat.x - bubbleWidth / 2;
+        const y = game.cat.y - catSize - bubbleHeight - 20; // 20px extra space for tail
+
+        bubble.style.left = `${x}px`;
+        bubble.style.top = `${y}px`;
     }
 
     function exerciseCat(points) {
@@ -508,6 +556,12 @@
 
         // Draw cat (always on top)
         drawCat();
+
+        // Update speech bubble position if it's visible
+        const bubble = document.getElementById('catSpeechBubble');
+        if (bubble && bubble.classList.contains('show')) {
+            positionSpeechBubble();
+        }
     }
 
     function drawCafeBackground(ctx) {
